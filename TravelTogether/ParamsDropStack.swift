@@ -11,6 +11,5 @@ import UIKit
 class ParamsDropStack: UIView {
 
     @IBOutlet weak var stackView: UIStackView!
-    
 
 }

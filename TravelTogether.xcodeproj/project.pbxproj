@@ -14,7 +14,7 @@
 		0B0D963C1EE4055500C2F1C4 /* ParamsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D963B1EE4055500C2F1C4 /* ParamsTextField.swift */; };
 		0B0D96401EE4107A00C2F1C4 /* ParamsDropStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B0D963F1EE4107A00C2F1C4 /* ParamsDropStack.xib */; };
 		0B0D96421EE410AD00C2F1C4 /* ParamsDropStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96411EE410AD00C2F1C4 /* ParamsDropStack.swift */; };
-		0B0D96441EE425B600C2F1C4 /* ParamsDataPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B0D96431EE425B600C2F1C4 /* ParamsDataPicker.xib */; };
+		0B0D96441EE425B600C2F1C4 /* ParamsDatePicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B0D96431EE425B600C2F1C4 /* ParamsDatePicker.xib */; };
 		0B0D96461EE4265900C2F1C4 /* ParamsDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96451EE4265900C2F1C4 /* ParamsDatePicker.swift */; };
 		0B0D96481EE42D8400C2F1C4 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96471EE42D8400C2F1C4 /* Protocols.swift */; };
 		0B0D964A1EE431FB00C2F1C4 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96491EE431FB00C2F1C4 /* Extensions.swift */; };
@@ -44,7 +44,7 @@
 		0B0D963B1EE4055500C2F1C4 /* ParamsTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsTextField.swift; sourceTree = "<group>"; };
 		0B0D963F1EE4107A00C2F1C4 /* ParamsDropStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsDropStack.xib; sourceTree = "<group>"; };
 		0B0D96411EE410AD00C2F1C4 /* ParamsDropStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsDropStack.swift; sourceTree = "<group>"; };
-		0B0D96431EE425B600C2F1C4 /* ParamsDataPicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsDataPicker.xib; sourceTree = "<group>"; };
+		0B0D96431EE425B600C2F1C4 /* ParamsDatePicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsDatePicker.xib; sourceTree = "<group>"; };
 		0B0D96451EE4265900C2F1C4 /* ParamsDatePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsDatePicker.swift; sourceTree = "<group>"; };
 		0B0D96471EE42D8400C2F1C4 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		0B0D96491EE431FB00C2F1C4 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 				0B0D963B1EE4055500C2F1C4 /* ParamsTextField.swift */,
 				0B0D96391EE402F100C2F1C4 /* ParamsTextField.xib */,
 				0B0D96451EE4265900C2F1C4 /* ParamsDatePicker.swift */,
-				0B0D96431EE425B600C2F1C4 /* ParamsDataPicker.xib */,
+				0B0D96431EE425B600C2F1C4 /* ParamsDatePicker.xib */,
 				0B0D964F1EE462B700C2F1C4 /* ParamsSelectField.swift */,
 				0B0D964D1EE4610F00C2F1C4 /* ParamsSelectField.xib */,
 			);
@@ -256,7 +256,7 @@
 			files = (
 				0B0D964E1EE4610F00C2F1C4 /* ParamsSelectField.xib in Resources */,
 				0BDA509B1EDF2D1800FA7A5E /* LaunchScreen.storyboard in Resources */,
-				0B0D96441EE425B600C2F1C4 /* ParamsDataPicker.xib in Resources */,
+				0B0D96441EE425B600C2F1C4 /* ParamsDatePicker.xib in Resources */,
 				0BDA50A31EDF2E8F00FA7A5E /* GoogleService-Info.plist in Resources */,
 				0BDA50981EDF2D1800FA7A5E /* Assets.xcassets in Resources */,
 				0B0D963A1EE402F100C2F1C4 /* ParamsTextField.xib in Resources */,
@@ -281,7 +281,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		607A81A40533D97B1B8BD455 /* [CP] Embed Pods Frameworks */ = {
@@ -465,6 +465,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 2XB4ND3L45;
 				INFOPLIST_FILE = TravelTogether/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.home.TravelTogether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -479,6 +480,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 2XB4ND3L45;
 				INFOPLIST_FILE = TravelTogether/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.home.TravelTogether;
 				PRODUCT_NAME = "$(TARGET_NAME)";

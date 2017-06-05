@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ParamsDatePicker: ParamsAbstract {
+class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
     
     let datePicker = UIDatePicker()
     
@@ -32,8 +32,24 @@ class ParamsDatePicker: ParamsAbstract {
     }
     
     static func initFromNib() -> ParamsDatePicker {
-        return Bundle.main.loadNibNamed("ParamsDataPicker", owner: self, options: nil)?.first as! ParamsDatePicker
-    }    
+        return Bundle.main.loadNibNamed("ParamsDatePicker", owner: self, options: nil)?.first as! ParamsDatePicker
+    }
+    
+    func setView(placeholder: String?, parrent: UIViewController, tag: Int) {
+        setAbstractView(placeholder: placeholder, parrent: parrent, tag: tag)
+    }
+    
+    func showHide() {
+        abstractShowHide()
+    }
+    
+    func hide() {
+        abstractHide()
+    }
+    
+    func getValue() {
+        Person.profileDict[self.tag] = textField.text
+    }
     
     
     

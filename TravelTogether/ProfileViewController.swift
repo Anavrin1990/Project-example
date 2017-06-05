@@ -8,8 +8,8 @@
 
 import UIKit
 
-var person = Person()
-var profileDict = [Int: String]()
+
+
 
 class ProfileViewController: UIViewController, ParamsViewDelegate {
     
@@ -67,7 +67,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
         scrollView.contentOffset = CGPoint.zero
     }
     
-    func onParamsViewClick(index: Int) {
+    func onParamsViewClick(index: Int) { 
         self.view.endEditing(true)
         
             ProfileViewController.paramsArray.forEach {
@@ -83,7 +83,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
         
         
         ProfileViewController.headersArray.enumerated().forEach {
-            let text = profileDict[$0.offset]
+            let text = Person.profileDict[$0.offset]
             if text != "" && text != nil {
                 $0.element.paramValue.text = text
             }
@@ -108,21 +108,21 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
                 }
             }
         }
-        person.name = profileDict[0]
-        person.sex = profileDict[1]
-        person.birthday = profileDict[2]
-        person.country = profileDict[3]
-        person.about = profileDict[4]
-        person.alcohol = profileDict[5]
-        person.smoking = profileDict[6]
-        person.familyStatus = profileDict[7]
-        person.childs = profileDict[8]
-        person.orientation = profileDict[9]
-        person.travelKind = profileDict[10]
-        person.staing = profileDict[11]
-        person.hobbies = [profileDict[12]]
+        Person.instance.name = Person.profileDict[0]
+        Person.instance.sex = Person.profileDict[1]
+        Person.instance.birthday = Person.profileDict[2]
+        Person.instance.country = Person.profileDict[3]
+        Person.instance.about = Person.profileDict[4]
+        Person.instance.alcohol = Person.profileDict[5]
+        Person.instance.smoking = Person.profileDict[6]
+        Person.instance.familyStatus = Person.profileDict[7]
+        Person.instance.childs = Person.profileDict[8]
+        Person.instance.orientation = Person.profileDict[9]
+        Person.instance.travelKind = Person.profileDict[10]
+        Person.instance.staing = Person.profileDict[11]
+        Person.instance.hobbies = [Person.profileDict[12]]
         
-        let mirror = Mirror(reflecting: person)
+        let mirror = Mirror(reflecting: Person.instance)
         for i in mirror.children {
             print (i.label)
             print (i.value)

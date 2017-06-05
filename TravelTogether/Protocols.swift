@@ -12,7 +12,7 @@ import UIKit
 protocol ParamsViewsProtocol {
     
     func setView(placeholder: String?, parrent: UIViewController, tag: Int)
-    func getValue()
     func showHide()
     func hide()
+    func getValue()
 }

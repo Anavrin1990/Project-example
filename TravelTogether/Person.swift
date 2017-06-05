@@ -9,6 +9,10 @@
 import Foundation
 
 struct Person {
+    
+    static var instance = Person()
+    static var profileDict = [Int: String]()
+    
     var name: String?
     var sex: String?
     var birthday: String?
@@ -23,6 +27,7 @@ struct Person {
     var travelKind: String?
     var staing: String?
     var hobbies: [String?]?
+    
 }
 
 struct Travel {
@@ -30,3 +35,5 @@ struct Travel {
     var destStartDate: String?
     var destEndDate: String?
 }
+
+
