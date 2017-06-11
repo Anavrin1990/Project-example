@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -260,7 +259,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OYP-sW-ERd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="h8j-JL-Ukg"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="kxh-rg-P9N">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="kxh-rg-P9N">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -419,71 +418,30 @@
                         <outlet property="collectionView" destination="Ovj-YA-H0q" id="Eyp-k1-e6i"/>
                         <outlet property="paramsStackView" destination="gis-dP-FTD" id="ghQ-n3-1pZ"/>
                         <outlet property="scrollView" destination="W2K-XT-43k" id="Lod-6G-3ME"/>
-                        <segue destination="WQv-bI-YBc" kind="show" identifier="ProfileSelection" id="aq1-NA-Zr0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cL1-8Y-a7p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3498" y="1539"/>
         </scene>
-        <!--Profile Selection View Controller-->
-        <scene sceneID="ojl-0J-qyf">
+        <!--Search Table View Controller-->
+        <scene sceneID="1Aj-UD-mb6">
             <objects>
-                <viewController id="WQv-bI-YBc" customClass="ProfileSelectionViewController" customModule="TravelTogether" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchTableViewController" id="rM8-F4-GKe" customClass="SearchTableViewController" customModule="TravelTogether" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="0ut-9g-6VJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="lfI-qC-jDY"/>
+                        <viewControllerLayoutGuide type="top" id="6nu-qt-TUz"/>
+                        <viewControllerLayoutGuide type="bottom" id="gaD-Fx-z4I"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="zFA-jV-fvU">
+                    <view key="view" contentMode="scaleToFill" id="Nd4-IK-RzT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yIm-SA-a4F">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2h0-qZ-zBm">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="402"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rUw-VT-zU1">
-                                                <rect key="frame" x="20" y="0.0" width="335" height="382"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="382" placeholder="YES" id="gRu-rU-enc"/>
-                                                </constraints>
-                                            </stackView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="rUw-VT-zU1" secondAttribute="bottom" constant="20" id="8e9-Ui-7YW"/>
-                                            <constraint firstItem="rUw-VT-zU1" firstAttribute="top" secondItem="2h0-qZ-zBm" secondAttribute="top" id="9tr-qQ-Fe4"/>
-                                            <constraint firstAttribute="trailing" secondItem="rUw-VT-zU1" secondAttribute="trailing" constant="20" id="IV7-cm-2r8"/>
-                                            <constraint firstItem="rUw-VT-zU1" firstAttribute="leading" secondItem="2h0-qZ-zBm" secondAttribute="leading" constant="20" id="cUX-s9-M34"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="2h0-qZ-zBm" firstAttribute="top" secondItem="yIm-SA-a4F" secondAttribute="top" id="E3e-oc-vpM"/>
-                                    <constraint firstAttribute="bottom" secondItem="2h0-qZ-zBm" secondAttribute="bottom" id="Efe-91-vTe"/>
-                                    <constraint firstAttribute="trailing" secondItem="2h0-qZ-zBm" secondAttribute="trailing" id="JoU-S6-O6a"/>
-                                    <constraint firstItem="2h0-qZ-zBm" firstAttribute="leading" secondItem="yIm-SA-a4F" secondAttribute="leading" id="cWi-IQ-wxf"/>
-                                </constraints>
-                            </scrollView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="yIm-SA-a4F" secondAttribute="trailing" id="BW5-m7-5yc"/>
-                            <constraint firstAttribute="bottom" secondItem="yIm-SA-a4F" secondAttribute="bottom" id="Mhc-I1-YNh"/>
-                            <constraint firstItem="yIm-SA-a4F" firstAttribute="leading" secondItem="zFA-jV-fvU" secondAttribute="leading" id="Si3-xC-LLf"/>
-                            <constraint firstItem="2h0-qZ-zBm" firstAttribute="width" secondItem="zFA-jV-fvU" secondAttribute="width" id="gGz-m7-Jci"/>
-                            <constraint firstItem="yIm-SA-a4F" firstAttribute="top" secondItem="zFA-jV-fvU" secondAttribute="top" id="vJu-4V-8CB"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="paramsStackView" destination="rUw-VT-zU1" id="aCG-TV-k7s"/>
-                    </connections>
+                    <navigationItem key="navigationItem" id="AQb-Z6-1oT"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="g9d-Av-P2e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o0r-11-QqW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4608.8000000000002" y="1538.6806596701651"/>
+            <point key="canvasLocation" x="4512.8000000000002" y="1538.6806596701651"/>
         </scene>
         <!--Item-->
         <scene sceneID="ZGY-4R-yh9">
@@ -491,7 +449,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ahu-ub-vEb" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="OK3-gp-u5z"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dT1-7y-lmB">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="dT1-7y-lmB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -509,7 +467,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Aha-Fj-mNm" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gUV-Au-DfD">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="gUV-Au-DfD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

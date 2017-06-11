@@ -8,9 +8,6 @@
 
 import UIKit
 
-
-
-
 class ProfileViewController: UIViewController, ParamsViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -39,7 +36,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
             ProfileViewController.headersArray.append(headerView)
             ProfileViewController.paramsArray.append(paramsDropStack)
             addDropList(key.offset)
-            paramsStackView.addArrangedSubview(paramsDropStack) 
+            paramsStackView.addArrangedSubview(paramsDropStack)
         }
     }
     
@@ -67,35 +64,36 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
         scrollView.contentOffset = CGPoint.zero
     }
     
-    func onParamsViewClick(index: Int) { 
+    func onParamsViewClick(index: Int) {
         self.view.endEditing(true)
         
-            ProfileViewController.paramsArray.forEach {
-                $0.stackView.subviews.forEach {
-                    if let view = $0 as? ParamsViewsProtocol {
-                        if index != ProfileViewController.selectedIndex {
-                            view.hide()
-                        }
-                        view.getValue()
+        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
+        self.navigationController?.pushViewController(searchVC, animated: true)
+        
+        ProfileViewController.paramsArray.forEach {
+            $0.stackView.subviews.forEach {
+                if let view = $0 as? ParamsViewsProtocol {
+                    if index != ProfileViewController.selectedIndex {
+                        view.hide()
                     }
+                    view.getValue()
                 }
             }
-        
-        
+        }
         ProfileViewController.headersArray.enumerated().forEach {
             let text = Person.profileDict[$0.offset]
             if text != "" && text != nil {
                 $0.element.paramValue.text = text
             }
         }
-        
         ProfileViewController.selectedIndex = index
         
         
-            ProfileViewController.paramsArray[index].stackView.subviews.forEach {
-                if let view = $0 as? ParamsViewsProtocol {
-                    view.showHide()
-                }
+        
+        ProfileViewController.paramsArray[index].stackView.subviews.forEach {
+            if let view = $0 as? ParamsViewsProtocol {
+                view.showHide()
+            }
             
         }
     }
