@@ -65,9 +65,16 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
         scrollView.contentOffset = CGPoint.zero
     }
     
-    func searchCountries (_ complition: @escaping (_ JSON: JSON) -> ()) -> Void {
+    func searchCountries (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void {
         Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCountries&v=5.65&need_all=1&lang=en&count=1000") { (json) in
-            complition(json)
+            var countriesArray = [(String, String)]()
+            let countries = json["response"]["items"].arrayValue
+            for c in countries {
+                let country = (c["id"].stringValue, c["title"].stringValue)
+                countriesArray.append(country)
+            }
+            let result = (NSLocalizedString("Страны", comment: "Страны"), countriesArray)
+            complition([result])
         }
     }
     

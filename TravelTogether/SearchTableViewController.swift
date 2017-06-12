@@ -15,9 +15,9 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     let tableView = UITableView()
     let stackView = UIStackView()
     
-    var request: ((_ complition: @escaping (_ JSON: JSON) -> ()) -> Void)?
+    var request: ((_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void)?
     
-    var url: String?
+    var contentArray = [(String, [(String, String)])]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +35,14 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func searchRequest(request: (_ complition: @escaping (_ JSON: JSON) -> ()) -> Void) {
-        request { (json) in
-            spinner.stopAnimating()
-            print (json)
+    func searchRequest(request: (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void) {
+        request { (content) in
+            
+            self.contentArray = content            
+            DispatchQueue.main.async {
+                spinner.stopAnimating()
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -58,12 +62,24 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SearchTableViewCell")!
-        cell.textLabel?.text = "123"
+        cell.textLabel?.text = contentArray[indexPath.section].1[indexPath.row].1
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return contentArray[section].1.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return contentArray[section].0
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return contentArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
     }
 
     
