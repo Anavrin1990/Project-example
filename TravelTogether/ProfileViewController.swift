@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 
-class ProfileViewController: UIViewController, ParamsViewDelegate {
+class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -18,15 +18,21 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
     static var headersArray = [ParamsView]()
     
     static var selectedIndex: Int?
+    
+    var countryId = ""
+    
     let keyArray = [NSLocalizedString("Имя", comment: "Имя"), NSLocalizedString("Пол", comment: "Пол"), NSLocalizedString("Дата рождения", comment: "Дата рождения"), NSLocalizedString("Страна", comment: "Страна"), NSLocalizedString("Город", comment: "Город"), NSLocalizedString("О себе", comment: "О себе"), NSLocalizedString("Алкоголь", comment: "Алкоголь"), NSLocalizedString("Курение", comment: "Курение"), NSLocalizedString("Отношения", comment: "Отношения"), NSLocalizedString("Дети", comment: "Дети"), NSLocalizedString("Ориентация", comment: "Ориентация"), NSLocalizedString("Вид отдыха", comment: "Вид отдыха"), NSLocalizedString("Проживание", comment: "Проживание"), NSLocalizedString("Интересы", comment: "Интересы") ]
     
     @IBOutlet weak var paramsStackView: UIStackView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scrollView.delaysContentTouches = false
         registerForKeyboardNotifications()
         ParamsView.delegate = self
+        SearchTableViewController.delegate = self
+        
         for key in keyArray.enumerated() {
             let paramsDropStack = Bundle.main.loadNibNamed("ParamsDropStack", owner: self, options: nil)?.first as! ParamsDropStack
             let headerView = Bundle.main.loadNibNamed("ParamsView", owner: self, options: nil)?.first as! ParamsView
@@ -65,7 +71,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
         scrollView.contentOffset = CGPoint.zero
     }
     
-    func searchCountries (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void {
+    func searchCountries (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
         Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCountries&v=5.65&need_all=1&lang=en&count=1000") { (json) in
             var countriesArray = [(String, String)]()
             let countries = json["response"]["items"].arrayValue
@@ -78,9 +84,24 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
         }
     }
     
+    func searchCities (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
+        Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCities&v=5.5&country_id=\(countryId)&lang=en&count=1000") { (json) in
+            var citiesArray = [(String, String)]()
+            let cities = json["response"]["items"].arrayValue
+            for c in cities {
+                let city = (c["id"].stringValue, c["title"].stringValue)
+                citiesArray.append(city)
+            }
+            let result = (NSLocalizedString("Города", comment: "Города"), citiesArray)
+            complition([result])
+        }
+    }
+    
     func onParamsViewClick(index: Int) {
         self.view.endEditing(true)
+        
         let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
+        searchVC.index = index
         
         ProfileViewController.paramsArray.forEach {
             $0.stackView.subviews.forEach {
@@ -92,12 +113,14 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
                 }
             }
         }
+        
         ProfileViewController.headersArray.enumerated().forEach {
             let text = Person.profileDict[$0.offset]
             if text != "" && text != nil {
                 $0.element.paramValue.text = text
             }
         }
+        
         ProfileViewController.selectedIndex = index
         
         ProfileViewController.paramsArray[index].stackView.subviews.forEach {
@@ -111,16 +134,28 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
             searchVC.request = searchCountries(_:)
             self.navigationController?.pushViewController(searchVC, animated: true)
         case 4:
+            searchVC.request = searchCities(_:)
             self.navigationController?.pushViewController(searchVC, animated: true)
         case 13:
             self.navigationController?.pushViewController(searchVC, animated: true)
         default:
             break
         }
-        
-        
-        
     }
+    
+    func getSearchResult(result: (String?, String?)?, index: Int?) {
+        if index == 3 {self.countryId = result!.0!}
+        
+        Person.profileDict[index!] = result?.1
+        
+        ProfileViewController.headersArray.enumerated().forEach {
+            let text = Person.profileDict[$0.offset]
+            if text != "" && text != nil {
+                $0.element.paramValue.text = text
+            }
+        }
+    }
+    
     @IBAction func nextButton(_ sender: Any) {
         ProfileViewController.paramsArray.forEach {
             $0.stackView.subviews.forEach {
@@ -134,15 +169,16 @@ class ProfileViewController: UIViewController, ParamsViewDelegate {
         Person.instance.sex = Person.profileDict[1]
         Person.instance.birthday = Person.profileDict[2]
         Person.instance.country = Person.profileDict[3]
-        Person.instance.about = Person.profileDict[4]
-        Person.instance.alcohol = Person.profileDict[5]
-        Person.instance.smoking = Person.profileDict[6]
-        Person.instance.familyStatus = Person.profileDict[7]
-        Person.instance.childs = Person.profileDict[8]
-        Person.instance.orientation = Person.profileDict[9]
-        Person.instance.travelKind = Person.profileDict[10]
-        Person.instance.staing = Person.profileDict[11]
-        Person.instance.hobbies = [Person.profileDict[12]]
+        Person.instance.city = Person.profileDict[4]
+        Person.instance.about = Person.profileDict[5]
+        Person.instance.alcohol = Person.profileDict[6]
+        Person.instance.smoking = Person.profileDict[7]
+        Person.instance.familyStatus = Person.profileDict[8]
+        Person.instance.childs = Person.profileDict[9]
+        Person.instance.orientation = Person.profileDict[10]
+        Person.instance.travelKind = Person.profileDict[11]
+        Person.instance.staing = Person.profileDict[12]
+        Person.instance.hobbies = [Person.profileDict[13]]
         
         let mirror = Mirror(reflecting: Person.instance)
         for i in mirror.children {

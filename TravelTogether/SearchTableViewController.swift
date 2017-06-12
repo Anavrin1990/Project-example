@@ -9,7 +9,15 @@
 import UIKit
 import SwiftyJSON
 
+protocol SearchTableViewDelegate {
+    func getSearchResult(result: (String?, String?)?, index: Int?)
+}
+
 class SearchTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {    
+    
+    static var delegate: SearchTableViewDelegate?
+    
+    var index: Int?
     
     let searchBar = UISearchBar()
     let tableView = UITableView()
@@ -18,6 +26,8 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     var request: ((_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void)?
     
     var contentArray = [(String, [(String, String)])]()
+    
+    var result: (String?, String?)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,8 +47,8 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     func searchRequest(request: (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void) {
         request { (content) in
+            self.contentArray = content
             
-            self.contentArray = content            
             DispatchQueue.main.async {
                 spinner.stopAnimating()
                 self.tableView.reloadData()
@@ -64,6 +74,13 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = tableView.dequeueReusableCell(withIdentifier: "SearchTableViewCell")!
         cell.textLabel?.text = contentArray[indexPath.section].1[indexPath.row].1
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        result = (contentArray[indexPath.section].1[indexPath.row].0, contentArray[indexPath.section].1[indexPath.row].1)
+        SearchTableViewController.delegate?.getSearchResult(result: result, index: index)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
