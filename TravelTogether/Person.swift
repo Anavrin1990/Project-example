@@ -15,7 +15,7 @@ struct Person {
     
     var name: String?
     var sex: String?
-    var birthday: String?
+    var birthdate: String?
     var country: String?
     var city: String?
     var about: String?
@@ -25,9 +25,7 @@ struct Person {
     var childs: String?
     var orientation: String?
     var travelKind: String?
-    var staing: String?
-    var hobbies: [String?]?
-    
+    var staying: String?
 }
 
 struct Travel {

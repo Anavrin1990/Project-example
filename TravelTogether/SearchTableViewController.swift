@@ -10,7 +10,7 @@ import UIKit
 import SwiftyJSON
 
 protocol SearchTableViewDelegate {
-    func getSearchResult(result: (String?, String?)?, index: Int?)
+    func getSearchResult(result: (String, String), index: Int?)
 }
 
 class SearchTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {    
@@ -18,6 +18,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     static var delegate: SearchTableViewDelegate?
     
     var index: Int?
+    var searchTextIsEmpty = true
     
     let searchBar = UISearchBar()
     let tableView = UITableView()
@@ -26,8 +27,9 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     var request: ((_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void)?
     
     var contentArray = [(String, [(String, String)])]()
+    var filteredContentArray = [(String, String)]()
     
-    var result: (String?, String?)?
+    var result: (String, String)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,33 +74,72 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SearchTableViewCell")!
-        cell.textLabel?.text = contentArray[indexPath.section].1[indexPath.row].1
+        cell.textLabel?.text = searchTextIsEmpty ? contentArray[indexPath.section].1[indexPath.row].1 : filteredContentArray[indexPath.row].1
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        result = (contentArray[indexPath.section].1[indexPath.row].0, contentArray[indexPath.section].1[indexPath.row].1)
-        SearchTableViewController.delegate?.getSearchResult(result: result, index: index)
+       
+        result = searchTextIsEmpty ? (contentArray[indexPath.section].1[indexPath.row].0, contentArray[indexPath.section].1[indexPath.row].1) : (filteredContentArray[indexPath.row].0, filteredContentArray[indexPath.row].1)
+        
+        SearchTableViewController.delegate?.getSearchResult(result: result!, index: index)
         self.navigationController?.popViewController(animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contentArray[section].1.count
+        return searchTextIsEmpty ? contentArray[section].1.count : filteredContentArray.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return contentArray[section].0
+        return searchTextIsEmpty ? contentArray[section].0 : nil
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return contentArray.count
+        return searchTextIsEmpty ? contentArray.count : 1
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
+        return searchTextIsEmpty ? 30 : 0
     }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchTextIsEmpty = searchText.isEmpty
+        filteredContentArray = []
+        
+        for item in contentArray {
+            for value in item.1 {
+                if value.1.lowercased().contains(searchText.lowercased()) {
+                    filteredContentArray.append(value.0, value.1)
+                }
+            }
+        }
+        tableView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.searchBar.showsCancelButton = true
+    }    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchTextIsEmpty = true
+        searchBar.resignFirstResponder()
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        tableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
 
+    
+    
+    
+    
+    
+    
     
 
 }

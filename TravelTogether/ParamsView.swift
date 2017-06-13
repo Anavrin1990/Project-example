@@ -19,13 +19,7 @@ class ParamsView: UIView {
 
     
     @IBOutlet weak var paramKey: UILabel!
-    @IBOutlet weak var paramValue: UILabel!
-    
-    override func awakeFromNib() {
-        
-    }
-    
-    
+    @IBOutlet weak var paramValue: UILabel!    
     
     @IBAction func onParamsViewClick(_ sender: UIButton) {
         ParamsView.delegate?.onParamsViewClick(index: self.tag)

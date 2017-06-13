@@ -8,6 +8,13 @@
 
 import UIKit
 
+protocol ParamsViewsProtocol {    
+    func setView(placeholder: String?, parrent: UIViewController, tag: Int)
+    func showHide()
+    func hide()
+    func getValue()
+}
+
 class ParamsAbstract: UIView {
     
     var parrent: UIViewController?

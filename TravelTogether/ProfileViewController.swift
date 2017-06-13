@@ -21,7 +21,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     
     var countryId = ""
     
-    let keyArray = [NSLocalizedString("Имя", comment: "Имя"), NSLocalizedString("Пол", comment: "Пол"), NSLocalizedString("Дата рождения", comment: "Дата рождения"), NSLocalizedString("Страна", comment: "Страна"), NSLocalizedString("Город", comment: "Город"), NSLocalizedString("О себе", comment: "О себе"), NSLocalizedString("Алкоголь", comment: "Алкоголь"), NSLocalizedString("Курение", comment: "Курение"), NSLocalizedString("Отношения", comment: "Отношения"), NSLocalizedString("Дети", comment: "Дети"), NSLocalizedString("Ориентация", comment: "Ориентация"), NSLocalizedString("Вид отдыха", comment: "Вид отдыха"), NSLocalizedString("Проживание", comment: "Проживание"), NSLocalizedString("Интересы", comment: "Интересы") ]
+    let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthdate", comment: "Birthdate"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Marital status", comment: "Marital status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation"), NSLocalizedString("Type of travel", comment: "Type of travel"), NSLocalizedString("Staying", comment: "Staying")]
     
     @IBOutlet weak var paramsStackView: UIStackView!
     
@@ -38,7 +38,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
             let headerView = Bundle.main.loadNibNamed("ParamsView", owner: self, options: nil)?.first as! ParamsView
             headerView.tag = key.offset
             headerView.paramKey.text = key.element
-            headerView.paramValue.text = NSLocalizedString("Не заполнено", comment: "Не заполнено")
+            headerView.paramValue.text = NSLocalizedString("Not filled", comment: "Not filled")
             paramsDropStack.stackView.addArrangedSubview(headerView)
             ProfileViewController.headersArray.append(headerView)
             ProfileViewController.paramsArray.append(paramsDropStack)
@@ -79,7 +79,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 let country = (c["id"].stringValue, c["title"].stringValue)
                 countriesArray.append(country)
             }
-            let result = (NSLocalizedString("Страны", comment: "Страны"), countriesArray)
+            let result = (NSLocalizedString("Countries", comment: "Countries"), countriesArray)
             complition([result])
         }
     }
@@ -92,7 +92,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 let city = (c["id"].stringValue, c["title"].stringValue)
                 citiesArray.append(city)
             }
-            let result = (NSLocalizedString("Города", comment: "Города"), citiesArray)
+            let result = (NSLocalizedString("Nearest city", comment: "Nearest city"), citiesArray)
             complition([result])
         }
     }
@@ -136,17 +136,15 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         case 4:
             searchVC.request = searchCities(_:)
             self.navigationController?.pushViewController(searchVC, animated: true)
-        case 13:
-            self.navigationController?.pushViewController(searchVC, animated: true)
         default:
             break
         }
     }
     
-    func getSearchResult(result: (String?, String?)?, index: Int?) {
-        if index == 3 {self.countryId = result!.0!}
+    func getSearchResult(result: (String, String), index: Int?) {
+        if index == 3 {self.countryId = result.0}
         
-        Person.profileDict[index!] = result?.1
+        Person.profileDict[index!] = result.1
         
         ProfileViewController.headersArray.enumerated().forEach {
             let text = Person.profileDict[$0.offset]
@@ -167,7 +165,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         }
         Person.instance.name = Person.profileDict[0]
         Person.instance.sex = Person.profileDict[1]
-        Person.instance.birthday = Person.profileDict[2]
+        Person.instance.birthdate = Person.profileDict[2]
         Person.instance.country = Person.profileDict[3]
         Person.instance.city = Person.profileDict[4]
         Person.instance.about = Person.profileDict[5]
@@ -177,15 +175,16 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         Person.instance.childs = Person.profileDict[9]
         Person.instance.orientation = Person.profileDict[10]
         Person.instance.travelKind = Person.profileDict[11]
-        Person.instance.staing = Person.profileDict[12]
-        Person.instance.hobbies = [Person.profileDict[13]]
+        Person.instance.staying = Person.profileDict[12]
         
         let mirror = Mirror(reflecting: Person.instance)
-        for i in mirror.children {
-            print (i.label)
-            print (i.value)
-            print ("--------")
+        for i in mirror.children.enumerated() {
+            if i.1.value as? String == nil || i.1.value as? String == "" {
+                MessageBox.showMessage(parent: self, title: ProfileViewController.headersArray[i.0].paramKey.text!, message: NSLocalizedString("Not filled", comment: "Not filled"))
+                return
+            }            
         }
+        MessageBox.showMessage(parent: self, title: "Good for you", message: "O_o")
         
     }
     
@@ -194,10 +193,10 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         switch index {
         case 0:
             let paramsTextField = ParamsTextField.initFromNib()
-            paramsTextField.setView(placeholder: NSLocalizedString("Введите ваше имя", comment: "Введите ваше имя"), parrent: self, tag: index)
+            paramsTextField.setView(placeholder: NSLocalizedString("Enter your name", comment: "Enter your name"), parrent: self, tag: index)
             ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsTextField)
         case 1:
-            let sexArray = [NSLocalizedString("Мужской", comment: "Мужской"), NSLocalizedString("Женский", comment: "Женский")]
+            let sexArray = [NSLocalizedString("Male", comment: "Male"), NSLocalizedString("Female", comment: "Female")]
             for i in sexArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
                 paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
@@ -205,52 +204,56 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
             }
         case 2:
             let paramsDataPicker = ParamsDatePicker.initFromNib()
-            paramsDataPicker.setView(placeholder: NSLocalizedString("Дата рождения", comment: "Дата рождения"), parrent: self, tag: index)
+            paramsDataPicker.setView(placeholder: NSLocalizedString("Birthdate", comment: "Birthdate"), parrent: self, tag: index)
             ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsDataPicker)
+        case 5:
+            let paramsTextField = ParamsTextField.initFromNib()
+            paramsTextField.setView(placeholder: NSLocalizedString("Write about yourself", comment: "Write about yourself"), parrent: self, tag: index)
+            ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsTextField)
         case 6:
-            let alcoholArray = [NSLocalizedString("Приемлю", comment: "Приемлю"), NSLocalizedString("Не приемлю", comment: "Не приемлю")]
+            let alcoholArray = [NSLocalizedString("Positive", comment: "Positive"), NSLocalizedString("Negative", comment: "Negative")]
             for i in alcoholArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
                 paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 7:
-            let smokingArray = [NSLocalizedString("Приемлю", comment: "Приемлю"), NSLocalizedString("Не приемлю", comment: "Не приемлю")]
+            let smokingArray = [NSLocalizedString("Positive", comment: "Positive"), NSLocalizedString("Negative", comment: "Negative")]
             for i in smokingArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
                 paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 8:
-            let familyArray = [NSLocalizedString("Холост", comment: "Холост"), NSLocalizedString("В браке", comment: "В браке")]
+            let familyArray = [NSLocalizedString("Single", comment: "Single"), NSLocalizedString("Married", comment: "Married")]
             for i in familyArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
                 paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 9:
-            let childsArray = [NSLocalizedString("Есть", comment: "Есть"), NSLocalizedString("Нет", comment: "Нет")]
+            let childsArray = [NSLocalizedString("Yes", comment: "Yes"), NSLocalizedString("No", comment: "No")]
             for i in childsArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
                 paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 10:
-            let orientationArray = [NSLocalizedString("Гетеро", comment: "Гетеро"), NSLocalizedString("Гомо", comment: "Гомо"), NSLocalizedString("Би", comment: "Би")]
+            let orientationArray = [NSLocalizedString("Hetero", comment: "Hetero"), NSLocalizedString("Homo", comment: "Homo"), NSLocalizedString("Bi", comment: "Bi")]
             for i in orientationArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
                 paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 11:
-            let travelKindArray = [NSLocalizedString("Активный", comment: "Активный"), NSLocalizedString("Пляжный", comment: "Пляжный")]
+            let travelKindArray = [NSLocalizedString("Active", comment: "Active"), NSLocalizedString("Beach rest", comment: "Beach rest")]
             for i in travelKindArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
                 paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 12:
-            let staingArray = [NSLocalizedString("В отеле", comment: "В отеле"), NSLocalizedString("Съем жилья", comment: "Съем жилья")]
+            let staingArray = [NSLocalizedString("Hotel", comment: "Hotel"), NSLocalizedString("Hostel", comment: "Hostel"),  NSLocalizedString("Rent", comment: "Rent")]
             for i in staingArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
                 paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
