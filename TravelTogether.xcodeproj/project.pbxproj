@@ -24,6 +24,7 @@
 		0B2106351EE2CE7B001AE7D0 /* ParamsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2106341EE2CE7B001AE7D0 /* ParamsView.xib */; };
 		0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B86048C1EEF03C40090CAF3 /* Global.swift */; };
 		0B95FC3A1EF06ACC00C315F6 /* MessageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B95FC391EF06ACC00C315F6 /* MessageBox.swift */; };
+		0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */; };
 		0BBA88DB1EE2FE2200CFE1C8 /* ParamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBA88DA1EE2FE2200CFE1C8 /* ParamsView.swift */; };
 		0BC4965C1EED563100505FD2 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC4965B1EED563100505FD2 /* Request.swift */; };
 		0BDA50911EDF2D1800FA7A5E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */; };
@@ -57,6 +58,7 @@
 		0B2106341EE2CE7B001AE7D0 /* ParamsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsView.xib; sourceTree = "<group>"; };
 		0B86048C1EEF03C40090CAF3 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		0B95FC391EF06ACC00C315F6 /* MessageBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBox.swift; sourceTree = "<group>"; };
+		0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		0BBA88DA1EE2FE2200CFE1C8 /* ParamsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsView.swift; sourceTree = "<group>"; };
 		0BC4965B1EED563100505FD2 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		0BDA508D1EDF2D1800FA7A5E /* TravelTogether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelTogether.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,6 +116,7 @@
 			children = (
 				0BDA50A81EDF370A00FA7A5E /* Person.swift */,
 				0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */,
+				0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -146,6 +149,16 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		0BAEE95C1EF506F000CCC0C1 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0B0D96491EE431FB00C2F1C4 /* Extensions.swift */,
+				0B86048C1EEF03C40090CAF3 /* Global.swift */,
+				0B95FC391EF06ACC00C315F6 /* MessageBox.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		0BDA50841EDF2D1800FA7A5E = {
 			isa = PBXGroup;
 			children = (
@@ -168,12 +181,10 @@
 			isa = PBXGroup;
 			children = (
 				0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */,
-				0B0D96491EE431FB00C2F1C4 /* Extensions.swift */,
-				0B86048C1EEF03C40090CAF3 /* Global.swift */,
-				0B95FC391EF06ACC00C315F6 /* MessageBox.swift */,
 				0BC4965B1EED563100505FD2 /* Request.swift */,
 				0BDA50941EDF2D1800FA7A5E /* Main.storyboard */,
 				0BDA50971EDF2D1800FA7A5E /* Assets.xcassets */,
+				0BAEE95C1EF506F000CCC0C1 /* Utils */,
 				0B0D962E1EE3E80000C2F1C4 /* Controllers */,
 				0B0D96301EE3E87E00C2F1C4 /* Models */,
 				0B0D962F1EE3E82B00C2F1C4 /* Cells */,
@@ -340,6 +351,7 @@
 				0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */,
 				0B0D96351EE3F05400C2F1C4 /* CustomScrollView.swift in Sources */,
 				0BDA50A71EDF34B700FA7A5E /* MainCollectionViewCell.swift in Sources */,
+				0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */,
 				0B2106331EE2CCC7001AE7D0 /* ProfileViewController.swift in Sources */,
 				0B0D964C1EE4469D00C2F1C4 /* ParamsAbstract.swift in Sources */,
 				0BC4965C1EED563100505FD2 /* Request.swift in Sources */,

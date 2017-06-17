@@ -11,7 +11,7 @@ import Foundation
 struct Person {
     
     static var instance = Person()
-    static var profileDict = [Int: String]()
+    static var profileDict = [Int: (String?, String?)]()
     
     var name: String?
     var sex: String?

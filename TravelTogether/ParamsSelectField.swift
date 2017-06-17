@@ -15,15 +15,19 @@ class ParamsSelectField: ParamsAbstract, ParamsViewsProtocol {
     
     @IBOutlet weak var checkLabel: UILabel!
     @IBOutlet weak var checkImage: UIImageView!
+    var rawValue: String?
+    var localValue: String?
     
     static func initFromNib() -> ParamsSelectField {
         return Bundle.main.loadNibNamed("ParamsSelectField", owner: self, options: nil)?.first as! ParamsSelectField
     }
     
-    func setView(placeholder: String?, parrent: UIViewController, tag: Int) {
+    func setView(placeholder: String?, parrent: UIViewController, tag: Int, rawValue: String?) {
         setAbstractView(placeholder: placeholder, parrent: parrent, tag: tag)
         checkLabel.text = placeholder
         checkImage.isHidden = true
+        self.rawValue = rawValue
+        self.localValue = placeholder
     }
     
     func showHide() {
@@ -37,7 +41,7 @@ class ParamsSelectField: ParamsAbstract, ParamsViewsProtocol {
     func getValue() {}
     
     @IBAction func selectField(_ sender: Any) {
-        Person.profileDict[self.tag] = checkLabel.text
+        Person.profileDict[self.tag] = (rawValue, localValue)
         
         ProfileViewController.paramsArray[ProfileViewController.selectedIndex!].stackView.subviews.forEach {
             if let field = $0 as? ParamsSelectField {
@@ -48,7 +52,7 @@ class ParamsSelectField: ParamsAbstract, ParamsViewsProtocol {
             }
         }
         ProfileViewController.headersArray.enumerated().forEach {
-            let text = Person.profileDict[$0.offset]
+            let text = Person.profileDict[$0.offset]?.1
             if text != "" && text != nil {
                 $0.element.paramValue.text = text
             }

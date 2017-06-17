@@ -115,7 +115,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         }
         
         ProfileViewController.headersArray.enumerated().forEach {
-            let text = Person.profileDict[$0.offset]
+            let text = Person.profileDict[$0.offset]?.1
             if text != "" && text != nil {
                 $0.element.paramValue.text = text
             }
@@ -144,10 +144,10 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     func getSearchResult(result: (String, String), index: Int?) {
         if index == 3 {self.countryId = result.0}
         
-        Person.profileDict[index!] = result.1
+        Person.profileDict[index!] = (result.1, result.1)
         
         ProfileViewController.headersArray.enumerated().forEach {
-            let text = Person.profileDict[$0.offset]
+            let text = Person.profileDict[$0.offset]?.1
             if text != "" && text != nil {
                 $0.element.paramValue.text = text
             }
@@ -163,22 +163,23 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 }
             }
         }
-        Person.instance.name = Person.profileDict[0]
-        Person.instance.sex = Person.profileDict[1]
-        Person.instance.birthdate = Person.profileDict[2]
-        Person.instance.country = Person.profileDict[3]
-        Person.instance.city = Person.profileDict[4]
-        Person.instance.about = Person.profileDict[5]
-        Person.instance.alcohol = Person.profileDict[6]
-        Person.instance.smoking = Person.profileDict[7]
-        Person.instance.familyStatus = Person.profileDict[8]
-        Person.instance.childs = Person.profileDict[9]
-        Person.instance.orientation = Person.profileDict[10]
-        Person.instance.travelKind = Person.profileDict[11]
-        Person.instance.staying = Person.profileDict[12]
+        Person.instance.name = Person.profileDict[0]?.0
+        Person.instance.sex = Person.profileDict[1]?.0
+        Person.instance.birthdate = Person.profileDict[2]?.0
+        Person.instance.country = Person.profileDict[3]?.0
+        Person.instance.city = Person.profileDict[4]?.0
+        Person.instance.about = Person.profileDict[5]?.0
+        Person.instance.alcohol = Person.profileDict[6]?.0
+        Person.instance.smoking = Person.profileDict[7]?.0
+        Person.instance.familyStatus = Person.profileDict[8]?.0
+        Person.instance.childs = Person.profileDict[9]?.0
+        Person.instance.orientation = Person.profileDict[10]?.0
+        Person.instance.travelKind = Person.profileDict[11]?.0
+        Person.instance.staying = Person.profileDict[12]?.0
         
         let mirror = Mirror(reflecting: Person.instance)
         for i in mirror.children.enumerated() {
+            print (i.element)
             if i.1.value as? String == nil || i.1.value as? String == "" {
                 MessageBox.showMessage(parent: self, title: ProfileViewController.headersArray[i.0].paramKey.text!, message: NSLocalizedString("Not filled", comment: "Not filled"))
                 return
@@ -193,70 +194,70 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         switch index {
         case 0:
             let paramsTextField = ParamsTextField.initFromNib()
-            paramsTextField.setView(placeholder: NSLocalizedString("Enter your name", comment: "Enter your name"), parrent: self, tag: index)
+            paramsTextField.setView(placeholder: NSLocalizedString("Enter your name", comment: "Enter your name"), parrent: self, tag: index, rawValue: nil)
             ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsTextField)
         case 1:
-            let sexArray = [NSLocalizedString("Male", comment: "Male"), NSLocalizedString("Female", comment: "Female")]
+            let sexArray = [Profile.Sex.male, Profile.Sex.female]
             for i in sexArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
+                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 2:
             let paramsDataPicker = ParamsDatePicker.initFromNib()
-            paramsDataPicker.setView(placeholder: NSLocalizedString("Birthdate", comment: "Birthdate"), parrent: self, tag: index)
+            paramsDataPicker.setView(placeholder: NSLocalizedString("Birthdate", comment: "Birthdate"), parrent: self, tag: index, rawValue: nil)
             ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsDataPicker)
         case 5:
             let paramsTextField = ParamsTextField.initFromNib()
-            paramsTextField.setView(placeholder: NSLocalizedString("Write about yourself", comment: "Write about yourself"), parrent: self, tag: index)
+            paramsTextField.setView(placeholder: NSLocalizedString("Write about yourself", comment: "Write about yourself"), parrent: self, tag: index, rawValue: nil)
             ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsTextField)
         case 6:
-            let alcoholArray = [NSLocalizedString("Positive", comment: "Positive"), NSLocalizedString("Negative", comment: "Negative")]
+            let alcoholArray = [Profile.Alcohol.positive, Profile.Alcohol.negative]
             for i in alcoholArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
+                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 7:
-            let smokingArray = [NSLocalizedString("Positive", comment: "Positive"), NSLocalizedString("Negative", comment: "Negative")]
+            let smokingArray = [Profile.Smoking.positive, Profile.Smoking.negative]
             for i in smokingArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
+                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 8:
-            let familyArray = [NSLocalizedString("Single", comment: "Single"), NSLocalizedString("Married", comment: "Married")]
+            let familyArray = [Profile.Family.single, Profile.Family.married]
             for i in familyArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
+                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 9:
-            let childsArray = [NSLocalizedString("Yes", comment: "Yes"), NSLocalizedString("No", comment: "No")]
+            let childsArray = [Profile.Childs.no, Profile.Childs.yes]
             for i in childsArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
+                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 10:
-            let orientationArray = [NSLocalizedString("Hetero", comment: "Hetero"), NSLocalizedString("Homo", comment: "Homo"), NSLocalizedString("Bi", comment: "Bi")]
+            let orientationArray = [Profile.Orientation.hetero, Profile.Orientation.homo, Profile.Orientation.bi]
             for i in orientationArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
+                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 11:
-            let travelKindArray = [NSLocalizedString("Active", comment: "Active"), NSLocalizedString("Beach rest", comment: "Beach rest")]
-            for i in travelKindArray {
+            let travelTypeArray = [Profile.TravelType.active, Profile.TravelType.beachRest]
+            for i in travelTypeArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
+                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         case 12:
-            let staingArray = [NSLocalizedString("Hotel", comment: "Hotel"), NSLocalizedString("Hostel", comment: "Hostel"),  NSLocalizedString("Rent", comment: "Rent")]
-            for i in staingArray {
+            let stayingArray = [Profile.Staying.hotel, Profile.Staying.hostel, Profile.Staying.rent]
+            for i in stayingArray {
                 let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i, parrent: self, tag: index)
+                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
             }
         default:
