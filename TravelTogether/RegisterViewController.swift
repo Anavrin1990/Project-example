@@ -10,8 +10,9 @@ import UIKit
 import FirebaseAuth
 import GoogleSignIn
 import FBSDKLoginKit
+import SwiftyJSON
 
-class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
+class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate, DismissVC {
     
     
     @IBOutlet weak var emailTextField: UITextField!
@@ -20,12 +21,11 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var loginRegButton: UIButton!
     var destinationVC: UIViewController?
-    var userProperties = [AnyHashable : Any]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //AppDelegate.delegate = self
+        AppDelegate.delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         passwordTextField.isSecureTextEntry = true
         
@@ -40,6 +40,20 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
         
     }
     
+    @IBAction func logOut(_ sender: Any) { 
+        MessageBox.showDialog(parent: self, title: NSLocalizedString("Sign out", comment: "Sign out"), message: NSLocalizedString("Do you want to sign out?", comment: "Do you want to sign out?")) {
+            let firebaseAuth = FIRAuth.auth()
+            do {
+                try firebaseAuth?.signOut()
+                User.email = nil
+                User.uid = nil
+                User.displayName = nil
+                print ("Sign out succes")                
+            } catch let signOutError as NSError {
+                print ("Error signing out: %@", signOutError)
+            }
+        }
+    }
     @IBAction func onRegister(_ sender: Any) {
         
         guard let emailUser = emailTextField.text, let password = passwordTextField.text else {return}
@@ -48,19 +62,16 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
             
             FIRAuth.auth()?.signIn(withEmail: emailUser, password: password, completion: { (user, error) in
                 guard error == nil else {self.errorHandling(error: error!); return}
-                User.uid = user?.uid
+                guard let uid = user?.uid else {print (error as Any); return}
+                
+                User.uid = uid
                 User.email = user?.email
                 User.displayName = user?.displayName
-                //FirstViewController.delegate?.fillTableView()
-                self.dismiss(animated: true, completion: nil)
-                if let dvc = self.destinationVC as? MainViewController {
-                    dvc.spinner.startAnimating()
-                    dvc.firstRequest()
-                }
+                
+                self.navigationController?.dismiss(animated: true, completion: nil)
                 print ("success Sign In with email")
             })
         } else {
-            
             FIRAuth.auth()?.createUser(withEmail: emailUser, password: password, completion: { (user, error) in
                 guard error == nil else {self.errorHandling(error: error!); return}
                 print ("success Register with email")
@@ -79,18 +90,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                     } else {
                         value = ["email": emailUser]
                     }
-//                    for (k, v) in self.userProperties {                       
-//                        Request.updateChildValue(reference: Request.ref.child("Criteria").child(k as! String).child(uid), value: [k : v], autoId: false, complition: {})
-//                        value[k] = v
-//                    }
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: value, autoId: false, complition: {})
                     
-                    //FirstViewController.delegate?.fillTableView()
-                    self.dismiss(animated: true, completion: nil)
-                    if let dvc = self.destinationVC as? MainViewController {
-                        dvc.spinner.startAnimating()
-                        dvc.firstRequest()
-                    }
+                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: value, complition: {})
+                    
+                    self.navigationController?.dismiss(animated: true, completion: nil)
                     print ("success Sign In with email")
                 })
             })
@@ -98,7 +101,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
         
     }
     
-    @IBAction func facebookLogin(_ sender: Any) {
+     @IBAction func facebookLogin(_ sender: Any) {
         
         FBSDKLoginManager().logIn(withReadPermissions: ["email"], from: self) { (result, error) in
             guard error == nil else {self.errorHandling(error: error!); return}
@@ -112,11 +115,11 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 User.displayName = user?.displayName
                 
                 if let uid = User.uid ,let email = User.email, let displayName = User.displayName {
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email, "name": displayName], autoId: false, complition: {})
+                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email, "name": displayName], complition: {})
                 } else if let uid = User.uid, let email = User.email {
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], autoId: false, complition: {})
+                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
                 } else if let uid = User.uid, let displayName = User.displayName {
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["name": displayName], autoId: false, complition: {})
+                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["name": displayName], complition: {})
                 }
                 
                 //FirstViewController.delegate?.fillTableView()
@@ -129,7 +132,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
     
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
-    }
+    }    
     
     
     func errorHandling (error: Error) {

@@ -162,6 +162,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         self.present(imagePicker, animated: true, completion: nil)
     }
     @IBAction func nextButton(_ sender: Any) {
+        
         ProfileViewController.paramsArray.forEach {
             $0.stackView.subviews.forEach {
                 if let view = $0 as? ParamsViewsProtocol {
@@ -170,6 +171,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 }
             }
         }
+        
         Person.instance.name = Person.profileDict[0]?.0
         Person.instance.sex = Person.profileDict[1]?.0
         Person.instance.birthdate = Person.profileDict[2]?.0
@@ -185,8 +187,9 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         Person.instance.staying = Person.profileDict[12]?.0
         
         var userProperties = [AnyHashable : Any]()
+        
         let mirror = Mirror(reflecting: Person.instance)
-        for i in mirror.children.enumerated() {            
+        for i in mirror.children.enumerated() {
             if i.1.value as? String == nil || i.1.value as? String == "" {
                 MessageBox.showMessage(parent: self, title: ProfileViewController.headersArray[i.0].paramKey.text!, message: NSLocalizedString("Not filled", comment: "Not filled"))
                 return
@@ -194,10 +197,13 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 userProperties[i.1.label!] = i.1.value
             }
         }
-        let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterViewController") as! RegisterViewController
-        registrationVC.userProperties = userProperties
-        self.navigationController?.pushViewController(registrationVC, animated: true)
-        
+        if let uid = User.uid {
+            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {})
+            for (k, v) in userProperties {
+                Request.updateChildValue(reference: Request.ref.child("Criteria").child(k as! String).child(uid), value: [k : v], complition: {})
+            }
+            self.navigationController?.dismiss(animated: true, completion: nil)
+        }
     }
     
     

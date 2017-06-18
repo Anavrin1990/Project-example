@@ -101,14 +101,20 @@
                             <constraint firstItem="ox5-iO-feS" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="yLH-Vo-JBJ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Yzc-x7-OK1"/>
+                    <navigationItem key="navigationItem" id="Yzc-x7-OK1">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="s4W-wz-RNc">
+                            <connections>
+                                <action selector="logout:" destination="BYZ-38-t0r" id="Bv0-Fe-R8G"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="ox5-iO-feS" id="34s-86-hwJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-314" y="1539"/>
+            <point key="canvasLocation" x="-687" y="1539"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="bB3-Qw-SBz">
@@ -259,7 +265,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OYP-sW-ERd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="h8j-JL-Ukg"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="kxh-rg-P9N">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="kxh-rg-P9N">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -270,7 +276,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X2G-et-Ak9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1186" y="1539"/>
+            <point key="canvasLocation" x="-1625" y="1539"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="y6h-fZ-wII">
@@ -355,14 +361,22 @@
                                         <rect key="frame" x="222" y="202" width="67" height="30"/>
                                         <state key="normal" title="Facebook"/>
                                         <connections>
-                                            <action selector="facebookLogin:" destination="Lgg-0S-Ndu" eventType="touchUpInside" id="psV-nj-WEg"/>
+                                            <action selector="facebookLogin:" destination="Lgg-0S-Ndu" eventType="touchUpInside" id="ECc-YG-Sjs"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ry1-VU-hYP">
                                         <rect key="frame" x="76" y="202" width="50" height="30"/>
                                         <state key="normal" title="Google"/>
                                         <connections>
-                                            <action selector="googleLogin:" destination="Lgg-0S-Ndu" eventType="touchUpInside" id="HJa-jP-qH8"/>
+                                            <action selector="googleLogin:" destination="Lgg-0S-Ndu" eventType="touchUpInside" id="FYD-cD-CWf"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jtk-G1-hcf">
+                                        <rect key="frame" x="164" y="431" width="48" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Logout"/>
+                                        <connections>
+                                            <action selector="logOut:" destination="Lgg-0S-Ndu" eventType="touchUpInside" id="Ld5-sC-dam"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -397,6 +411,7 @@
                             <constraint firstItem="ezy-n4-DAn" firstAttribute="leading" secondItem="LsU-Xr-7O3" secondAttribute="leading" id="fvW-8T-gzv"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Ue4-AF-vKX"/>
                     <connections>
                         <outlet property="emailTextField" destination="lti-Gd-KUF" id="R2f-S1-5ZW"/>
                         <outlet property="loginRegButton" destination="hYy-V3-7m2" id="bef-yj-pF5"/>
@@ -407,12 +422,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tZt-EL-Jwt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-314" y="2334"/>
+            <point key="canvasLocation" x="-687" y="777"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="wYX-4h-CQy">
             <objects>
-                <viewController id="rIB-7W-5cY" customClass="ProfileViewController" customModule="TravelTogether" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" id="rIB-7W-5cY" customClass="ProfileViewController" customModule="TravelTogether" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1CO-4g-pbd"/>
                         <viewControllerLayoutGuide type="bottom" id="JRs-qd-W7H"/>
@@ -562,7 +577,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o0r-11-QqW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5404" y="1539"/>
+            <point key="canvasLocation" x="1713" y="777"/>
         </scene>
         <!--Item-->
         <scene sceneID="ZGY-4R-yh9">
@@ -570,7 +585,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ahu-ub-vEb" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="OK3-gp-u5z"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dT1-7y-lmB">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="dT1-7y-lmB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -586,9 +601,9 @@
         <!--Navigation Controller-->
         <scene sceneID="i5W-2D-9nY">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Aha-Fj-mNm" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ProfileNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Aha-Fj-mNm" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gUV-Au-DfD">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="gUV-Au-DfD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -600,6 +615,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RS6-Ko-Mvl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2559" y="1539"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="NsD-db-DLY">
+            <objects>
+                <navigationController storyboardIdentifier="RegisterNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="icR-Jn-CNF" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="5BJ-OB-4jl"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Gnc-c0-Ie3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Lgg-0S-Ndu" kind="relationship" relationship="rootViewController" id="k6q-gH-2sl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="518-j2-byA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1626" y="777"/>
         </scene>
     </scenes>
 </document>

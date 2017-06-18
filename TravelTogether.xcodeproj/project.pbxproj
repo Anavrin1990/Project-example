@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */; };
 		0B0D96351EE3F05400C2F1C4 /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */; };
-		0B0D96371EE3F81900C2F1C4 /* ProfileSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96361EE3F81900C2F1C4 /* ProfileSelectionViewController.swift */; };
 		0B0D963A1EE402F100C2F1C4 /* ParamsTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B0D96391EE402F100C2F1C4 /* ParamsTextField.xib */; };
 		0B0D963C1EE4055500C2F1C4 /* ParamsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D963B1EE4055500C2F1C4 /* ParamsTextField.swift */; };
 		0B0D96401EE4107A00C2F1C4 /* ParamsDropStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B0D963F1EE4107A00C2F1C4 /* ParamsDropStack.xib */; };
@@ -22,6 +21,7 @@
 		0B0D96501EE462B700C2F1C4 /* ParamsSelectField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D964F1EE462B700C2F1C4 /* ParamsSelectField.swift */; };
 		0B2106331EE2CCC7001AE7D0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */; };
 		0B2106351EE2CE7B001AE7D0 /* ParamsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2106341EE2CE7B001AE7D0 /* ParamsView.xib */; };
+		0B5062471EF65DF7003B5785 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5062461EF65DF7003B5785 /* Parsing.swift */; };
 		0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B86048C1EEF03C40090CAF3 /* Global.swift */; };
 		0B95FC3A1EF06ACC00C315F6 /* MessageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B95FC391EF06ACC00C315F6 /* MessageBox.swift */; };
 		0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */; };
@@ -45,7 +45,6 @@
 /* Begin PBXFileReference section */
 		0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
-		0B0D96361EE3F81900C2F1C4 /* ProfileSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSelectionViewController.swift; sourceTree = "<group>"; };
 		0B0D96391EE402F100C2F1C4 /* ParamsTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsTextField.xib; sourceTree = "<group>"; };
 		0B0D963B1EE4055500C2F1C4 /* ParamsTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsTextField.swift; sourceTree = "<group>"; };
 		0B0D963F1EE4107A00C2F1C4 /* ParamsDropStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsDropStack.xib; sourceTree = "<group>"; };
@@ -58,6 +57,7 @@
 		0B0D964F1EE462B700C2F1C4 /* ParamsSelectField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsSelectField.swift; sourceTree = "<group>"; };
 		0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0B2106341EE2CE7B001AE7D0 /* ParamsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsView.xib; sourceTree = "<group>"; };
+		0B5062461EF65DF7003B5785 /* Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; };
 		0B86048C1EEF03C40090CAF3 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		0B95FC391EF06ACC00C315F6 /* MessageBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBox.swift; sourceTree = "<group>"; };
 		0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -99,7 +99,6 @@
 			children = (
 				0BDA50A41EDF333400FA7A5E /* MainViewController.swift */,
 				0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */,
-				0B0D96361EE3F81900C2F1C4 /* ProfileSelectionViewController.swift */,
 				0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */,
 				0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */,
 				0BEBA0821EEC6C48001EE6EA /* SearchTableViewController.swift */,
@@ -161,6 +160,7 @@
 				0B0D96491EE431FB00C2F1C4 /* Extensions.swift */,
 				0B86048C1EEF03C40090CAF3 /* Global.swift */,
 				0B95FC391EF06ACC00C315F6 /* MessageBox.swift */,
+				0B5062461EF65DF7003B5785 /* Parsing.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -352,6 +352,7 @@
 				0BF7455B1EE077F700F6A8E5 /* SearchViewController.swift in Sources */,
 				0B0D96501EE462B700C2F1C4 /* ParamsSelectField.swift in Sources */,
 				0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */,
+				0B5062471EF65DF7003B5785 /* Parsing.swift in Sources */,
 				0BDA50911EDF2D1800FA7A5E /* AppDelegate.swift in Sources */,
 				0BBA88DB1EE2FE2200CFE1C8 /* ParamsView.swift in Sources */,
 				0B0D96421EE410AD00C2F1C4 /* ParamsDropStack.swift in Sources */,
@@ -363,7 +364,6 @@
 				0B0D964C1EE4469D00C2F1C4 /* ParamsAbstract.swift in Sources */,
 				0BC4965C1EED563100505FD2 /* Request.swift in Sources */,
 				0B95FC3A1EF06ACC00C315F6 /* MessageBox.swift in Sources */,
-				0B0D96371EE3F81900C2F1C4 /* ProfileSelectionViewController.swift in Sources */,
 				0B0D964A1EE431FB00C2F1C4 /* Extensions.swift in Sources */,
 				0B0D963C1EE4055500C2F1C4 /* ParamsTextField.swift in Sources */,
 				0BDA50A91EDF370A00FA7A5E /* Person.swift in Sources */,

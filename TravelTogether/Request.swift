@@ -12,7 +12,7 @@ import FirebaseAuth
 import Alamofire
 import SwiftyJSON
 
-class Request {    
+class Request {
     
     static var ref = FIRDatabase.database().reference()
     
@@ -23,7 +23,7 @@ class Request {
             let result = response.result
             if result.error == nil {
                 let json = JSON(result.value as Any)
-                complition(json)                
+                complition(json)
             } else {
                 print (result.error?.localizedDescription as Any)
             }
@@ -31,24 +31,55 @@ class Request {
     }
     
     // Обновление значения
-    static func updateChildValue (reference: FIRDatabaseReference, value: [AnyHashable : Any], autoId: Bool, complition: @escaping () ->()) {
-        if !autoId {
-            reference.updateChildValues(value) { (error, success) in
-                if error != nil {
-                    print (error?.localizedDescription as Any)
-                } else {
-                    complition()
-                }
+    static func updateChildValue (reference: FIRDatabaseReference, value: [AnyHashable : Any], complition: @escaping () ->()) {
+        
+        reference.updateChildValues(value) { (error, success) in
+            if error != nil {
+                print (error?.localizedDescription as Any)
+            } else {
+                complition()
             }
+        }        
+    }
+    
+    static func requestSingleFirstByKey (reference: FIRDatabaseReference, limit: UInt?, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
+        
+        if limit == nil {
+            reference.queryOrderedByKey().observeSingleEvent(of: .value, with: { (snapshot) in
+                complition(snapshot, nil)
+            }) { (error) in
+                complition(nil, error)
+            }
+            print ("First single request (byKey)")
         } else {
-            reference.childByAutoId().updateChildValues(value) { (error, success) in
-                if error != nil {
-                    print (error?.localizedDescription as Any)
-                } else {
-                    complition()
-                }
+            reference.queryOrderedByKey().queryLimited(toLast: limit!).observeSingleEvent(of: .value, with: { (snapshot) in
+                complition(snapshot, nil)
+            }) { (error) in
+                complition(nil, error)
             }
+            print ("First single request (byKey)")
+        }
+        
+        
+    }
+    
+    static func requestSearchEqual (reference: FIRDatabaseReference, equal: String, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?, _ ref: FIRDatabaseReference?) -> ()) {        
+        reference.queryOrderedByKey().queryEqual(toValue: equal).observeSingleEvent(of: .value, with: { (snapshot) in
+            complition(snapshot, nil, reference)
+        }) { (error) in
+            complition(nil, error, nil)
+        }
+    }
+    
+    // Юзер инфо
+    static func getUserInfo() {
+        let user = FIRAuth.auth()?.currentUser
+        if let user = user {
+            User.email = user.email
+            User.uid = user.uid
+            User.displayName = user.displayName
         }
         
     }
+    
 }
