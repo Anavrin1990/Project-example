@@ -16,6 +16,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     let imagePicker = UIImagePickerController()
     
     var photoArray = [UIImage]()
+    let photoArrayNames = ["infoImage1", "infoImage2", "infoImage3", "infoImage4", "infoImage5"]
     static var paramsArray = [ParamsDropStack]()
     static var headersArray = [ParamsView]()
     
@@ -34,6 +35,8 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         registerForKeyboardNotifications()
         ParamsView.delegate = self
         SearchTableViewController.delegate = self
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
         
         for key in keyArray.enumerated() {
             let paramsDropStack = Bundle.main.loadNibNamed("ParamsDropStack", owner: self, options: nil)?.first as! ParamsDropStack
@@ -157,12 +160,13 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     }
     
     @IBAction func addPhoto(_ sender: Any) {
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
+        guard photoArray.count < 5 else {
+            MessageBox.showMessage(parent: self, title: NSLocalizedString("Only five photos", comment: "Only five photos"), message: "")
+            return
+        }
         self.present(imagePicker, animated: true, completion: nil)
     }
     @IBAction func nextButton(_ sender: Any) {
-        
         ProfileViewController.paramsArray.forEach {
             $0.stackView.subviews.forEach {
                 if let view = $0 as? ParamsViewsProtocol {
@@ -189,6 +193,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         var userProperties = [AnyHashable : Any]()
         
         let mirror = Mirror(reflecting: Person.instance)
+        
         for i in mirror.children.enumerated() {
             if i.1.value as? String == nil || i.1.value as? String == "" {
                 MessageBox.showMessage(parent: self, title: ProfileViewController.headersArray[i.0].paramKey.text!, message: NSLocalizedString("Not filled", comment: "Not filled"))
@@ -197,15 +202,40 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 userProperties[i.1.label!] = i.1.value
             }
         }
+        if photoArray.isEmpty {
+            MessageBox.showMessage(parent: self, title: NSLocalizedString("Please add photos", comment: "Please add photos"), message: "")
+            return
+        }
         if let uid = User.uid {
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {})
             for (k, v) in userProperties {
                 Request.updateChildValue(reference: Request.ref.child("Criteria").child(k as! String).child(uid), value: [k : v], complition: {})
             }
+            
+            for photo in photoArray.enumerated() {
+                if photo.offset == 0 {
+                    if let uploadPhoto = UIImageJPEGRepresentation(photo.element, 0.2) {
+                        Request.storagePutData(reference: Request.storageRef.child(uid).child("icon"), data: uploadPhoto, complition: { (metadata, error) in
+                            guard error == nil else {print (error?.localizedDescription as Any); return}
+                            if let imageURL = metadata?.downloadURL()?.absoluteString {
+                                Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["icon": imageURL], complition: {})
+                            }
+                        })
+                    }
+                }
+                if let uploadPhoto = UIImageJPEGRepresentation(photo.element, 0.6) {
+                    Request.storagePutData(reference: Request.storageRef.child(uid).child(photoArrayNames[photo.offset]), data: uploadPhoto, complition: { (metadata, error) in
+                        guard error == nil else {print (error?.localizedDescription as Any); return}
+                        if let imageURL = metadata?.downloadURL()?.absoluteString {
+                            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: [self.photoArrayNames[photo.offset]: imageURL], complition: {})
+                        }
+                    })
+                }
+                
+            }
             self.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
-    
     
     func addDropList(_ index: Int) {
         switch index {
@@ -291,12 +321,11 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileCell", for: indexPath) as! ProfileCollectionViewCell
         cell.profileImage.image = photoArray[indexPath.row]
-        
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.view.endEditing(true)
     }
@@ -317,6 +346,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         if let image = image {
             photoArray.append(image)
         }
+        
         collectionView.reloadData()
         self.dismiss(animated: true, completion: nil)
     }

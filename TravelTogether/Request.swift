@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseDatabase
+import FirebaseStorage
 import FirebaseAuth
 import Alamofire
 import SwiftyJSON
@@ -15,6 +16,7 @@ import SwiftyJSON
 class Request {
     
     static var ref = FIRDatabase.database().reference()
+    static var storageRef = FIRStorage.storage().reference()
     
     static func getJSON (url: String?, complition: @escaping (_ JSON: JSON) -> ())  {
         guard let url = url else {return}
@@ -26,6 +28,17 @@ class Request {
                 complition(json)
             } else {
                 print (result.error?.localizedDescription as Any)
+            }
+        }
+    }
+    
+    static func storagePutData (reference: FIRStorageReference, data: Data, complition: @escaping (_ snapshot: FIRStorageMetadata?, _ error: Error?) -> ()) {
+        
+        reference.put(data, metadata: nil) { (metadata, error) in
+            if error != nil {
+                complition(nil, error)
+            } else {
+                complition(metadata, nil)
             }
         }
     }
