@@ -100,6 +100,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 User.uid = nil
                 User.displayName = nil
                 print ("Sign out succes")
+                let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
+                self.present(registrationVC!, animated: true, completion: nil)
             } catch let signOutError as NSError {
                 print ("Error signing out: %@", signOutError)
             }

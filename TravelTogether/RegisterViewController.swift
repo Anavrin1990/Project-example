@@ -114,15 +114,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 User.uid = user?.uid
                 User.displayName = user?.displayName
                 
-                if let uid = User.uid ,let email = User.email, let displayName = User.displayName {
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email, "name": displayName], complition: {})
-                } else if let uid = User.uid, let email = User.email {
+                if let uid = User.uid ,let email = User.email{
                     Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
-                } else if let uid = User.uid, let displayName = User.displayName {
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["name": displayName], complition: {})
-                }
+                } 
                 
-                //FirstViewController.delegate?.fillTableView()
                 self.dismiss(animated: true, completion: nil)
                 print ("Facebook sign in success")
             })

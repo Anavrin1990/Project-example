@@ -70,9 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             User.email = user?.email
             User.uid = user?.uid
             User.displayName = user?.displayName
-            if let uid = User.uid, let email = User.email, let displayName = User.displayName {
-                Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email, "name": displayName], complition: {})
-            } else if let uid = User.uid, let email = User.email {
+            if let uid = User.uid, let email = User.email {
                 Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
             }
             AppDelegate.delegate?.dismissVC()
