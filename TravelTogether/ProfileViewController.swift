@@ -13,7 +13,9 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var collectionView: UICollectionView!
-    var photoArray = [#imageLiteral(resourceName: "Аня"), #imageLiteral(resourceName: "Настя"), #imageLiteral(resourceName: "Саша"), #imageLiteral(resourceName: "Таня")]
+    let imagePicker = UIImagePickerController()
+    
+    var photoArray = [UIImage]()
     static var paramsArray = [ParamsDropStack]()
     static var headersArray = [ParamsView]()
     
@@ -154,6 +156,11 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         }
     }
     
+    @IBAction func addPhoto(_ sender: Any) {
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        self.present(imagePicker, animated: true, completion: nil)
+    }
     @IBAction func nextButton(_ sender: Any) {
         ProfileViewController.paramsArray.forEach {
             $0.stackView.subviews.forEach {
@@ -177,15 +184,19 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         Person.instance.travelKind = Person.profileDict[11]?.0
         Person.instance.staying = Person.profileDict[12]?.0
         
+        var userProperties = [AnyHashable : Any]()
         let mirror = Mirror(reflecting: Person.instance)
-        for i in mirror.children.enumerated() {
-            print (i.element)
+        for i in mirror.children.enumerated() {            
             if i.1.value as? String == nil || i.1.value as? String == "" {
                 MessageBox.showMessage(parent: self, title: ProfileViewController.headersArray[i.0].paramKey.text!, message: NSLocalizedString("Not filled", comment: "Not filled"))
                 return
-            }            
+            } else {
+                userProperties[i.1.label!] = i.1.value
+            }
         }
-        MessageBox.showMessage(parent: self, title: "Good for you", message: "O_o")
+        let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterViewController") as! RegisterViewController
+        registrationVC.userProperties = userProperties
+        self.navigationController?.pushViewController(registrationVC, animated: true)
         
     }
     
@@ -265,11 +276,6 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         }
     }
     
-    
-    
-    
-    
-    
 }
 
 extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -285,11 +291,30 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
         
         return cell
     }
-    
-    
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.view.endEditing(true)
     }
     
 }
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        
+        var image: UIImage?
+        
+        if let editedImage = info ["UIImagePickerControllerEditedImage"] {
+            image = editedImage as? UIImage
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] {
+            image = originalImage as? UIImage
+        }
+        if let image = image {
+            photoArray.append(image)
+        }
+        collectionView.reloadData()
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+

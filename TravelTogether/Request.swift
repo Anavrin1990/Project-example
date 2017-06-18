@@ -12,9 +12,9 @@ import FirebaseAuth
 import Alamofire
 import SwiftyJSON
 
-class Request {
+class Request {    
     
-    var ref = FIRDatabase.database().reference()
+    static var ref = FIRDatabase.database().reference()
     
     static func getJSON (url: String?, complition: @escaping (_ JSON: JSON) -> ())  {
         guard let url = url else {return}
@@ -28,5 +28,27 @@ class Request {
                 print (result.error?.localizedDescription as Any)
             }
         }
+    }
+    
+    // Обновление значения
+    static func updateChildValue (reference: FIRDatabaseReference, value: [AnyHashable : Any], autoId: Bool, complition: @escaping () ->()) {
+        if !autoId {
+            reference.updateChildValues(value) { (error, success) in
+                if error != nil {
+                    print (error?.localizedDescription as Any)
+                } else {
+                    complition()
+                }
+            }
+        } else {
+            reference.childByAutoId().updateChildValues(value) { (error, success) in
+                if error != nil {
+                    print (error?.localizedDescription as Any)
+                } else {
+                    complition()
+                }
+            }
+        }
+        
     }
 }

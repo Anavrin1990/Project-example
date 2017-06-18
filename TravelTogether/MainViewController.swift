@@ -45,6 +45,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         navigationController?.hidesBarsOnSwipe = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterViewController") as! RegisterViewController
+        present(registrationVC, animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -54,6 +59,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         refreshControl.backgroundColor = .white
         refreshControl.addTarget(self, action: #selector(firstRequest), for: .valueChanged)
         collectionView?.addSubview(refreshControl)
+        
+       
         
         //spinner.startAnimating()
         

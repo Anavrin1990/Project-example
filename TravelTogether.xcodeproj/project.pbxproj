@@ -25,6 +25,8 @@
 		0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B86048C1EEF03C40090CAF3 /* Global.swift */; };
 		0B95FC3A1EF06ACC00C315F6 /* MessageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B95FC391EF06ACC00C315F6 /* MessageBox.swift */; };
 		0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */; };
+		0BAEE9601EF5456F00CCC0C1 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */; };
+		0BAEE9621EF545E200CCC0C1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE9611EF545E200CCC0C1 /* User.swift */; };
 		0BBA88DB1EE2FE2200CFE1C8 /* ParamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBA88DA1EE2FE2200CFE1C8 /* ParamsView.swift */; };
 		0BC4965C1EED563100505FD2 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC4965B1EED563100505FD2 /* Request.swift */; };
 		0BDA50911EDF2D1800FA7A5E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */; };
@@ -59,6 +61,8 @@
 		0B86048C1EEF03C40090CAF3 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		0B95FC391EF06ACC00C315F6 /* MessageBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBox.swift; sourceTree = "<group>"; };
 		0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		0BAEE9611EF545E200CCC0C1 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0BBA88DA1EE2FE2200CFE1C8 /* ParamsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsView.swift; sourceTree = "<group>"; };
 		0BC4965B1EED563100505FD2 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		0BDA508D1EDF2D1800FA7A5E /* TravelTogether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelTogether.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,8 +99,9 @@
 			children = (
 				0BDA50A41EDF333400FA7A5E /* MainViewController.swift */,
 				0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */,
-				0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */,
 				0B0D96361EE3F81900C2F1C4 /* ProfileSelectionViewController.swift */,
+				0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */,
+				0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */,
 				0BEBA0821EEC6C48001EE6EA /* SearchTableViewController.swift */,
 			);
 			name = Controllers;
@@ -114,9 +119,10 @@
 		0B0D96301EE3E87E00C2F1C4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0BDA50A81EDF370A00FA7A5E /* Person.swift */,
 				0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */,
+				0BDA50A81EDF370A00FA7A5E /* Person.swift */,
 				0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */,
+				0BAEE9611EF545E200CCC0C1 /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -342,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BEBA0831EEC6C48001EE6EA /* SearchTableViewController.swift in Sources */,
+				0BAEE9601EF5456F00CCC0C1 /* RegisterViewController.swift in Sources */,
 				0BF7455B1EE077F700F6A8E5 /* SearchViewController.swift in Sources */,
 				0B0D96501EE462B700C2F1C4 /* ParamsSelectField.swift in Sources */,
 				0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */,
@@ -362,6 +369,7 @@
 				0BDA50A91EDF370A00FA7A5E /* Person.swift in Sources */,
 				0BDA50A51EDF333400FA7A5E /* MainViewController.swift in Sources */,
 				0B0D96461EE4265900C2F1C4 /* ParamsDatePicker.swift in Sources */,
+				0BAEE9621EF545E200CCC0C1 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

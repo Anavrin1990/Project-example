@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseDatabase
 
 let spinner: UIActivityIndicatorView = {
     let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
