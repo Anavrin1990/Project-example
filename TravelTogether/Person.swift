@@ -28,10 +28,8 @@ struct Person {
 
 struct Travel {
     var destination: String?
-    var destStartDate: String?
-    var destEndDate: String?
-    var travelKind: String?
-    var staying: String?
+    var month: String?
+    var createDate: String?
 }
 
 
