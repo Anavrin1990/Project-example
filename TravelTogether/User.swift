@@ -12,5 +12,5 @@ struct User {
     
     static var email: String?
     static var uid: String?
-    static var displayName: String?
+    
 }

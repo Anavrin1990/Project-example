@@ -46,24 +46,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if User.uid == nil {
-            let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
-            present(registrationVC!, animated: true, completion: nil)
-            return
-        }
-        Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(User.uid!), limit: nil, complition: { (snapshot, error) in
-            guard error == nil else {return}
-            if let snap = snapshot?.value as? NSDictionary {
-                let json = JSON(snap)
-                let name = json["alcohol"].stringValue                
-                if name == "" {
-                    let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "ProfileNavigationController")
-                    DispatchQueue.main.async {
-                        self.present(profileVC!, animated: true)
-                    }
-                }
-            }
-        })
+        checkAuth()
     }
     
     override func viewDidLoad() {
@@ -97,8 +80,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             do {
                 try firebaseAuth?.signOut()
                 User.email = nil
-                User.uid = nil
-                User.displayName = nil
+                User.uid = nil                
                 print ("Sign out succes")
                 let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
                 self.present(registrationVC!, animated: true, completion: nil)
@@ -141,7 +123,26 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     
-    
+    func checkAuth() {
+        if User.uid == nil {
+            let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
+            present(registrationVC!, animated: true, completion: nil)
+            return
+        }
+        Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(User.uid!), limit: nil, complition: { (snapshot, error) in
+            guard error == nil else {return}
+            if let snap = snapshot?.value as? NSDictionary {
+                let json = JSON(snap)
+                let name = json["alcohol"].stringValue
+                if name == "" {
+                    let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "ProfileNavigationController")
+                    DispatchQueue.main.async {
+                        self.present(profileVC!, animated: true)
+                    }
+                }
+            }
+        })
+    }
     
     func firstRequest () {
         

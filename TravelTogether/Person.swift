@@ -23,15 +23,15 @@ struct Person {
     var smoking: String?
     var familyStatus: String?
     var childs: String?
-    var orientation: String?
-    var travelKind: String?
-    var staying: String?
+    var orientation: String?   
 }
 
 struct Travel {
     var destination: String?
     var destStartDate: String?
     var destEndDate: String?
+    var travelKind: String?
+    var staying: String?
 }
 
 

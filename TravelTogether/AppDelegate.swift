@@ -68,8 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             }
             print ("User sign in into Firebase")
             User.email = user?.email
-            User.uid = user?.uid
-            User.displayName = user?.displayName
+            User.uid = user?.uid            
             if let uid = User.uid, let email = User.email {
                 Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
             }

@@ -46,14 +46,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
             do {
                 try firebaseAuth?.signOut()
                 User.email = nil
-                User.uid = nil
-                User.displayName = nil
+                User.uid = nil                
                 print ("Sign out succes")                
             } catch let signOutError as NSError {
                 print ("Error signing out: %@", signOutError)
             }
         }
     }
+    
     @IBAction func onRegister(_ sender: Any) {
         
         guard let emailUser = emailTextField.text, let password = passwordTextField.text else {return}
@@ -66,7 +66,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 
                 User.uid = uid
                 User.email = user?.email
-                User.displayName = user?.displayName
                 
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 print ("success Sign In with email")
@@ -82,16 +81,8 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                     
                     User.uid = uid
                     User.email = user?.email
-                    User.displayName = user?.displayName
                     
-                    var value = [AnyHashable : Any]()
-                    if let displayName = User.displayName {
-                        value = ["email": emailUser, "name": displayName]
-                    } else {
-                        value = ["email": emailUser]
-                    }
-                    
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: value, complition: {})
+                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": emailUser], complition: {})
                     
                     self.navigationController?.dismiss(animated: true, completion: nil)
                     print ("success Sign In with email")
@@ -112,7 +103,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 guard error == nil else {self.errorHandling(error: error!); return}
                 User.email = user?.email
                 User.uid = user?.uid
-                User.displayName = user?.displayName
                 
                 if let uid = User.uid ,let email = User.email{
                     Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})

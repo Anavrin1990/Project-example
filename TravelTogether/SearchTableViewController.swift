@@ -24,7 +24,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     let tableView = UITableView()
     let stackView = UIStackView()
     
-    var request: ((_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void)?
+    var request: ((_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void)? // Выполняемая функция
     
     var contentArray = [(String, [(String, String)])]()
     var filteredContentArray = [(String, String)]()

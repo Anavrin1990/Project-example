@@ -17,14 +17,14 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     
     var photoArray = [UIImage]()
     let photoArrayNames = ["infoImage1", "infoImage2", "infoImage3", "infoImage4", "infoImage5"]
-    static var paramsArray = [ParamsDropStack]()
-    static var headersArray = [ParamsView]()
+    static var paramsArray = [ParamsDropStack]() // массив вложенностей
+    static var headersArray = [ParamsView]() // массив заголовков
     
     static var selectedIndex: Int?
     
     var countryId = ""
     
-    let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthdate", comment: "Birthdate"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Marital status", comment: "Marital status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation"), NSLocalizedString("Type of travel", comment: "Type of travel"), NSLocalizedString("Staying", comment: "Staying")]
+    let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthdate", comment: "Birthdate"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Marital status", comment: "Marital status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation")]
     
     @IBOutlet weak var paramsStackView: UIStackView!
     
@@ -38,6 +38,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
         
+        // Добавляем заголовки в главный стек вью
         for key in keyArray.enumerated() {
             let paramsDropStack = Bundle.main.loadNibNamed("ParamsDropStack", owner: self, options: nil)?.first as! ParamsDropStack
             let headerView = Bundle.main.loadNibNamed("ParamsView", owner: self, options: nil)?.first as! ParamsView
@@ -105,9 +106,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     func onParamsViewClick(index: Int) {
         self.view.endEditing(true)
         
-        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
-        searchVC.index = index
-        
+        // Прячем все вложенности
         ProfileViewController.paramsArray.forEach {
             $0.stackView.subviews.forEach {
                 if let view = $0 as? ParamsViewsProtocol {
@@ -119,6 +118,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
             }
         }
         
+        // Назначаем выбранное значение в заголовок
         ProfileViewController.headersArray.enumerated().forEach {
             let text = Person.profileDict[$0.offset]?.1
             if text != "" && text != nil {
@@ -128,6 +128,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         
         ProfileViewController.selectedIndex = index
         
+        // Открыть закрыть вложенности
         ProfileViewController.paramsArray[index].stackView.subviews.forEach {
             if let view = $0 as? ParamsViewsProtocol {
                 view.showHide()
@@ -136,9 +137,13 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         
         switch index {
         case 3:
+            let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
+            searchVC.index = index
             searchVC.request = searchCountries(_:)
             self.navigationController?.pushViewController(searchVC, animated: true)
         case 4:
+            let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
+            searchVC.index = index
             searchVC.request = searchCities(_:)
             self.navigationController?.pushViewController(searchVC, animated: true)
         default:
@@ -146,6 +151,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         }
     }
     
+    // Метод делегата поиска
     func getSearchResult(result: (String, String), index: Int?) {
         if index == 3 {self.countryId = result.0}
         
@@ -166,6 +172,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         }
         self.present(imagePicker, animated: true, completion: nil)
     }
+    
     @IBAction func nextButton(_ sender: Any) {
         ProfileViewController.paramsArray.forEach {
             $0.stackView.subviews.forEach {
@@ -187,8 +194,6 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         Person.instance.familyStatus = Person.profileDict[8]?.0
         Person.instance.childs = Person.profileDict[9]?.0
         Person.instance.orientation = Person.profileDict[10]?.0
-        Person.instance.travelKind = Person.profileDict[11]?.0
-        Person.instance.staying = Person.profileDict[12]?.0
         
         var userProperties = [AnyHashable : Any]()
         
@@ -292,26 +297,11 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 let paramsSelectField = ParamsSelectField.initFromNib()
                 paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
                 ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
-            }
-        case 11:
-            let travelTypeArray = [Profile.TravelType.active, Profile.TravelType.beachRest]
-            for i in travelTypeArray {
-                let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
-                ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
-            }
-        case 12:
-            let stayingArray = [Profile.Staying.hotel, Profile.Staying.hostel, Profile.Staying.rent]
-            for i in stayingArray {
-                let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
-                ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
-            }
+            }        
         default:
             break
         }
-    }
-    
+    }    
 }
 
 extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate {

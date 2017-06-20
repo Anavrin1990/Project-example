@@ -89,8 +89,7 @@ class Request {
         let user = FIRAuth.auth()?.currentUser
         if let user = user {
             User.email = user.email
-            User.uid = user.uid
-            User.displayName = user.displayName
+            User.uid = user.uid            
         }
         
     }
