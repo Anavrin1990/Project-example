@@ -11,6 +11,7 @@ import UIKit
 class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
     
     let datePicker = UIDatePicker()
+    var dateValue: String?
     
     override func setTextField() {
         super.setTextField()
@@ -29,6 +30,8 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
         dateFormatter.timeStyle = .none
         self.parrent?.view.endEditing(true)
         textField.text = dateFormatter.string(from: datePicker.date)
+        dateFormatter.dateStyle = .short
+        dateValue = dateFormatter.string(from: datePicker.date)
     }
     
     static func initFromNib() -> ParamsDatePicker {
@@ -48,7 +51,7 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
     }
     
     func getValue() { 
-        Person.profileDict[self.tag] = (textField.text, textField.text)
+        Person.profileDict[self.tag] = (dateValue, textField.text)
     }
     
     

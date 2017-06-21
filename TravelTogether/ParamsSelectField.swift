@@ -25,7 +25,7 @@ class ParamsSelectField: ParamsAbstract, ParamsViewsProtocol {
     func setView(placeholder: String?, parrent: UIViewController, tag: Int, rawValue: String?) {
         setAbstractView(placeholder: placeholder, parrent: parrent, tag: tag)
         checkLabel.text = placeholder
-        checkImage.isHidden = true
+        checkImage.isHidden = true       
         self.rawValue = rawValue
         self.localValue = placeholder
     }
