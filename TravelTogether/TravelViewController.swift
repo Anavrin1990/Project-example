@@ -23,7 +23,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         SearchTableViewController.delegate = self
-        
+        Request.getUserInfo()
     }
 
     @IBAction func selectButton(_ sender: Any) {
@@ -37,14 +37,17 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             
             let date = Date()
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "ddMMyyHHmmss"
+            dateFormatter.dateFormat = "yyMMddHHmmss"
             
             let stringDate = dateFormatter.string(from: date)
             
-            var values = [String : String]()
+            var values = [String : Any]()
             values["destination"] = country
             values["month"] = month
-            values["createdate"] = stringDate
+            values["createdate"] = Int(stringDate)
+            values["icon"] = User.icon            
+            values["name"] = User.person?.name
+            values["age"] = User.person?.birthdate
             
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["hasTravel" : true], complition: {
                 Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").child(uid), value: ["destination" : country], complition: {})

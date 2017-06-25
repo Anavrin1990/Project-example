@@ -30,6 +30,16 @@ class Request {
                 print (result.error?.localizedDescription as Any)
             }
         }
+        print ("Get JSON")
+    }
+    
+    // Получить изображение
+    static func getImage (url: String?, complition: @escaping (_ data: Data?) -> ())  {
+        guard let url = url else {return}
+        guard url != "" else {return}
+        request(url).responseData { (data) in
+            complition(data.data)
+        }
     }
     
     static func storagePutData (reference: FIRStorageReference, data: Data, complition: @escaping (_ snapshot: FIRStorageMetadata?, _ error: Error?) -> ()) {
@@ -41,6 +51,7 @@ class Request {
                 complition(metadata, nil)
             }
         }
+        print ("Storage put data")
     }
     
     // Обновление значения
@@ -52,7 +63,8 @@ class Request {
             } else {
                 complition()
             }
-        }        
+        }
+        print ("Update child value")
     }
     
     static func requestSingleFirstByKey (reference: FIRDatabaseReference, limit: UInt?, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
@@ -102,6 +114,7 @@ class Request {
         }) { (error) in
             complition(nil, error, nil)
         }
+        print ("Request search equal")
     }
     
     // Юзер инфо
@@ -109,9 +122,28 @@ class Request {
         let user = FIRAuth.auth()?.currentUser
         if let user = user {
             User.email = user.email
-            User.uid = user.uid            
+            User.uid = user.uid
+            Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(User.uid!), limit: nil, complition: { (snapshot, error) in
+                guard error == nil else {return}
+                if let snap = snapshot?.value as? NSDictionary {
+                    let json = JSON(snap)
+                    let person = Person(name: json["name"].stringValue,
+                                        sex: json["sex"].stringValue,
+                                        birthdate: json["birthdate"].stringValue,
+                                        country: json["name"].stringValue,
+                                        city: json["city"].stringValue,
+                                        about: json["about"].stringValue,
+                                        alcohol: json["alcohol"].stringValue,
+                                        smoking: json["smoking"].stringValue,
+                                        familyStatus: json["familyStatus"].stringValue,
+                                        childs: json["childs"].stringValue,
+                                        orientation: json["orientation"].stringValue)
+                    User.person = person
+                    User.icon = json["icon"].stringValue
+                }
+            })
         }
-        
+        print ("Get user info")
     }
     
     static func logOut() {

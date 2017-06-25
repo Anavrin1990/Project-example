@@ -50,7 +50,10 @@ class Parsing {
             for value in json {
                 let travel = Travel(destination: value.1["destination"].stringValue,
                                     month: value.1["month"].stringValue,
-                                    createDate: value.1["createDate"].stringValue)
+                                    createDate: value.1["createdate"].stringValue,
+                                    name: value.1["name"].stringValue,
+                                    age: value.1["age"].stringValue,
+                                    icon: value.1["icon"].stringValue)
                 self.travelsArray.append(travel)
             }
             complition(self.travelsArray)

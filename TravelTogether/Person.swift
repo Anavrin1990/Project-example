@@ -33,6 +33,9 @@ struct Travel {
     var destination: String?
     var month: String?
     var createDate: String?
+    var name: String?
+    var age: String?
+    var icon: String?
 }
 
 

@@ -24,7 +24,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     
     
     
-    let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthdate", comment: "Birthdate"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Marital status", comment: "Marital status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation")]
+    let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthdate", comment: "Birthdate"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Family status", comment: "Family status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation")]
     
     @IBOutlet weak var paramsStackView: UIStackView!
     
@@ -213,7 +213,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 
             }
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {
-                self.navigationController?.dismiss(animated: true, completion: nil)
+                self.navigationController?.dismiss(animated: true, completion: nil)                
                 SearchTableViewController.delegate = nil
             })
             

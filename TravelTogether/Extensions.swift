@@ -9,3 +9,31 @@
 import Foundation
 import UIKit
 
+extension UIImageView {
+    
+    func getImage (url: String?) {
+        
+        if let cacheImage = imageCache.object(forKey: url as AnyObject) as? UIImage {
+            self.image = cacheImage
+            return
+        }
+        Request.getImage(url: url) { (data) in
+            guard let imageData = data else {return}
+            DispatchQueue.main.async {
+                guard let image = UIImage(data: imageData) else {return}
+                imageCache.setObject(image, forKey: url as AnyObject)
+                self.image = image
+            }
+        }
+    }
+}
+
+extension Bool {
+    
+    func toString() -> String? {
+        switch self {
+        case true: return NSLocalizedString("Yes", comment: "Yes")
+        case false: return NSLocalizedString("No", comment: "No")
+        }
+    }
+}
