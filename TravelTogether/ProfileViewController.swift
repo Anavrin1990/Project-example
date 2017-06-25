@@ -22,7 +22,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     
     static var selectedIndex: Int?
     
-    var countryId = ""
+    
     
     let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthdate", comment: "Birthdate"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Marital status", comment: "Marital status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation")]
     
@@ -77,31 +77,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         scrollView.contentOffset = CGPoint.zero
     }
     
-    func searchCountries (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
-        Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCountries&v=5.65&need_all=1&lang=en&count=1000") { (json) in
-            var countriesArray = [(String, String)]()
-            let countries = json["response"]["items"].arrayValue
-            for c in countries {
-                let country = (c["id"].stringValue, c["title"].stringValue)
-                countriesArray.append(country)
-            }
-            let result = (NSLocalizedString("Countries", comment: "Countries"), countriesArray)
-            complition([result])
-        }
-    }
     
-    func searchCities (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
-        Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCities&v=5.5&country_id=\(countryId)&lang=en&count=1000") { (json) in
-            var citiesArray = [(String, String)]()
-            let cities = json["response"]["items"].arrayValue
-            for c in cities {
-                let city = (c["id"].stringValue, c["title"].stringValue)
-                citiesArray.append(city)
-            }
-            let result = (NSLocalizedString("Nearest city", comment: "Nearest city"), citiesArray)
-            complition([result])
-        }
-    }
     
     func onParamsViewClick(index: Int) {
         self.view.endEditing(true)
@@ -153,7 +129,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     
     // Метод делегата поиска
     func getSearchResult(result: (String, String), index: Int?) {
-        if index == 3 {self.countryId = result.0}
+        if index == 3 {countryId = result.0}
         
         Person.profileDict[index!] = (result.1, result.1)
         
@@ -212,11 +188,9 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
             return
         }
         if let uid = User.uid {
-            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {})
             for (k, v) in userProperties {
                 Request.updateChildValue(reference: Request.ref.child("Criteria").child(k as! String).child(uid), value: [k : v], complition: {})
             }
-            
             for photo in photoArray.enumerated() {
                 if photo.offset == 0 {
                     if let uploadPhoto = UIImageJPEGRepresentation(photo.element, 0.2) {
@@ -238,7 +212,11 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 }
                 
             }
-            self.navigationController?.dismiss(animated: true, completion: nil)
+            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {
+                self.navigationController?.dismiss(animated: true, completion: nil)
+                SearchTableViewController.delegate = nil
+            })
+            
         }
     }
     

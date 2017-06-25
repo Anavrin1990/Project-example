@@ -29,6 +29,8 @@
 		0BAEE9621EF545E200CCC0C1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE9611EF545E200CCC0C1 /* User.swift */; };
 		0BBA88DB1EE2FE2200CFE1C8 /* ParamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBA88DA1EE2FE2200CFE1C8 /* ParamsView.swift */; };
 		0BC4965C1EED563100505FD2 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC4965B1EED563100505FD2 /* Request.swift */; };
+		0BCB55511EFFB00500605F24 /* MonthPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCB55501EFFB00500605F24 /* MonthPicker.swift */; };
+		0BCD648E1EFE741300B93F82 /* TravelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCD648D1EFE741300B93F82 /* TravelViewController.swift */; };
 		0BDA50911EDF2D1800FA7A5E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */; };
 		0BDA50961EDF2D1800FA7A5E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BDA50941EDF2D1800FA7A5E /* Main.storyboard */; };
 		0BDA50981EDF2D1800FA7A5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BDA50971EDF2D1800FA7A5E /* Assets.xcassets */; };
@@ -65,6 +67,8 @@
 		0BAEE9611EF545E200CCC0C1 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0BBA88DA1EE2FE2200CFE1C8 /* ParamsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsView.swift; sourceTree = "<group>"; };
 		0BC4965B1EED563100505FD2 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		0BCB55501EFFB00500605F24 /* MonthPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthPicker.swift; sourceTree = "<group>"; };
+		0BCD648D1EFE741300B93F82 /* TravelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelViewController.swift; sourceTree = "<group>"; };
 		0BDA508D1EDF2D1800FA7A5E /* TravelTogether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelTogether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BDA50951EDF2D1800FA7A5E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -102,6 +106,7 @@
 				0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */,
 				0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */,
 				0BEBA0821EEC6C48001EE6EA /* SearchTableViewController.swift */,
+				0BCD648D1EFE741300B93F82 /* TravelViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */,
+				0BCB55501EFFB00500605F24 /* MonthPicker.swift */,
 				0BDA50A81EDF370A00FA7A5E /* Person.swift */,
 				0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */,
 				0BAEE9611EF545E200CCC0C1 /* User.swift */,
@@ -358,6 +364,7 @@
 				0B0D96421EE410AD00C2F1C4 /* ParamsDropStack.swift in Sources */,
 				0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */,
 				0B0D96351EE3F05400C2F1C4 /* CustomScrollView.swift in Sources */,
+				0BCB55511EFFB00500605F24 /* MonthPicker.swift in Sources */,
 				0BDA50A71EDF34B700FA7A5E /* MainCollectionViewCell.swift in Sources */,
 				0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */,
 				0B2106331EE2CCC7001AE7D0 /* ProfileViewController.swift in Sources */,
@@ -365,6 +372,7 @@
 				0BC4965C1EED563100505FD2 /* Request.swift in Sources */,
 				0B95FC3A1EF06ACC00C315F6 /* MessageBox.swift in Sources */,
 				0B0D964A1EE431FB00C2F1C4 /* Extensions.swift in Sources */,
+				0BCD648E1EFE741300B93F82 /* TravelViewController.swift in Sources */,
 				0B0D963C1EE4055500C2F1C4 /* ParamsTextField.swift in Sources */,
 				0BDA50A91EDF370A00FA7A5E /* Person.swift in Sources */,
 				0BDA50A51EDF333400FA7A5E /* MainViewController.swift in Sources */,

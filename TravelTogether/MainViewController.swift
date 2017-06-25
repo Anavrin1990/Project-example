@@ -11,17 +11,10 @@ import FirebaseDatabase
 import FirebaseAuth
 import SwiftyJSON
 
-let userDefault = UserDefaults()
-var imageCache = NSCache<AnyObject, AnyObject>()
-let reqLimit: UInt = 15
-
-var categoriesArray = [String]()
-var difficultyArray = [Int]()
-
 class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {
     
     
-    var personArray = [Person]()
+    var travelsArray = [Travel]()
     var endIndex: Int?
     
     let spinner: UIActivityIndicatorView = {
@@ -59,9 +52,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         refreshControl.addTarget(self, action: #selector(firstRequest), for: .valueChanged)
         collectionView?.addSubview(refreshControl)
         
-       
-        
-        //spinner.startAnimating()
+        spinner.startAnimating()
         
         spinnerSettings()
         Request.getUserInfo()
@@ -91,7 +82,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.personArray.count
+        return self.travelsArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -125,6 +116,13 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func checkAuth() {
         if User.uid == nil {
+            Request.logOut()
+            let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
+            present(registrationVC!, animated: true, completion: nil)
+            return
+        }
+        if User.email == nil {
+            Request.logOut()
             let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
             present(registrationVC!, animated: true, completion: nil)
             return
@@ -133,19 +131,48 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             guard error == nil else {return}
             if let snap = snapshot?.value as? NSDictionary {
                 let json = JSON(snap)
-                let name = json["alcohol"].stringValue
-                if name == "" {
+                let alcohol = json["alcohol"].stringValue
+                if alcohol == "" {
                     let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "ProfileNavigationController")
                     DispatchQueue.main.async {
                         self.present(profileVC!, animated: true)
                     }
+                } else {
+                    Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(User.uid!), limit: nil, complition: { (snapshot, error) in
+                        guard error == nil else {return}
+                        if let snap = snapshot?.value as? NSDictionary {
+                            let json = JSON(snap)
+                            let hasTravel = json["hasTravel"].boolValue
+                            if !hasTravel {
+                                let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "TravelNavigationController")
+                                DispatchQueue.main.async {
+                                    self.present(profileVC!, animated: true)                                    
+                                }
+                            }
+                        }
+                    })
                 }
             }
         })
     }
     
     func firstRequest () {
-        
+        Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("Users"), child: "createdate", limit: reqLimit) { (snapshot, error) in
+            guard error == nil else {print (error as Any); return}
+            print (snapshot)
+            Parsing.travelsParse(snapshot, complition: { (travelsArray) in
+                self.travelsArray = travelsArray
+                //self.personArray.sort(by: {$0.position < $1.position})
+                //self.travelsArray.reverse()
+                //self.endIndex = self.personArray.last?.position
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    self.spinner.stopAnimating()
+                    self.refreshControl.endRefreshing()
+                    
+                }
+            })
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

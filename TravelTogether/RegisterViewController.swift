@@ -40,17 +40,9 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
         
     }
     
-    @IBAction func logOut(_ sender: Any) { 
+    @IBAction func logOut(_ sender: Any) {
         MessageBox.showDialog(parent: self, title: NSLocalizedString("Sign out", comment: "Sign out"), message: NSLocalizedString("Do you want to sign out?", comment: "Do you want to sign out?")) {
-            let firebaseAuth = FIRAuth.auth()
-            do {
-                try firebaseAuth?.signOut()
-                User.email = nil
-                User.uid = nil                
-                print ("Sign out succes")                
-            } catch let signOutError as NSError {
-                print ("Error signing out: %@", signOutError)
-            }
+            Request.logOut()
         }
     }
     
@@ -92,7 +84,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
         
     }
     
-     @IBAction func facebookLogin(_ sender: Any) {
+    @IBAction func facebookLogin(_ sender: Any) {
         
         FBSDKLoginManager().logIn(withReadPermissions: ["email"], from: self) { (result, error) in
             guard error == nil else {self.errorHandling(error: error!); return}
@@ -104,20 +96,43 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 User.email = user?.email
                 User.uid = user?.uid
                 
-                if let uid = User.uid ,let email = User.email{
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
-                } 
-                
-                self.dismiss(animated: true, completion: nil)
-                print ("Facebook sign in success")
+                if let uid = User.uid {
+                    if let email = User.email {
+                        Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
+                    } else {
+                        self.enterEmail(uid: uid)
+                        return
+                    }
+                    self.dismiss(animated: true, completion: nil)
+                    print ("Facebook sign in success")
+                }
             })
             
         }
     }
     
+    func enterEmail(uid: String) {
+        MessageBox.showTextField(parent: self, title: NSLocalizedString("Enter your email", comment: "Enter your email"), message: "", placeholder: "email", complition: { (email) in
+            if let email = email {
+                if email != "" {
+                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {
+                        User.email = email
+                        self.dismiss(animated: true, completion: nil)
+                        print ("Facebook sign in success")
+                    })
+                } else {
+                    self.enterEmail(uid: uid)
+                }
+            } else {
+                Request.logOut()
+            }
+            
+        })
+    }
+    
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
-    }    
+    }
     
     
     func errorHandling (error: Error) {

@@ -31,6 +31,7 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
         self.parrent?.view.endEditing(true)
         textField.text = dateFormatter.string(from: datePicker.date)
         dateFormatter.dateStyle = .short
+        dateFormatter.dateFormat = "d.M.yyyy"
         dateValue = dateFormatter.string(from: datePicker.date)
     }
     

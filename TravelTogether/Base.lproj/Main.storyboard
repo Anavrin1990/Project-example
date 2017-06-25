@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5oO-IC-FFD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5oO-IC-FFD">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -424,6 +424,62 @@
             </objects>
             <point key="canvasLocation" x="-687" y="777"/>
         </scene>
+        <!--Travel View Controller-->
+        <scene sceneID="VC4-VD-eli">
+            <objects>
+                <viewController id="3Sa-Ri-VVx" customClass="TravelViewController" customModule="TravelTogether" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KeV-yA-tAe"/>
+                        <viewControllerLayoutGuide type="bottom" id="1jB-To-gwM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="WfW-sZ-q4n">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="doW-93-iCK">
+                                <rect key="frame" x="137" y="280" width="100" height="30"/>
+                                <state key="normal" title="Select country"/>
+                                <connections>
+                                    <action selector="selectButton:" destination="3Sa-Ri-VVx" eventType="touchUpInside" id="9el-3O-XIM"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Travel month" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mSD-xP-XY0">
+                                <rect key="frame" x="135" y="318" width="105" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="897-fx-b7G">
+                                <rect key="frame" x="164" y="427" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="gOQ-17-1El"/>
+                                </constraints>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="onDoneClick:" destination="3Sa-Ri-VVx" eventType="touchUpInside" id="Zf1-oU-k5d"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="897-fx-b7G" firstAttribute="centerX" secondItem="mSD-xP-XY0" secondAttribute="centerX" id="3ga-ZD-ZeW"/>
+                            <constraint firstItem="doW-93-iCK" firstAttribute="centerX" secondItem="WfW-sZ-q4n" secondAttribute="centerX" id="6Qp-zy-aiD"/>
+                            <constraint firstItem="mSD-xP-XY0" firstAttribute="centerY" secondItem="WfW-sZ-q4n" secondAttribute="centerY" id="GVI-Qc-9jC"/>
+                            <constraint firstItem="mSD-xP-XY0" firstAttribute="centerX" secondItem="WfW-sZ-q4n" secondAttribute="centerX" id="TJo-ei-JQt"/>
+                            <constraint firstItem="897-fx-b7G" firstAttribute="top" secondItem="mSD-xP-XY0" secondAttribute="bottom" constant="79" id="fjn-h9-AeC"/>
+                            <constraint firstItem="mSD-xP-XY0" firstAttribute="top" secondItem="doW-93-iCK" secondAttribute="bottom" constant="8" id="nAY-HU-tcM"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="jTD-TW-DFj"/>
+                    <connections>
+                        <outlet property="monthTextField" destination="mSD-xP-XY0" id="EFL-K8-Lni"/>
+                        <outlet property="selectButton" destination="doW-93-iCK" id="6zH-go-hdR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LYP-ir-1lq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3497" y="777"/>
+        </scene>
         <!--Profile View Controller-->
         <scene sceneID="wYX-4h-CQy">
             <objects>
@@ -577,7 +633,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o0r-11-QqW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1713" y="777"/>
+            <point key="canvasLocation" x="1457" y="777"/>
         </scene>
         <!--Item-->
         <scene sceneID="ZGY-4R-yh9">
@@ -634,6 +690,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="518-j2-byA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1626" y="777"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0Vz-iW-nag">
+            <objects>
+                <navigationController storyboardIdentifier="TravelNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Lg5-pj-9DZ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="BF2-bQ-oSU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="3Sa-Ri-VVx" kind="relationship" relationship="rootViewController" id="QR7-DE-1y9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HiV-GI-K6H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2558" y="777"/>
         </scene>
     </scenes>
 </document>

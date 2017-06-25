@@ -23,13 +23,20 @@ struct Person {
     var smoking: String?
     var familyStatus: String?
     var childs: String?
-    var orientation: String?   
+    var orientation: String?
 }
 
 struct Travel {
+    
+    static var instance = Travel()
+    
     var destination: String?
     var month: String?
     var createDate: String?
 }
+
+
+
+
 
 

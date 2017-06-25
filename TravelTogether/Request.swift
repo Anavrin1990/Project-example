@@ -76,6 +76,26 @@ class Request {
         
     }
     
+    static func requestSingleFirstByChild (reference: FIRDatabaseReference, child: String, limit: UInt?, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
+        
+        if limit == nil {
+            reference.queryOrdered(byChild: child).observeSingleEvent(of: .value, with: { (snapshot) in
+                complition(snapshot, nil)
+            }) { (error) in
+                complition(nil, error)
+            }
+            print ("First single request (byChild)")
+        } else {
+            reference.queryOrdered(byChild: child).queryLimited(toLast: limit!).observeSingleEvent(of: .value, with: { (snapshot) in
+                complition(snapshot, nil)
+            }) { (error) in
+                complition(nil, error)
+            }
+            print ("First single request (byChild)")
+        }
+        
+    }
+    
     static func requestSearchEqual (reference: FIRDatabaseReference, equal: String, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?, _ ref: FIRDatabaseReference?) -> ()) {        
         reference.queryOrderedByKey().queryEqual(toValue: equal).observeSingleEvent(of: .value, with: { (snapshot) in
             complition(snapshot, nil, reference)
@@ -92,6 +112,18 @@ class Request {
             User.uid = user.uid            
         }
         
+    }
+    
+    static func logOut() {
+        let firebaseAuth = FIRAuth.auth()
+        do {
+            try firebaseAuth?.signOut()
+            User.email = nil
+            User.uid = nil
+            print ("Sign out succes")
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
     }
     
 }
