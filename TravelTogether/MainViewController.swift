@@ -17,6 +17,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var travelsArray = [Travel]()
     var endIndex: Int?
     
+    
     let spinner: UIActivityIndicatorView = {
         let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         spin.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +40,13 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        checkAuth()        
+        if needCheckAuth {
+            Request.getUserInfo{
+                self.checkAuth()
+            }
+        }
+        needCheckAuth = true
+        
     }
     
     override func viewDidLoad() {
@@ -55,7 +62,9 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         spinner.startAnimating()
         
         spinnerSettings()
-        Request.getUserInfo()
+        Request.getUserInfo{
+            self.checkAuth()
+        }
         firstRequest()
     }
     
@@ -67,16 +76,9 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     @IBAction func logout(_ sender: Any) {
         MessageBox.showDialog(parent: self, title: NSLocalizedString("Sign out", comment: "Sign out"), message: NSLocalizedString("Do you want to sign out?", comment: "Do you want to sign out?")) {
-            let firebaseAuth = FIRAuth.auth()
-            do {
-                try firebaseAuth?.signOut()
-                User.email = nil
-                User.uid = nil                
-                print ("Sign out succes")
+            Request.logOut {
                 let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
                 self.present(registrationVC!, animated: true, completion: nil)
-            } catch let signOutError as NSError {
-                print ("Error signing out: %@", signOutError)
             }
         }
     }
@@ -119,13 +121,13 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func checkAuth() {
         if User.uid == nil {
-            Request.logOut()
+            Request.logOut{}
             let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
             present(registrationVC!, animated: true, completion: nil)
             return
         }
         if User.email == nil {
-            Request.logOut()
+            Request.logOut{}
             let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
             present(registrationVC!, animated: true, completion: nil)
             return
@@ -140,6 +142,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     DispatchQueue.main.async {
                         self.present(profileVC!, animated: true)
                     }
+                    return
                 } else {
                     Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(User.uid!), limit: nil, complition: { (snapshot, error) in
                         guard error == nil else {return}
@@ -149,9 +152,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                             if !hasTravel {
                                 let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "TravelNavigationController")
                                 DispatchQueue.main.async {
-                                    self.present(profileVC!, animated: true)                                    
+                                    self.present(profileVC!, animated: true)
                                 }
+                                return
                             }
+                            needCheckAuth = false
                         }
                     })
                 }

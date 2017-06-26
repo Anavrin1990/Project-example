@@ -14,6 +14,8 @@ let userDefault = UserDefaults()
 var imageCache = NSCache<AnyObject, AnyObject>()
 let reqLimit: UInt = 15
 var countryId = ""
+var needCheckAuth = false // включение проверки авторизации на главном экране
+
 
 let spinner: UIActivityIndicatorView = {
     let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)

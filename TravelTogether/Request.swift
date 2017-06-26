@@ -118,10 +118,12 @@ class Request {
     }
     
     // Юзер инфо
-    static func getUserInfo() {
+    static func getUserInfo(complition: @escaping() -> ()) {
         let user = FIRAuth.auth()?.currentUser
         if let user = user {
-            User.email = user.email
+            if user.email != nil, user.email != "" {
+                User.email = user.email
+            }
             User.uid = user.uid
             Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(User.uid!), limit: nil, complition: { (snapshot, error) in
                 guard error == nil else {return}
@@ -140,18 +142,24 @@ class Request {
                                         orientation: json["orientation"].stringValue)
                     User.person = person
                     User.icon = json["icon"].stringValue
+                    User.email = json["email"].stringValue
+                    complition()
                 }
             })
+        } else {
+            complition()
         }
         print ("Get user info")
     }
     
-    static func logOut() {
+    static func logOut(complition: @escaping() -> ()) {
+        needCheckAuth = true
         let firebaseAuth = FIRAuth.auth()
         do {
             try firebaseAuth?.signOut()
             User.email = nil
             User.uid = nil
+            complition()
             print ("Sign out succes")
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)

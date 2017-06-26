@@ -42,7 +42,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
     
     @IBAction func logOut(_ sender: Any) {
         MessageBox.showDialog(parent: self, title: NSLocalizedString("Sign out", comment: "Sign out"), message: NSLocalizedString("Do you want to sign out?", comment: "Do you want to sign out?")) {
-            Request.logOut()
+            Request.logOut{}
         }
     }
     
@@ -100,11 +100,32 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                     if let email = User.email {
                         Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
                     } else {
-                        self.enterEmail(uid: uid)
-                        return
+                        Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(uid), limit: nil, complition: { (snapshot, error) in
+                            guard error == nil else {return}
+                            if let snap = snapshot?.value as? NSDictionary {
+                                let json = JSON(snap)
+                                let email = json["email"].stringValue
+                                if email == "" {
+                                    DispatchQueue.main.async {
+                                        self.enterEmail(uid: uid)
+                                        return
+                                    }
+                                } else {
+                                    User.email = email
+                                    DispatchQueue.main.async {
+                                        self.dismiss(animated: true, completion: nil)
+                                        print ("Facebook sign in success")
+                                    }
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    self.enterEmail(uid: uid)
+                                    return
+                                }
+                            }
+                        })
                     }
-                    self.dismiss(animated: true, completion: nil)
-                    print ("Facebook sign in success")
+                    
                 }
             })
             
@@ -115,18 +136,19 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
         MessageBox.showTextField(parent: self, title: NSLocalizedString("Enter your email", comment: "Enter your email"), message: "", placeholder: "email", complition: { (email) in
             if let email = email {
                 if email != "" {
+                    User.email = email
                     Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {
-                        User.email = email
-                        self.dismiss(animated: true, completion: nil)
-                        print ("Facebook sign in success")
+                        DispatchQueue.main.async {
+                            self.dismiss(animated: true, completion: nil)
+                            print ("Facebook sign in success")
+                        }
                     })
                 } else {
                     self.enterEmail(uid: uid)
                 }
             } else {
-                Request.logOut()
-            }
-            
+                Request.logOut{}
+            }            
         })
     }
     

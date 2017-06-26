@@ -23,7 +23,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         SearchTableViewController.delegate = self
-        Request.getUserInfo()
+        Request.getUserInfo{}
     }
 
     @IBAction func selectButton(_ sender: Any) {
