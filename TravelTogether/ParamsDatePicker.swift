@@ -25,14 +25,13 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
     }
     
     func donePressed() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
+        customDateFormatter.dateStyle = .medium
+        customDateFormatter.timeStyle = .none
         self.parrent?.view.endEditing(true)
-        textField.text = dateFormatter.string(from: datePicker.date)
-        dateFormatter.dateStyle = .short
-        dateFormatter.dateFormat = "d.M.yyyy"
-        dateValue = dateFormatter.string(from: datePicker.date)
+        textField.text = customDateFormatter.string(from: datePicker.date)
+        customDateFormatter.dateStyle = .short
+        customDateFormatter.dateFormat = "dd.MM.yyyy"
+        dateValue = customDateFormatter.string(from: datePicker.date)
     }
     
     static func initFromNib() -> ParamsDatePicker {

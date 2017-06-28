@@ -15,7 +15,7 @@ struct Person {
     
     var name: String?
     var sex: String?
-    var birthdate: String?
+    var birthday: String?
     var country: String?
     var city: String?
     var about: String?
@@ -31,10 +31,10 @@ struct Travel {
     static var instance = Travel()
     
     var destination: String?
-    var month: String?
+    var month: Int?
     var createDate: String?
     var name: String?
-    var age: String?
+    var birthday: String?
     var icon: String?
 }
 

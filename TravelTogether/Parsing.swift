@@ -24,7 +24,7 @@ class Parsing {
             for value in json {
                 let person = Person(name: value.1["name"].stringValue,
                                     sex: value.1["sex"].stringValue,
-                                    birthdate: value.1["birthdate"].stringValue,
+                                    birthday: value.1["birthday"].stringValue,
                                     country: value.1["name"].stringValue,
                                     city: value.1["city"].stringValue,
                                     about: value.1["about"].stringValue,
@@ -49,10 +49,10 @@ class Parsing {
             let json = JSON(snap)            
             for value in json {
                 let travel = Travel(destination: value.1["destination"].stringValue,
-                                    month: value.1["month"].stringValue,
+                                    month: value.1["month"].intValue,
                                     createDate: value.1["createdate"].stringValue,
                                     name: value.1["name"].stringValue,
-                                    age: value.1["age"].stringValue,
+                                    birthday: value.1["birthday"].stringValue,
                                     icon: value.1["icon"].stringValue)
                 self.travelsArray.append(travel)
             }

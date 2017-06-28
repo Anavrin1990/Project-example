@@ -90,10 +90,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainCell", for: indexPath) as! MainCollectionViewCell
-        cell.nameAgeLabel.text = travelsArray[indexPath.row].name
-        cell.destinationLabel.text = travelsArray[indexPath.row].destination
-        cell.dateLabel.text = travelsArray[indexPath.row].month
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainCell", for: indexPath) as! MainCollectionViewCell        
+        cell.nameAgeLabel.text = "\(travelsArray[indexPath.row].name ?? ""), \(travelsArray[indexPath.row].birthday?.getAge() ?? "")"
+        cell.destinationLabel.text = "\(travelsArray[indexPath.row].destination ?? ""). \(travelsArray[indexPath.row].month?.getMonth() ?? "")"
+        cell.profileImage.layer.cornerRadius = cell.profileImage.frame.width / 2
+        cell.profileImage.layer.masksToBounds = true
         cell.profileImage.getImage(url: travelsArray[indexPath.row].icon)
         return cell
     }

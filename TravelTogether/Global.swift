@@ -25,6 +25,12 @@ let spinner: UIActivityIndicatorView = {
     return spin
 }()
 
+let customDateFormatter : DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd.MM.yyyy"
+    return formatter
+}()
+
 func addSpinner(_ view: UIView) {
     
     view.addSubview(spinner)

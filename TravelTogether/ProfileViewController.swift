@@ -24,7 +24,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     
     
     
-    let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthdate", comment: "Birthdate"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Family status", comment: "Family status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation")]
+    let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthday", comment: "Birthday"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Family status", comment: "Family status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation")]
     
     @IBOutlet weak var paramsStackView: UIStackView!
     
@@ -161,7 +161,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         
         Person.instance.name = Person.profileDict[0]?.0
         Person.instance.sex = Person.profileDict[1]?.0
-        Person.instance.birthdate = Person.profileDict[2]?.0
+        Person.instance.birthday = Person.profileDict[2]?.0
         Person.instance.country = Person.profileDict[3]?.0
         Person.instance.city = Person.profileDict[4]?.0
         Person.instance.about = Person.profileDict[5]?.0
@@ -236,7 +236,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
             }
         case 2:
             let paramsDataPicker = ParamsDatePicker.initFromNib()
-            paramsDataPicker.setView(placeholder: NSLocalizedString("Birthdate", comment: "Birthdate"), parrent: self, tag: index, rawValue: nil)
+            paramsDataPicker.setView(placeholder: NSLocalizedString("Birthday", comment: "Birthday"), parrent: self, tag: index, rawValue: nil)
             ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsDataPicker)
         case 5:
             let paramsTextField = ParamsTextField.initFromNib()

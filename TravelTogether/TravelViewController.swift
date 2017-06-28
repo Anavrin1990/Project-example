@@ -47,7 +47,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             values["createdate"] = Int(stringDate)
             values["icon"] = User.icon            
             values["name"] = User.person?.name
-            values["age"] = User.person?.birthdate
+            values["birthday"] = User.person?.birthday
             values["uid"] = User.uid
             
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["hasTravel" : true], complition: {

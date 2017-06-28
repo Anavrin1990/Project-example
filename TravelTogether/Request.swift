@@ -131,7 +131,7 @@ class Request {
                     let json = JSON(snap)
                     let person = Person(name: json["name"].stringValue,
                                         sex: json["sex"].stringValue,
-                                        birthdate: json["birthdate"].stringValue,
+                                        birthday: json["birthday"].stringValue,
                                         country: json["name"].stringValue,
                                         city: json["city"].stringValue,
                                         about: json["about"].stringValue,
@@ -144,6 +144,8 @@ class Request {
                     User.icon = json["icon"].stringValue
                     User.email = json["email"].stringValue
                     complition()                    
+                } else {
+                    complition()
                 }
             })
         } else {

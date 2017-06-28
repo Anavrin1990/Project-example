@@ -37,3 +37,33 @@ extension Bool {
         }
     }
 }
+
+extension String {
+    func getAge () -> String? {
+        let birthday = customDateFormatter.date(from: self)
+        let now = Date()
+        let calendar = Calendar.current
+        if let birthday = birthday {
+            let ageComponents = calendar.dateComponents([Calendar.Component.year], from: birthday, to: now)
+            if let age = ageComponents.year {
+                return String(age)
+            }
+        }
+        return nil
+    }
+}
+
+extension Int {
+    func getMonth () -> String? {
+        if self <= 12 {
+            return DateFormatter().monthSymbols[self - 1]
+        }
+        return nil
+        
+    }
+}
+
+
+
+
+

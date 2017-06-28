@@ -11,6 +11,5 @@ import UIKit
 class MainCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameAgeLabel: UILabel!
-    @IBOutlet weak var destinationLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!    
+    @IBOutlet weak var destinationLabel: UILabel!    
 }
