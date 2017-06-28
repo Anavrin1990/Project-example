@@ -48,13 +48,14 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             values["icon"] = User.icon            
             values["name"] = User.person?.name
             values["age"] = User.person?.birthdate
+            values["uid"] = User.uid
             
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["hasTravel" : true], complition: {
-                Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").child(uid), value: ["destination" : country], complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").child(uid), value: ["month" : month], complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Countries").child(country).child(uid), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(month).child(uid), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Users").child(uid), value: values, complition: {})
+//                Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").childByAutoId(), value: ["destination" : country, "uid" : User.uid!], complition: {})
+//                Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").childByAutoId(), value: ["month" : month, "uid" : User.uid!], complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Countries").child(country).childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(month).childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("All").childByAutoId(), value: values, complition: {})
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 SearchTableViewController.delegate = nil
             })

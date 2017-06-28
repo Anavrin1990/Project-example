@@ -143,7 +143,7 @@ class Request {
                     User.person = person
                     User.icon = json["icon"].stringValue
                     User.email = json["email"].stringValue
-                    complition()
+                    complition()                    
                 }
             })
         } else {

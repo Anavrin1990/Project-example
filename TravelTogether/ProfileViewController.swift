@@ -212,6 +212,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
                 }
                 
             }
+            userProperties["uid"] = uid
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {
                 self.navigationController?.dismiss(animated: true, completion: nil)                
                 SearchTableViewController.delegate = nil

@@ -44,8 +44,9 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             Request.getUserInfo{
                 self.checkAuth()
             }
+            needCheckAuth = true
         }
-        needCheckAuth = true
+        
         
     }
     
@@ -160,12 +161,16 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         }
                     })
                 }
+            } else {
+                Request.logOut{}
+                let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
+                self.present(registrationVC!, animated: true, completion: nil)                
             }
         })
     }
     
     func firstRequest () {
-        Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("Users"), child: "createdate", limit: reqLimit) { (snapshot, error) in
+        Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("All"), child: "createdate", limit: reqLimit) { (snapshot, error) in
             guard error == nil else {print (error as Any); return}
             
             Parsing.travelsParse(snapshot, complition: { (travelsArray) in
