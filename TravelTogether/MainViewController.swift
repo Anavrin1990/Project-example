@@ -16,7 +16,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     var travelsArray = [Travel]()
     var endIndex: Int?
-    
+    var lastPosition: Int?
     
     let spinner: UIActivityIndicatorView = {
         let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -46,13 +46,20 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
             needCheckAuth = true
         }
-        
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+//        var q = 170628235713
+//        for _ in 0...20 {
+//            var value = [String : Int]()
+//            value["name"] = q
+//            value["createdate"] = q
+//            Request.updateChildValue(reference: Request.ref.child("Travels").child("All").childByAutoId(), value: value, complition: {})
+//            q += 10
+//        }
         
         self.collectionView.alwaysBounceVertical = true
         
@@ -171,25 +178,59 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func firstRequest () {
-        Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("All"), child: "createdate", limit: reqLimit) { (snapshot, error) in
+        Request.requestSingleByChildLastIndex(reference: Request.ref.child("Travels").child("All"), child: "createdate") { (snapshot, error) in
             guard error == nil else {print (error as Any); return}
             
-            Parsing.travelsParse(snapshot, complition: { (travelsArray) in
-                self.travelsArray = travelsArray
-                //self.personArray.sort(by: {$0.position < $1.position})
-                //self.travelsArray.reverse()
-                //self.endIndex = self.personArray.last?.position
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                    self.spinner.stopAnimating()
-                    self.refreshControl.endRefreshing()
-                    //print(self.travelsArray)
+            Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
+                self.lastPosition = travelsArray.first?.createDate
+                
+                Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("All"), child: "createdate", limit: reqLimit) { (snapshot, error) in
+                    guard error == nil else {print (error as Any); return}
+                    
+                    Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
+                        self.travelsArray = travelsArray
+                        
+                        self.travelsArray.sort(by: { (first, second) -> Bool in
+                            guard let firstCreateDate = first.createDate, let secondCreateDate = second.createDate else {return false}
+                            return firstCreateDate < secondCreateDate
+                        })
+                        self.travelsArray.reverse()
+                        self.endIndex = self.travelsArray.last?.createDate
+                        DispatchQueue.main.async {
+                            self.collectionView.reloadData()
+                            self.spinner.stopAnimating()
+                            self.refreshControl.endRefreshing()                            
+                        }
+                    })
                 }
             })
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if indexPath.row == (travelsArray.count - 2) {
+            
+            guard let endIndex = self.endIndex else {return}
+            guard let lastPosition = self.lastPosition else {return}
+            guard endIndex > lastPosition else {return}
+            
+            Request.requestSingleNextByChild(reference: Request.ref.child("Travels").child("All"), child: "createdate", ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
+                
+                guard error == nil else {print (error as Any); return}
+                
+                Parsing.travelsParseSecond(snapshot, complition: { (preArray) in
+                    
+                    for i in preArray {
+                        self.travelsArray.append(i)
+                    }
+                })
+                self.endIndex = self.travelsArray.last?.createDate
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            })
+        }
         
     }
     

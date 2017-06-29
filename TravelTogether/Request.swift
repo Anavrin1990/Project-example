@@ -67,6 +67,17 @@ class Request {
         print ("Update child value")
     }
     
+    // Узнать последний индекс
+    static func requestSingleByChildLastIndex (reference: FIRDatabaseReference, child: String, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
+        
+        reference.queryOrdered(byChild: child).queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
+            complition(snapshot, nil)
+        }) { (error) in
+            complition(nil, error)
+        }
+        print ("Request last index")        
+    }
+    
     static func requestSingleFirstByKey (reference: FIRDatabaseReference, limit: UInt?, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
         
         if limit == nil {
@@ -104,6 +115,26 @@ class Request {
                 complition(nil, error)
             }
             print ("First single request (byChild)")
+        }
+        
+    }
+    
+    static func requestSingleNextByChild<T> (reference: FIRDatabaseReference, child: String, ending: T, limit: UInt?, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
+        
+        if limit == nil {
+            reference.queryOrdered(byChild: child).queryEnding(atValue: ending).observeSingleEvent(of: .value, with: { (snapshot) in
+                complition(snapshot, nil)
+            }) { (error) in
+                complition(nil, error)
+            }
+            print ("Next single request (byChild)")
+        } else {
+            reference.queryOrdered(byChild: child).queryEnding(atValue: ending).queryLimited(toLast: limit!).observeSingleEvent(of: .value, with: { (snapshot) in
+                complition(snapshot, nil)
+            }) { (error) in
+                complition(nil, error)
+            }
+            print ("Next single request (byChild)")
         }
         
     }

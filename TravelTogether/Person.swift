@@ -32,7 +32,7 @@ struct Travel {
     
     var destination: String?
     var month: Int?
-    var createDate: String?
+    var createDate: Int?
     var name: String?
     var birthday: String?
     var icon: String?

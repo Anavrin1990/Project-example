@@ -55,7 +55,7 @@ extension String {
 
 extension Int {
     func getMonth () -> String? {
-        if self <= 12 {
+        if self <= 12, self != 0 {
             return DateFormatter().monthSymbols[self - 1]
         }
         return nil
