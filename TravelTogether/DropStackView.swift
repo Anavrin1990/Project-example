@@ -16,15 +16,15 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDel
     var paramsDict = [String : ParamsDropStack]() // массив вложенностей
     var headersDict = [String : ParamsHeaderView]() // массив заголовков
     
-    var result = [String : String?]()
+    var result = [String : String]()
     
-    func addComponents (_ components: [(header: String, fields: [ParamsAbstract]?, instantiateVC: UIViewController?)]  ) {
+    func addComponents (_ components: [(header: String, paramKey: String, fields: [ParamsAbstract]?, instantiateVC: UIViewController?)]  ) {
         
         components.forEach { (component) in
             let paramsDropStack = Bundle.main.loadNibNamed("ParamsDropStack", owner: self, options: nil)?.first as! ParamsDropStack
             let headerView = Bundle.main.loadNibNamed("ParamsHeaderView", owner: self, options: nil)?.first as! ParamsHeaderView
             headerView.name = component.header
-            headerView.paramKey.text = component.header
+            headerView.paramKey.text = component.paramKey
             headerView.instantiateVC = component.instantiateVC
             headerView.paramValue.text = NSLocalizedString("Not filled", comment: "Not filled")
             paramsDropStack.stackView.addArrangedSubview(headerView)
@@ -45,8 +45,7 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDel
         SearchTableViewController.delegate = self
     }
     
-    func getValue() -> [String : String?] {
-        
+    func getValue() -> [String : String] {
         self.paramsDict.forEach { (component) in
             component.value.stackView.subviews.forEach { (view) in
                 if let view = view as? ParamsViewsProtocol {
@@ -60,8 +59,6 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDel
         }
         return self.result
     }
-    
-    
     
     func onParamsHeaderViewClick(name: String, instantiateVC: UIViewController?) {
         self.parent!.view.endEditing(true)
@@ -95,8 +92,7 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDel
         if let instantiateVC = instantiateVC {
             parent?.navigationController?.pushViewController(instantiateVC, animated: true)
         }
-    }
-    
+    }    
     
     // Метод делегата selectField
     func selectField(name: String, localResult: String) {
@@ -137,7 +133,7 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDel
         self.headersDict.forEach { (header) in
             if header.value.name == name {
                 header.value.paramValue.text = result.1
-                self.result["country"] = result.1
+                self.result[name!] = result.1
                 countryId = result.0
             }
         }

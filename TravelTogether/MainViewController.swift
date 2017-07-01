@@ -11,8 +11,9 @@ import FirebaseDatabase
 import FirebaseAuth
 import SwiftyJSON
 
-class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {
+class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {    
     
+    static var needCheckAuth = true // включение проверки авторизации
     
     var travelsArray = [Travel]()
     var endIndex: Int?
@@ -40,11 +41,10 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if needCheckAuth {
+        if MainViewController.needCheckAuth {
             Request.getUserInfo{
                 self.checkAuth()
             }
-            needCheckAuth = true
         }
     }
     
@@ -70,9 +70,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         spinner.startAnimating()
         
         spinnerSettings()
-        Request.getUserInfo{
-            self.checkAuth()
-        }
+
         firstRequest()
     }
     
@@ -127,7 +125,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    
     func checkAuth() {
         if User.uid == nil {
             Request.logOut{}
@@ -165,7 +162,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                                 }
                                 return
                             }
-                            needCheckAuth = false
+                            MainViewController.needCheckAuth = false
                         }
                     })
                 }
@@ -220,7 +217,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 guard error == nil else {print (error as Any); return}
                 
                 Parsing.travelsParseSecond(snapshot, complition: { (preArray) in
-                    
                     for i in preArray {
                         self.travelsArray.append(i)
                     }

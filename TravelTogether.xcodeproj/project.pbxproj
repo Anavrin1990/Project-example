@@ -128,8 +128,8 @@
 		0B0D96301EE3E87E00C2F1C4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0B7E63061F084254007DBDA6 /* DropStackView */,
 				0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */,
-				0B273FED1F079B910031D3C1 /* DropStackView.swift */,
 				0BCB55501EFFB00500605F24 /* MonthPicker.swift */,
 				0BDA50A81EDF370A00FA7A5E /* Person.swift */,
 				0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */,
@@ -164,6 +164,15 @@
 				0B0D964D1EE4610F00C2F1C4 /* ParamsSelectField.xib */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		0B7E63061F084254007DBDA6 /* DropStackView */ = {
+			isa = PBXGroup;
+			children = (
+				0B273FED1F079B910031D3C1 /* DropStackView.swift */,
+				0B0D96381EE3FFCC00C2F1C4 /* Views */,
+			);
+			name = DropStackView;
 			sourceTree = "<group>";
 		};
 		0BAEE95C1EF506F000CCC0C1 /* Utils */ = {
@@ -206,7 +215,6 @@
 				0B0D962E1EE3E80000C2F1C4 /* Controllers */,
 				0B0D96301EE3E87E00C2F1C4 /* Models */,
 				0B0D962F1EE3E82B00C2F1C4 /* Cells */,
-				0B0D96381EE3FFCC00C2F1C4 /* Views */,
 				0B0D96311EE3E8AE00C2F1C4 /* Stuff */,
 			);
 			path = TravelTogether;
