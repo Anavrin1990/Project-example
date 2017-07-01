@@ -149,7 +149,7 @@ class ProfileViewController: UIViewController {
         componentsArray.append(("sex", NSLocalizedString("Sex", comment: "Sex"), sexArray, nil))
         
         let birthdayField = ParamsDatePicker.initFromNib()
-        birthdayField.setView(placeholder: NSLocalizedString("birthday", comment: "birthday"), parrent: self, name: "birthday", rawValue: nil)
+        birthdayField.setView(placeholder: NSLocalizedString("Birthday", comment: "Birthday"), parrent: self, name: "birthday", rawValue: nil)
         componentsArray.append(("birthday", NSLocalizedString("Birthday", comment: "Birthday"), [birthdayField], nil))
         
         let countryField = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController

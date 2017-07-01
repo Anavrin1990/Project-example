@@ -61,6 +61,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
 //            q += 10
 //        }
         
+        
+        
         self.collectionView.alwaysBounceVertical = true
         
         refreshControl.backgroundColor = .white

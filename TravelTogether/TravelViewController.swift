@@ -49,6 +49,8 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             values["name"] = User.person?.name
             values["birthday"] = User.person?.birthday
             values["uid"] = User.uid
+            values["country"] = User.person?.country
+            values["country_createdate"] = (User.person?.country)! + "_" + stringDate
             
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["hasTravel" : true], complition: {
 //                Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").childByAutoId(), value: ["destination" : country, "uid" : User.uid!], complition: {})

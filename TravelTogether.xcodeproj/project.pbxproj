@@ -179,7 +179,6 @@
 			isa = PBXGroup;
 			children = (
 				0B0D96491EE431FB00C2F1C4 /* Extensions.swift */,
-				0B86048C1EEF03C40090CAF3 /* Global.swift */,
 				0B95FC391EF06ACC00C315F6 /* MessageBox.swift */,
 				0B5062461EF65DF7003B5785 /* Parsing.swift */,
 			);
@@ -208,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */,
+				0B86048C1EEF03C40090CAF3 /* Global.swift */,
 				0BC4965B1EED563100505FD2 /* Request.swift */,
 				0BDA50941EDF2D1800FA7A5E /* Main.storyboard */,
 				0BDA50971EDF2D1800FA7A5E /* Assets.xcassets */,

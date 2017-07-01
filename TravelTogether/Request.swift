@@ -163,7 +163,7 @@ class Request {
                     let person = Person(name: json["name"].stringValue,
                                         sex: json["sex"].stringValue,
                                         birthday: json["birthday"].stringValue,
-                                        country: json["name"].stringValue,
+                                        country: json["country"].stringValue,
                                         city: json["city"].stringValue,
                                         about: json["about"].stringValue,
                                         alcohol: json["alcohol"].stringValue,
