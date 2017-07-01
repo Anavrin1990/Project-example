@@ -14,8 +14,8 @@ class ParamsTextField: ParamsAbstract, ParamsViewsProtocol {
         return Bundle.main.loadNibNamed("ParamsTextField", owner: self, options: nil)?.first as! ParamsTextField
     }
     
-    func setView(placeholder: String?, parrent: UIViewController, tag: Int, rawValue: String?) {
-        setAbstractView(placeholder: placeholder, parrent: parrent, tag: tag)
+    func setView(placeholder: String?, parrent: UIViewController, name: String, rawValue: String?) {
+        setAbstractView(placeholder: placeholder, parrent: parrent, name: name)
     }
     
     func showHide() {
@@ -26,8 +26,10 @@ class ParamsTextField: ParamsAbstract, ParamsViewsProtocol {
         abstractHide()
     }
     
-    func getValue() {
-        Person.profileDict[self.tag] = (textField.text, textField.text)
+    func getValue(complition: @escaping (String?, String?, String?) -> ()) {
+        //Person.profileDict[self.tag] = (textField.text, textField.text)
+        complition(name, textField.text, textField.text)
     }
+    
 
 }

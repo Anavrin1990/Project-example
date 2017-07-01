@@ -186,7 +186,7 @@ class Request {
     }
     
     static func logOut(complition: @escaping() -> ()) {
-        needCheckAuth = true
+        MainViewController.needCheckAuth = true
         let firebaseAuth = FIRAuth.auth()
         do {
             try firebaseAuth?.signOut()

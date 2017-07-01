@@ -8,10 +8,16 @@
 
 import UIKit
 
+protocol ParamsDatePickerDelegate {
+    func onDoneClick(name: String, localDate: String)
+}
+
 class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
     
     let datePicker = UIDatePicker()
     var dateValue: String?
+    
+    static var delegate: ParamsDatePickerDelegate?
     
     override func setTextField() {
         super.setTextField()
@@ -32,14 +38,15 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
         customDateFormatter.dateStyle = .short
         customDateFormatter.dateFormat = "dd.MM.yyyy"
         dateValue = customDateFormatter.string(from: datePicker.date)
+        ParamsDatePicker.delegate?.onDoneClick(name: name!, localDate: textField.text ?? "")
     }
     
     static func initFromNib() -> ParamsDatePicker {
         return Bundle.main.loadNibNamed("ParamsDatePicker", owner: self, options: nil)?.first as! ParamsDatePicker
     }
     
-    func setView(placeholder: String?, parrent: UIViewController, tag: Int, rawValue: String?) {
-        setAbstractView(placeholder: placeholder, parrent: parrent, tag: tag)
+    func setView(placeholder: String?, parrent: UIViewController, name: String, rawValue: String?) {
+        setAbstractView(placeholder: placeholder, parrent: parrent, name: name)
     }
     
     func showHide() {
@@ -50,8 +57,9 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
         abstractHide()
     }
     
-    func getValue() { 
-        Person.profileDict[self.tag] = (dateValue, textField.text)
+    func getValue(complition: @escaping (String?, String?, String?) -> ()) {
+        //Person.profileDict[self.tag] = (dateValue, textField.text)
+        complition(name, dateValue, textField.text)
     }
     
     
