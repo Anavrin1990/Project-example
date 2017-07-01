@@ -20,14 +20,16 @@
 		0B0D964E1EE4610F00C2F1C4 /* ParamsSelectField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B0D964D1EE4610F00C2F1C4 /* ParamsSelectField.xib */; };
 		0B0D96501EE462B700C2F1C4 /* ParamsSelectField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D964F1EE462B700C2F1C4 /* ParamsSelectField.swift */; };
 		0B2106331EE2CCC7001AE7D0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */; };
-		0B2106351EE2CE7B001AE7D0 /* ParamsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2106341EE2CE7B001AE7D0 /* ParamsView.xib */; };
+		0B2106351EE2CE7B001AE7D0 /* ParamsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2106341EE2CE7B001AE7D0 /* ParamsHeaderView.xib */; };
+		0B273FEC1F0796D10031D3C1 /* CriteriaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */; };
+		0B273FEE1F079B910031D3C1 /* DropStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B273FED1F079B910031D3C1 /* DropStackView.swift */; };
 		0B5062471EF65DF7003B5785 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5062461EF65DF7003B5785 /* Parsing.swift */; };
 		0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B86048C1EEF03C40090CAF3 /* Global.swift */; };
 		0B95FC3A1EF06ACC00C315F6 /* MessageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B95FC391EF06ACC00C315F6 /* MessageBox.swift */; };
 		0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */; };
 		0BAEE9601EF5456F00CCC0C1 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */; };
 		0BAEE9621EF545E200CCC0C1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE9611EF545E200CCC0C1 /* User.swift */; };
-		0BBA88DB1EE2FE2200CFE1C8 /* ParamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBA88DA1EE2FE2200CFE1C8 /* ParamsView.swift */; };
+		0BBA88DB1EE2FE2200CFE1C8 /* ParamsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBA88DA1EE2FE2200CFE1C8 /* ParamsHeaderView.swift */; };
 		0BC4965C1EED563100505FD2 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC4965B1EED563100505FD2 /* Request.swift */; };
 		0BCB55511EFFB00500605F24 /* MonthPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCB55501EFFB00500605F24 /* MonthPicker.swift */; };
 		0BCD648E1EFE741300B93F82 /* TravelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCD648D1EFE741300B93F82 /* TravelViewController.swift */; };
@@ -58,14 +60,16 @@
 		0B0D964D1EE4610F00C2F1C4 /* ParamsSelectField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsSelectField.xib; sourceTree = "<group>"; };
 		0B0D964F1EE462B700C2F1C4 /* ParamsSelectField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsSelectField.swift; sourceTree = "<group>"; };
 		0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		0B2106341EE2CE7B001AE7D0 /* ParamsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsView.xib; sourceTree = "<group>"; };
+		0B2106341EE2CE7B001AE7D0 /* ParamsHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsHeaderView.xib; sourceTree = "<group>"; };
+		0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CriteriaViewController.swift; sourceTree = "<group>"; };
+		0B273FED1F079B910031D3C1 /* DropStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropStackView.swift; sourceTree = "<group>"; };
 		0B5062461EF65DF7003B5785 /* Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; };
 		0B86048C1EEF03C40090CAF3 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		0B95FC391EF06ACC00C315F6 /* MessageBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBox.swift; sourceTree = "<group>"; };
 		0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		0BAEE9611EF545E200CCC0C1 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		0BBA88DA1EE2FE2200CFE1C8 /* ParamsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsView.swift; sourceTree = "<group>"; };
+		0BBA88DA1EE2FE2200CFE1C8 /* ParamsHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsHeaderView.swift; sourceTree = "<group>"; };
 		0BC4965B1EED563100505FD2 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		0BCB55501EFFB00500605F24 /* MonthPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthPicker.swift; sourceTree = "<group>"; };
 		0BCD648D1EFE741300B93F82 /* TravelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +105,7 @@
 		0B0D962E1EE3E80000C2F1C4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */,
 				0BDA50A41EDF333400FA7A5E /* MainViewController.swift */,
 				0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */,
 				0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */,
@@ -124,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */,
+				0B273FED1F079B910031D3C1 /* DropStackView.swift */,
 				0BCB55501EFFB00500605F24 /* MonthPicker.swift */,
 				0BDA50A81EDF370A00FA7A5E /* Person.swift */,
 				0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */,
@@ -146,8 +152,8 @@
 			isa = PBXGroup;
 			children = (
 				0B0D964B1EE4469D00C2F1C4 /* ParamsAbstract.swift */,
-				0BBA88DA1EE2FE2200CFE1C8 /* ParamsView.swift */,
-				0B2106341EE2CE7B001AE7D0 /* ParamsView.xib */,
+				0BBA88DA1EE2FE2200CFE1C8 /* ParamsHeaderView.swift */,
+				0B2106341EE2CE7B001AE7D0 /* ParamsHeaderView.xib */,
 				0B0D96411EE410AD00C2F1C4 /* ParamsDropStack.swift */,
 				0B0D963F1EE4107A00C2F1C4 /* ParamsDropStack.xib */,
 				0B0D963B1EE4055500C2F1C4 /* ParamsTextField.swift */,
@@ -292,7 +298,7 @@
 				0BDA50A31EDF2E8F00FA7A5E /* GoogleService-Info.plist in Resources */,
 				0BDA50981EDF2D1800FA7A5E /* Assets.xcassets in Resources */,
 				0B0D963A1EE402F100C2F1C4 /* ParamsTextField.xib in Resources */,
-				0B2106351EE2CE7B001AE7D0 /* ParamsView.xib in Resources */,
+				0B2106351EE2CE7B001AE7D0 /* ParamsHeaderView.xib in Resources */,
 				0B0D96401EE4107A00C2F1C4 /* ParamsDropStack.xib in Resources */,
 				0BDA50961EDF2D1800FA7A5E /* Main.storyboard in Resources */,
 			);
@@ -360,13 +366,14 @@
 				0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */,
 				0B5062471EF65DF7003B5785 /* Parsing.swift in Sources */,
 				0BDA50911EDF2D1800FA7A5E /* AppDelegate.swift in Sources */,
-				0BBA88DB1EE2FE2200CFE1C8 /* ParamsView.swift in Sources */,
+				0BBA88DB1EE2FE2200CFE1C8 /* ParamsHeaderView.swift in Sources */,
 				0B0D96421EE410AD00C2F1C4 /* ParamsDropStack.swift in Sources */,
 				0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */,
 				0B0D96351EE3F05400C2F1C4 /* CustomScrollView.swift in Sources */,
 				0BCB55511EFFB00500605F24 /* MonthPicker.swift in Sources */,
 				0BDA50A71EDF34B700FA7A5E /* MainCollectionViewCell.swift in Sources */,
 				0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */,
+				0B273FEE1F079B910031D3C1 /* DropStackView.swift in Sources */,
 				0B2106331EE2CCC7001AE7D0 /* ProfileViewController.swift in Sources */,
 				0B0D964C1EE4469D00C2F1C4 /* ParamsAbstract.swift in Sources */,
 				0BC4965C1EED563100505FD2 /* Request.swift in Sources */,
@@ -376,6 +383,7 @@
 				0B0D963C1EE4055500C2F1C4 /* ParamsTextField.swift in Sources */,
 				0BDA50A91EDF370A00FA7A5E /* Person.swift in Sources */,
 				0BDA50A51EDF333400FA7A5E /* MainViewController.swift in Sources */,
+				0B273FEC1F0796D10031D3C1 /* CriteriaViewController.swift in Sources */,
 				0B0D96461EE4265900C2F1C4 /* ParamsDatePicker.swift in Sources */,
 				0BAEE9621EF545E200CCC0C1 /* User.swift in Sources */,
 			);

@@ -29,5 +29,7 @@ class ParamsTextField: ParamsAbstract, ParamsViewsProtocol {
     func getValue() {
         Person.profileDict[self.tag] = (textField.text, textField.text)
     }
+    
+    
 
 }

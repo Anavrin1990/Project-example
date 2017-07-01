@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 
-class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableViewDelegate {
+class ProfileViewController: UIViewController, ParamsHeaderViewDelegate, SearchTableViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -18,11 +18,9 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     var photoArray = [UIImage]()
     let photoArrayNames = ["infoImage1", "infoImage2", "infoImage3", "infoImage4", "infoImage5"]
     static var paramsArray = [ParamsDropStack]() // массив вложенностей
-    static var headersArray = [ParamsView]() // массив заголовков
+    static var headersArray = [ParamsHeaderView]() // массив заголовков
     
     static var selectedIndex: Int?
-    
-    
     
     let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthday", comment: "Birthday"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Family status", comment: "Family status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation")]
     
@@ -33,7 +31,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         
         scrollView.delaysContentTouches = false
         registerForKeyboardNotifications()
-        ParamsView.delegate = self
+        ParamsHeaderView.delegate = self
         SearchTableViewController.delegate = self
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
@@ -41,7 +39,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
         // Добавляем заголовки в главный стек вью
         for key in keyArray.enumerated() {
             let paramsDropStack = Bundle.main.loadNibNamed("ParamsDropStack", owner: self, options: nil)?.first as! ParamsDropStack
-            let headerView = Bundle.main.loadNibNamed("ParamsView", owner: self, options: nil)?.first as! ParamsView
+            let headerView = Bundle.main.loadNibNamed("ParamsHeaderView", owner: self, options: nil)?.first as! ParamsHeaderView
             headerView.tag = key.offset
             headerView.paramKey.text = key.element
             headerView.paramValue.text = NSLocalizedString("Not filled", comment: "Not filled")
@@ -79,7 +77,7 @@ class ProfileViewController: UIViewController, ParamsViewDelegate, SearchTableVi
     
     
     
-    func onParamsViewClick(index: Int) {
+    func onParamsHeaderViewClick(index: Int) {
         self.view.endEditing(true)
         
         // Прячем все вложенности
