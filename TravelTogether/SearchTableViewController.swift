@@ -10,15 +10,16 @@ import UIKit
 import SwiftyJSON
 
 protocol SearchTableViewDelegate {
-    func getSearchResult(result: (String, String), index: Int?)
+    func getSearchResult(name: String?, result: (String, String))
 }
 
 class SearchTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {    
     
     static var delegate: SearchTableViewDelegate?
     
-    var index: Int?
     var searchTextIsEmpty = true
+    
+    var name: String?
     
     let searchBar = UISearchBar()
     let tableView = UITableView()
@@ -83,7 +84,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
        
         result = searchTextIsEmpty ? (contentArray[indexPath.section].1[indexPath.row].0, contentArray[indexPath.section].1[indexPath.row].1) : (filteredContentArray[indexPath.row].0, filteredContentArray[indexPath.row].1)
         
-        SearchTableViewController.delegate?.getSearchResult(result: result!, index: index)
+        SearchTableViewController.delegate?.getSearchResult(name: name, result: result!)
         self.navigationController?.popViewController(animated: true)
     }
     

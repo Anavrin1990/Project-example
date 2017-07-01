@@ -9,20 +9,21 @@
 import UIKit
 
 protocol ParamsHeaderViewDelegate {
-    func onParamsHeaderViewClick(index: Int)
+    func onParamsHeaderViewClick(name: String, instantiateVC: UIViewController?)
 }
 
 class ParamsHeaderView: UIView {
     
     static var delegate: ParamsHeaderViewDelegate?
-    var selectedIndex: Int?
-
+    
+    var name: String?
+    var instantiateVC: UIViewController?
     
     @IBOutlet weak var paramKey: UILabel!
     @IBOutlet weak var paramValue: UILabel!    
     
     @IBAction func onParamsHeaderViewClick(_ sender: UIButton) {
-        ParamsHeaderView.delegate?.onParamsHeaderViewClick(index: self.tag)
+        ParamsHeaderView.delegate?.onParamsHeaderViewClick(name: name!, instantiateVC: instantiateVC)
     }
     
 

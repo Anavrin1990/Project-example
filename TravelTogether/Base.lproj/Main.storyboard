@@ -301,19 +301,28 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R14-bY-rZv">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="500"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="peG-aM-RnI" customClass="DropStackView" customModule="TravelTogether" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="0.0" width="335" height="500"/>
+                                                <rect key="frame" x="20" y="0.0" width="335" height="200"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="500" placeholder="YES" id="nIR-Lp-gOE"/>
+                                                    <constraint firstAttribute="height" constant="200" placeholder="YES" id="nIR-Lp-gOE"/>
                                                 </constraints>
                                             </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fzx-Jr-u6r">
+                                                <rect key="frame" x="164" y="246" width="46" height="30"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="getValues:" destination="jzx-7m-Thz" eventType="touchUpInside" id="xqw-dL-rUb"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="peG-aM-RnI" firstAttribute="top" secondItem="R14-bY-rZv" secondAttribute="top" id="0pM-dJ-fAX"/>
-                                            <constraint firstAttribute="bottom" secondItem="peG-aM-RnI" secondAttribute="bottom" id="Xsc-tH-0Dh"/>
+                                            <constraint firstAttribute="bottom" secondItem="peG-aM-RnI" secondAttribute="bottom" constant="100" id="Xsc-tH-0Dh"/>
+                                            <constraint firstItem="fzx-Jr-u6r" firstAttribute="top" secondItem="peG-aM-RnI" secondAttribute="bottom" constant="46" id="ZCD-2s-7Pd"/>
+                                            <constraint firstItem="fzx-Jr-u6r" firstAttribute="centerX" secondItem="R14-bY-rZv" secondAttribute="centerX" id="iGt-cH-H9Y"/>
                                             <constraint firstItem="peG-aM-RnI" firstAttribute="leading" secondItem="R14-bY-rZv" secondAttribute="leading" constant="20" id="mME-w1-rTX"/>
                                             <constraint firstAttribute="trailing" secondItem="peG-aM-RnI" secondAttribute="trailing" constant="20" id="ryO-77-Tpz"/>
                                         </constraints>
@@ -598,7 +607,7 @@
                                                     <action selector="addPhoto:" destination="rIB-7W-5cY" eventType="touchUpInside" id="G8N-pE-nQH"/>
                                                 </connections>
                                             </button>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gis-dP-FTD">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gis-dP-FTD" customClass="DropStackView" customModule="TravelTogether" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="185" width="335" height="200"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" placeholder="YES" id="qFC-hl-1IP"/>
@@ -656,7 +665,7 @@
                     <navigationItem key="navigationItem" id="L56-O2-n8F"/>
                     <connections>
                         <outlet property="collectionView" destination="Ovj-YA-H0q" id="Eyp-k1-e6i"/>
-                        <outlet property="paramsStackView" destination="gis-dP-FTD" id="ghQ-n3-1pZ"/>
+                        <outlet property="dropStackView" destination="gis-dP-FTD" id="BEp-NU-CvP"/>
                         <outlet property="scrollView" destination="W2K-XT-43k" id="Lod-6G-3ME"/>
                     </connections>
                 </viewController>

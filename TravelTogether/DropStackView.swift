@@ -8,26 +8,29 @@
 
 import UIKit
 
-class DropStackView: UIStackView, ParamsHeaderViewDelegate {
+class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDelegate, ParamsDatePickerDelegate, SearchTableViewDelegate {
     
     var parent: UIViewController?
-    var selectedIndex: Int?
+    var selectedName: String?
     
-    var paramsArray = [ParamsDropStack]() // массив вложенностей
-    var headersArray = [ParamsHeaderView]() // массив заголовков
+    var paramsDict = [String : ParamsDropStack]() // массив вложенностей
+    var headersDict = [String : ParamsHeaderView]() // массив заголовков
     
-    func addComponents (_ components: [(String, [ParamsAbstract])] ) {
+    var result = [String : String?]()
+    
+    func addComponents (_ components: [(header: String, fields: [ParamsAbstract]?, instantiateVC: UIViewController?)]  ) {
         
-        components.enumerated().forEach { (component) in
+        components.forEach { (component) in
             let paramsDropStack = Bundle.main.loadNibNamed("ParamsDropStack", owner: self, options: nil)?.first as! ParamsDropStack
             let headerView = Bundle.main.loadNibNamed("ParamsHeaderView", owner: self, options: nil)?.first as! ParamsHeaderView
-            headerView.tag = component.offset
-            headerView.paramKey.text = component.element.0
+            headerView.name = component.header
+            headerView.paramKey.text = component.header
+            headerView.instantiateVC = component.instantiateVC
             headerView.paramValue.text = NSLocalizedString("Not filled", comment: "Not filled")
             paramsDropStack.stackView.addArrangedSubview(headerView)
-            self.headersArray.append(headerView)
-            self.paramsArray.append(paramsDropStack)
-            component.element.1.forEach { (view) in
+            self.headersDict[component.header] = headerView
+            self.paramsDict[component.header] = paramsDropStack
+            component.fields?.forEach { (view) in
                 paramsDropStack.stackView.addArrangedSubview(view)
             }
             self.addArrangedSubview(paramsDropStack)
@@ -37,38 +40,110 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate {
     func setDropStackView(_ parent: UIViewController) {
         self.parent = parent
         ParamsHeaderView.delegate = self
+        ParamsSelectField.delegate = self
+        ParamsDatePicker.delegate = self
+        SearchTableViewController.delegate = self
     }
     
-    func onParamsHeaderViewClick(index: Int) {
+    func getValue() -> [String : String?] {
+        
+        self.paramsDict.forEach { (component) in
+            component.value.stackView.subviews.forEach { (view) in
+                if let view = view as? ParamsViewsProtocol {
+                    view.getValue(complition: { (name, rawValue, localValue) in
+                        if rawValue != nil {
+                            self.result[name!] = rawValue
+                        }
+                    })
+                }
+            }
+        }
+        return self.result
+    }
+    
+    
+    
+    func onParamsHeaderViewClick(name: String, instantiateVC: UIViewController?) {
+        self.parent!.view.endEditing(true)
         
         // Прячем все вложенности
-        self.paramsArray.forEach { (component) in
-            component.stackView.subviews.forEach { (view) in
+        self.paramsDict.forEach { (component) in
+            component.value.stackView.subviews.forEach { (view) in
                 if let view = view as? ParamsViewsProtocol {
-                    if index != self.selectedIndex {
-                        view.hide()
-                    }
-                    view.getValue()
+                    if name != self.selectedName {view.hide()}
+                    view.getValue(complition: { (name, rawValue, localValue) in
+                        self.headersDict.forEach { (header) in
+                            if header.value.name == name {
+                                if localValue != nil {
+                                    header.value.paramValue.text = localValue != "" ? localValue : NSLocalizedString("Not filled", comment: "Not filled")
+                                }
+                            }
+                        }
+                    })
                 }
             }
         }
         
-        // Назначаем выбранное значение в заголовок
-        self.headersArray.enumerated().forEach { (header) in
-            let text = Person.profileDict[header.offset]?.1
-            if text != "" && text != nil {
-                header.element.paramValue.text = text
-            }
-        }
-        
-        self.selectedIndex = index
+        self.selectedName = name
         
         // Открыть закрыть вложенности
-        self.paramsArray[index].stackView.subviews.forEach { (component) in
+        self.paramsDict[name]?.stackView.subviews.forEach { (component) in
             if let view = component as? ParamsViewsProtocol {
                 view.showHide()
             }
         }
+        if let instantiateVC = instantiateVC {
+            parent?.navigationController?.pushViewController(instantiateVC, animated: true)
+        }
     }
-
+    
+    
+    // Метод делегата selectField
+    func selectField(name: String, localResult: String) {
+        
+        // Чистим неиспользуемые результаты
+        self.paramsDict[selectedName!]?.stackView.subviews.forEach { (component) in
+            if let field = component as? ParamsSelectField {
+                field.checkImage.isHidden = true
+                if field.localResult != localResult {
+                    field.rawResult = nil
+                    field.localResult = nil
+                }
+                UIView.animate(withDuration: 0.3) {
+                    field.hide()
+                }
+            }
+        }
+        
+        // Назначить в хедер
+        self.headersDict.forEach { (header) in
+            if header.value.name == name {
+                header.value.paramValue.text = localResult
+            }
+        }
+    }
+    
+    // Метод делегате datePicker
+    func onDoneClick(name: String, localDate: String) {
+        self.headersDict.forEach { (header) in
+            if header.value.name == name {
+                header.value.paramValue.text = localDate
+            }
+        }
+    }
+    
+    // Метод делегата поиска
+    func getSearchResult(name: String?, result: (String, String)) {
+        self.headersDict.forEach { (header) in
+            if header.value.name == name {
+                header.value.paramValue.text = result.1
+                self.result["country"] = result.1
+                countryId = result.0
+            }
+        }
+    }
+    
+    
+    
+    
 }

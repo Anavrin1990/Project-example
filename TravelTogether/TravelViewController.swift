@@ -70,7 +70,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
     }
    
     
-    func getSearchResult(result: (String, String), index: Int?) {
+    func getSearchResult(name: String?, result: (String, String)) {
         self.country = result.1
         selectButton.setTitle(result.1, for: .normal)
     }

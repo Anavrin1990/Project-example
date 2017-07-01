@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 
-class ProfileViewController: UIViewController, ParamsHeaderViewDelegate, SearchTableViewDelegate {
+class ProfileViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -17,38 +17,23 @@ class ProfileViewController: UIViewController, ParamsHeaderViewDelegate, SearchT
     
     var photoArray = [UIImage]()
     let photoArrayNames = ["infoImage1", "infoImage2", "infoImage3", "infoImage4", "infoImage5"]
-    static var paramsArray = [ParamsDropStack]() // массив вложенностей
-    static var headersArray = [ParamsHeaderView]() // массив заголовков
     
-    static var selectedIndex: Int?
     
-    let keyArray = [NSLocalizedString("Name", comment: "Name"), NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString("Birthday", comment: "Birthday"), NSLocalizedString("Country", comment: "Country"), NSLocalizedString("City", comment: "City"), NSLocalizedString("About me", comment: "About me"), NSLocalizedString("Alcohol", comment: "Alcohol"), NSLocalizedString("Smoking", comment: "Smoking"), NSLocalizedString("Family status", comment: "Family status"), NSLocalizedString("Have children", comment: "Have children"), NSLocalizedString("Sexual orientation", comment: "Sexual orientation")]
     
-    @IBOutlet weak var paramsStackView: UIStackView!
+    
+    @IBOutlet weak var dropStackView: DropStackView! {
+        didSet {
+            dropStackView.setDropStackView(self)
+            addDropList()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         scrollView.delaysContentTouches = false
         registerForKeyboardNotifications()
-        ParamsHeaderView.delegate = self
-        SearchTableViewController.delegate = self
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
-        
-        // Добавляем заголовки в главный стек вью
-        for key in keyArray.enumerated() {
-            let paramsDropStack = Bundle.main.loadNibNamed("ParamsDropStack", owner: self, options: nil)?.first as! ParamsDropStack
-            let headerView = Bundle.main.loadNibNamed("ParamsHeaderView", owner: self, options: nil)?.first as! ParamsHeaderView
-            headerView.tag = key.offset
-            headerView.paramKey.text = key.element
-            headerView.paramValue.text = NSLocalizedString("Not filled", comment: "Not filled")
-            paramsDropStack.stackView.addArrangedSubview(headerView)
-            ProfileViewController.headersArray.append(headerView)
-            ProfileViewController.paramsArray.append(paramsDropStack)
-            addDropList(key.offset)
-            paramsStackView.addArrangedSubview(paramsDropStack)
-        }
     }
     
     deinit {
@@ -76,69 +61,6 @@ class ProfileViewController: UIViewController, ParamsHeaderViewDelegate, SearchT
     }
     
     
-    
-    func onParamsHeaderViewClick(index: Int) {
-        self.view.endEditing(true)
-        
-        // Прячем все вложенности
-        ProfileViewController.paramsArray.forEach {
-            $0.stackView.subviews.forEach {
-                if let view = $0 as? ParamsViewsProtocol {
-                    if index != ProfileViewController.selectedIndex {
-                        view.hide()
-                    }
-                    view.getValue()
-                }
-            }
-        }
-        
-        // Назначаем выбранное значение в заголовок
-        ProfileViewController.headersArray.enumerated().forEach {
-            let text = Person.profileDict[$0.offset]?.1
-            if text != "" && text != nil {
-                $0.element.paramValue.text = text
-            }
-        }
-        
-        ProfileViewController.selectedIndex = index
-        
-        // Открыть закрыть вложенности
-        ProfileViewController.paramsArray[index].stackView.subviews.forEach {
-            if let view = $0 as? ParamsViewsProtocol {
-                view.showHide()
-            }
-        }
-        
-        switch index {
-        case 3:
-            let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
-            searchVC.index = index
-            searchVC.request = searchCountries(_:)
-            self.navigationController?.pushViewController(searchVC, animated: true)
-        case 4:
-            let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
-            searchVC.index = index
-            searchVC.request = searchCities(_:)
-            self.navigationController?.pushViewController(searchVC, animated: true)
-        default:
-            break
-        }
-    }
-    
-    // Метод делегата поиска
-    func getSearchResult(result: (String, String), index: Int?) {
-        if index == 3 {countryId = result.0}
-        
-        Person.profileDict[index!] = (result.1, result.1)
-        
-        ProfileViewController.headersArray.enumerated().forEach {
-            let text = Person.profileDict[$0.offset]?.1
-            if text != "" && text != nil {
-                $0.element.paramValue.text = text
-            }
-        }
-    }
-    
     @IBAction func addPhoto(_ sender: Any) {
         guard photoArray.count < 5 else {
             MessageBox.showMessage(parent: self, title: NSLocalizedString("Only five photos", comment: "Only five photos"), message: "")
@@ -148,14 +70,8 @@ class ProfileViewController: UIViewController, ParamsHeaderViewDelegate, SearchT
     }
     
     @IBAction func nextButton(_ sender: Any) {
-        ProfileViewController.paramsArray.forEach {
-            $0.stackView.subviews.forEach {
-                if let view = $0 as? ParamsViewsProtocol {
-                    view.hide()
-                    view.getValue()
-                }
-            }
-        }
+        
+        print (dropStackView.getValue())
         
         Person.instance.name = Person.profileDict[0]?.0
         Person.instance.sex = Person.profileDict[1]?.0
@@ -173,14 +89,14 @@ class ProfileViewController: UIViewController, ParamsHeaderViewDelegate, SearchT
         
         let mirror = Mirror(reflecting: Person.instance)
         
-        for i in mirror.children.enumerated() {
-            if i.1.value as? String == nil || i.1.value as? String == "" {
-                MessageBox.showMessage(parent: self, title: ProfileViewController.headersArray[i.0].paramKey.text!, message: NSLocalizedString("Not filled", comment: "Not filled"))
-                return
-            } else {
-                userProperties[i.1.label!] = i.1.value
-            }
-        }
+//        for i in mirror.children.enumerated() {
+//            if i.1.value as? String == nil || i.1.value as? String == "" {
+//                MessageBox.showMessage(parent: self, title: ProfileViewController.headersArray[i.0].paramKey.text!, message: NSLocalizedString("Not filled", comment: "Not filled"))
+//                return
+//            } else {
+//                userProperties[i.1.label!] = i.1.value
+//            }
+//        }
         if photoArray.isEmpty {
             MessageBox.showMessage(parent: self, title: NSLocalizedString("Please add photos", comment: "Please add photos"), message: "")
             return
@@ -212,74 +128,92 @@ class ProfileViewController: UIViewController, ParamsHeaderViewDelegate, SearchT
             }
             userProperties["uid"] = uid
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {
-                self.navigationController?.dismiss(animated: true, completion: nil)                
+                self.navigationController?.dismiss(animated: true, completion: nil)
                 SearchTableViewController.delegate = nil
             })
             
         }
     }
     
-    func addDropList(_ index: Int) {
-        switch index {
-        case 0:
-            let paramsTextField = ParamsTextField.initFromNib()
-            paramsTextField.setView(placeholder: NSLocalizedString("Enter your name", comment: "Enter your name"), parrent: self, tag: index, rawValue: nil)
-            ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsTextField)
-        case 1:
-            let sexArray = [Profile.Sex.male, Profile.Sex.female]
-            for i in sexArray {
-                let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
-                ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
-            }
-        case 2:
-            let paramsDataPicker = ParamsDatePicker.initFromNib()
-            paramsDataPicker.setView(placeholder: NSLocalizedString("Birthday", comment: "Birthday"), parrent: self, tag: index, rawValue: nil)
-            ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsDataPicker)
-        case 5:
-            let paramsTextField = ParamsTextField.initFromNib()
-            paramsTextField.setView(placeholder: NSLocalizedString("Write about yourself", comment: "Write about yourself"), parrent: self, tag: index, rawValue: nil)
-            ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsTextField)
-        case 6:
-            let alcoholArray = [Profile.Alcohol.positive, Profile.Alcohol.negative]
-            for i in alcoholArray {
-                let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
-                ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
-            }
-        case 7:
-            let smokingArray = [Profile.Smoking.positive, Profile.Smoking.negative]
-            for i in smokingArray {
-                let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
-                ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
-            }
-        case 8:
-            let familyArray = [Profile.Family.single, Profile.Family.married]
-            for i in familyArray {
-                let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
-                ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
-            }
-        case 9:
-            let childsArray = [Profile.Childs.no, Profile.Childs.yes]
-            for i in childsArray {
-                let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
-                ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
-            }
-        case 10:
-            let orientationArray = [Profile.Orientation.hetero, Profile.Orientation.homo, Profile.Orientation.bi]
-            for i in orientationArray {
-                let paramsSelectField = ParamsSelectField.initFromNib()
-                paramsSelectField.setView(placeholder: i.localValue, parrent: self, tag: index, rawValue: i.rawValue)
-                ProfileViewController.paramsArray[index].stackView.addArrangedSubview(paramsSelectField)
-            }        
-        default:
-            break
+    func addDropList() {
+        
+        var componentsArray = [(String, [ParamsAbstract]?, UIViewController?)]()
+        
+        
+        let nameField = ParamsTextField.initFromNib()
+        nameField.setView(placeholder: NSLocalizedString("Enter your name", comment: "Enter your name"), parrent: self, name: NSLocalizedString("Name", comment: "Name"), rawValue: nil)
+        componentsArray.append((NSLocalizedString("Name", comment: "Name"), [nameField], nil))
+        
+        var sexArray = [ParamsAbstract]()
+        for i in iterateEnum(Profile.Sex.self) {
+            let paramsSelectField = ParamsSelectField.initFromNib()
+            paramsSelectField.setView(placeholder: i.localValue, parrent: self, name: NSLocalizedString("Sex", comment: "Sex"), rawValue: i.rawValue)
+            sexArray.append(paramsSelectField)
         }
-    }    
+        componentsArray.append((NSLocalizedString("Sex", comment: "Sex"), sexArray, nil))
+        
+        let birthdayField = ParamsDatePicker.initFromNib()
+        birthdayField.setView(placeholder: NSLocalizedString("birthday", comment: "birthday"), parrent: self, name: NSLocalizedString("Birthday", comment: "Birthday"), rawValue: nil)
+        componentsArray.append((NSLocalizedString("Birthday", comment: "Birthday"), [birthdayField], nil))
+        
+        let countryField = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
+        countryField.request = searchCountries
+        countryField.name = (NSLocalizedString("Country", comment: "Country"))
+        componentsArray.append((NSLocalizedString("Country", comment: "Country"), nil, countryField))
+        
+        let cityField = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
+        cityField.request = searchCities
+        cityField.name = (NSLocalizedString("City", comment: "City"))
+        componentsArray.append((NSLocalizedString("City", comment: "City"), nil, cityField))
+        
+        let aboutField = ParamsTextField.initFromNib()
+        aboutField.setView(placeholder: NSLocalizedString("Write about yourself", comment: "Write about yourself"), parrent: self, name: NSLocalizedString("About me", comment: "About me"), rawValue: nil)
+        componentsArray.append((NSLocalizedString("About me", comment: "About me"), [aboutField], nil))
+        
+        var alcoholArray = [ParamsAbstract]()
+        for i in iterateEnum(Profile.Alcohol.self) {
+            let paramsSelectField = ParamsSelectField.initFromNib()
+            paramsSelectField.setView(placeholder: i.localValue, parrent: self, name: NSLocalizedString("Alcohol", comment: "Alcohol"), rawValue: i.rawValue)
+            alcoholArray.append(paramsSelectField)
+        }
+        componentsArray.append((NSLocalizedString("Alcohol", comment: "Alcohol"), alcoholArray, nil))
+        
+        var smokingArray = [ParamsAbstract]()
+        for i in iterateEnum(Profile.Smoking.self) {
+            let paramsSelectField = ParamsSelectField.initFromNib()
+            paramsSelectField.setView(placeholder: i.localValue, parrent: self, name: NSLocalizedString("Smoking", comment: "Smoking"), rawValue: i.rawValue)
+            smokingArray.append(paramsSelectField)
+        }
+        componentsArray.append((NSLocalizedString("Smoking", comment: "Smoking"), smokingArray, nil))
+        
+        var familyArray = [ParamsAbstract]()
+        for i in iterateEnum(Profile.Family.self) {
+            let paramsSelectField = ParamsSelectField.initFromNib()
+            paramsSelectField.setView(placeholder: i.localValue, parrent: self, name: NSLocalizedString("Family status", comment: "Family status"), rawValue: i.rawValue)
+            familyArray.append(paramsSelectField)
+        }
+        componentsArray.append((NSLocalizedString("Family status", comment: "Family status"), familyArray, nil))
+        
+        var childsArray = [ParamsAbstract]()
+        for i in iterateEnum(Profile.Childs.self) {
+            let paramsSelectField = ParamsSelectField.initFromNib()
+            paramsSelectField.setView(placeholder: i.localValue, parrent: self, name: NSLocalizedString("Have children", comment: "Have children"), rawValue: i.rawValue)
+            childsArray.append(paramsSelectField)
+        }
+        componentsArray.append((NSLocalizedString("Have children", comment: "Have children"), childsArray, nil))
+        
+        var orientationArray = [ParamsAbstract]()
+        for i in iterateEnum(Profile.Orientation.self) {
+            let paramsSelectField = ParamsSelectField.initFromNib()
+            paramsSelectField.setView(placeholder: i.localValue, parrent: self, name: NSLocalizedString("Sexual orientation", comment: "Sexual orientation"), rawValue: i.rawValue)
+            orientationArray.append(paramsSelectField)
+        }
+        componentsArray.append((NSLocalizedString("Sexual orientation", comment: "Sexual orientation"), orientationArray, nil))
+        
+        dropStackView.addComponents(componentsArray)
+    }
 }
+
 
 extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     

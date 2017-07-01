@@ -9,16 +9,18 @@
 import UIKit
 
 protocol ParamsViewsProtocol {    
-    func setView(placeholder: String?, parrent: UIViewController, tag: Int, rawValue: String?)
+    func setView(placeholder: String?, parrent: UIViewController, name: String, rawValue: String?)
     func showHide()
     func hide()
-    func getValue()
+    func getValue(complition: @escaping (_ name: String?, _ value: String?, _ localValue: String?) -> ())
 }
 
 class ParamsAbstract: UIView {
     
     var parrent: UIViewController?
     var value: String?
+    
+    var name: String?
     
     @IBOutlet weak var textField: UITextField! {
         didSet {setTextField()}
@@ -38,8 +40,8 @@ class ParamsAbstract: UIView {
         self.isHidden = true
     }
     
-    func setAbstractView(placeholder: String?, parrent: UIViewController, tag: Int) {
-        self.tag = tag
+    func setAbstractView(placeholder: String?, parrent: UIViewController, name: String) {
+        self.name = name
         self.isHidden = true
         textField?.placeholder = placeholder
         self.parrent = parrent
