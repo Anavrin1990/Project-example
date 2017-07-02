@@ -47,7 +47,8 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
         self.delegate = self
         self.dataSource = self
         
-        self.selectRow(currentMonth - 1, inComponent: 0, animated: false)
+        self.selectRow(currentMonth - 1, inComponent: 0, animated: false)        
+        
     }
     
     // Mark: UIPicker Delegate / Data Source
@@ -67,6 +68,7 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let monthInt = self.selectedRow(inComponent: 0)+1
         let monthString = self.months[row]
+        
         if let block = onDateSelected {
             block(monthInt, monthString)
         }

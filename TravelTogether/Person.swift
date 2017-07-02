@@ -10,8 +10,7 @@ import Foundation
 
 struct Person {
     
-    static var instance = Person()
-    static var profileDict = [Int: (String?, String?)]()
+    static var instance = Person()    
     
     var name: String?
     var sex: String?
@@ -23,7 +22,7 @@ struct Person {
     var smoking: String?
     var familyStatus: String?
     var childs: String?
-    var orientation: String?
+    var orientation: String?    
 }
 
 struct Travel {

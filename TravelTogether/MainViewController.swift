@@ -18,6 +18,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var travelsArray = [Travel]()
     var endIndex: Int?
     var lastPosition: Int?
+    var countryDefault = "All"
     
     let spinner: UIActivityIndicatorView = {
         let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -156,8 +157,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         guard error == nil else {return}
                         if let snap = snapshot?.value as? NSDictionary {
                             let json = JSON(snap)
-                            let hasTravel = json["hasTravel"].boolValue
-                            if !hasTravel {
+                            let travelsCount = json["travelsCount"].intValue
+                            if travelsCount == 0 {
                                 let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "TravelNavigationController")
                                 DispatchQueue.main.async {
                                     self.present(profileVC!, animated: true)
@@ -177,13 +178,13 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func firstRequest () {
-        Request.requestSingleByChildLastIndex(reference: Request.ref.child("Travels").child("All"), child: "createdate") { (snapshot, error) in
+        Request.requestSingleByChildLastIndex(reference: Request.ref.child("Travels").child("All").child(countryDefault), child: "createdate") { (snapshot, error) in
             guard error == nil else {print (error as Any); return}
             
             Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
                 self.lastPosition = travelsArray.first?.createDate
                 
-                Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("All"), child: "createdate", limit: reqLimit) { (snapshot, error) in
+                Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("All").child(self.countryDefault), child: "createdate", limit: reqLimit) { (snapshot, error) in
                     guard error == nil else {print (error as Any); return}
                     
                     Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
@@ -214,7 +215,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             guard let lastPosition = self.lastPosition else {return}
             guard endIndex > lastPosition else {return}
             
-            Request.requestSingleNextByChild(reference: Request.ref.child("Travels").child("All"), child: "createdate", ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
+            Request.requestSingleNextByChild(reference: Request.ref.child("Travels").child("All").child(countryDefault), child: "createdate", ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
                 
                 guard error == nil else {print (error as Any); return}
                 

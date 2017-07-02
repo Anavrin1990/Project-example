@@ -12,7 +12,7 @@ protocol ParamsViewsProtocol {
     func setView(placeholder: String?, parrent: UIViewController, name: String, rawValue: String?)
     func showHide()
     func hide()
-    func getValue(complition: @escaping (_ name: String?, _ value: String?, _ localValue: String?) -> ())
+    func getValue(complition: @escaping (_ name: String?, _ value: AnyHashable?, _ localValue: String?) -> ())
 }
 
 class ParamsAbstract: UIView {

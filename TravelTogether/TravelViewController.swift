@@ -10,7 +10,7 @@ import UIKit
 
 class TravelViewController: UIViewController, SearchTableViewDelegate {
     
-    var country: String?
+    var destination: String?
     var monthNumber: String?
     var monthString: String?
     
@@ -33,7 +33,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
     }
     @IBAction func onDoneClick(_ sender: Any) {
         self.view.endEditing(true)
-        if let country = country, let month = monthNumber, monthTextField.text != "", let uid = User.uid {
+        if let destination = destination, let month = monthNumber, monthTextField.text != "", let uid = User.uid {
             
             let date = Date()
             let dateFormatter = DateFormatter()
@@ -42,27 +42,32 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             let stringDate = dateFormatter.string(from: date)
             
             var values = [String : Any]()
-            values["destination"] = country
+            values["destination"] = destination
             values["month"] = month
             values["createdate"] = Int(stringDate)
             values["icon"] = User.icon            
             values["name"] = User.person?.name
             values["birthday"] = User.person?.birthday
-            values["uid"] = User.uid
-            values["country"] = User.person?.country
-            values["country_createdate"] = (User.person?.country)! + "_" + stringDate
+            values["uid"] = User.uid            
             
-            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["hasTravel" : true], complition: {
-//                Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").childByAutoId(), value: ["destination" : country, "uid" : User.uid!], complition: {})
-//                Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").childByAutoId(), value: ["month" : month, "uid" : User.uid!], complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Countries").child(country).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(month).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("All").childByAutoId(), value: values, complition: {})
+            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["travelsCount" : (User.travelsCount)! + 1], complition: {
+                
+                Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").childByAutoId(), value: ["destination" : destination], complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").childByAutoId(), value: ["month" : month], complition: {})
+                
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("All").child(destination).childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(User.person!.country!).child(destination).childByAutoId(), value: values, complition: {})
+                
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("All").child(month).childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(User.person!.country!).child(month).childByAutoId(), value: values, complition: {})
+                
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("All").child("All").childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("All").child(User.person!.country!).childByAutoId(), value: values, complition: {})
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 SearchTableViewController.delegate = nil
             })
         } else {
-            if country == nil {
+            if destination == nil {
                 MessageBox.showMessage(parent: self, title: NSLocalizedString("Please select country", comment: "Please select country"), message: "")
             } else if monthTextField.text == "" {
                 MessageBox.showMessage(parent: self, title: NSLocalizedString("Please select month", comment: "Please select month"), message: "")
@@ -73,7 +78,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
    
     
     func getSearchResult(name: String?, result: (String, String)) {
-        self.country = result.1
+        self.destination = result.1
         selectButton.setTitle(result.1, for: .normal)
     }
     

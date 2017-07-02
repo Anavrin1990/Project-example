@@ -174,6 +174,7 @@ class Request {
                     User.person = person
                     User.icon = json["icon"].stringValue
                     User.email = json["email"].stringValue
+                    User.travelsCount = json["travelsCount"].intValue
                     complition()                    
                 } else {
                     complition()

@@ -16,7 +16,7 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDel
     var paramsDict = [String : ParamsDropStack]() // массив вложенностей
     var headersDict = [String : ParamsHeaderView]() // массив заголовков
     
-    var result = [String : String]()
+    var result = [String : AnyHashable]()
     
     func addComponents (_ components: [(header: String, paramKey: String, fields: [ParamsAbstract]?, instantiateVC: UIViewController?)]  ) {
         
@@ -45,7 +45,7 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDel
         SearchTableViewController.delegate = self
     }
     
-    func getValue() -> [String : String] {
+    func getValue() -> [String : AnyHashable] {
         self.paramsDict.forEach { (component) in
             component.value.stackView.subviews.forEach { (view) in
                 if let view = view as? ParamsViewsProtocol {

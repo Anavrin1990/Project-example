@@ -26,7 +26,7 @@ class ParamsTextField: ParamsAbstract, ParamsViewsProtocol {
         abstractHide()
     }
     
-    func getValue(complition: @escaping (String?, String?, String?) -> ()) {
+    func getValue(complition: @escaping (String?, AnyHashable?, String?) -> ()) {
         //Person.profileDict[self.tag] = (textField.text, textField.text)
         complition(name, textField.text, textField.text)
     }

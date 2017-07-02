@@ -15,7 +15,10 @@ protocol ParamsDatePickerDelegate {
 class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
     
     let datePicker = UIDatePicker()
+    let monthPicker = MonthPickerView()
     var dateValue: String?
+    var monthValue: Int?
+    var onlyMonth = false
     
     static var delegate: ParamsDatePickerDelegate?
     
@@ -26,18 +29,31 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
         toolBar.setItems([doneButton], animated: false)
         textField.inputAccessoryView = toolBar
-        datePicker.datePickerMode = .date
-        textField.inputView = datePicker
+        if onlyMonth {
+            textField.inputView = monthPicker
+            monthValue = monthPicker.currentMonth
+            self.textField.text = monthPicker.months[monthPicker.currentMonth - 1]
+        } else {
+            datePicker.datePickerMode = .date
+            textField.inputView = datePicker
+        }
     }
     
     func donePressed() {
-        customDateFormatter.dateStyle = .medium
-        customDateFormatter.timeStyle = .none
-        self.parrent?.view.endEditing(true)
-        textField.text = customDateFormatter.string(from: datePicker.date)
-        customDateFormatter.dateStyle = .short
-        customDateFormatter.dateFormat = "dd.MM.yyyy"
-        dateValue = customDateFormatter.string(from: datePicker.date)
+        if onlyMonth {
+            monthPicker.onDateSelected = { (monthInt: Int, monthString: String) in
+                self.textField.text = monthString
+                self.monthValue = monthInt
+            }
+        } else {
+            customDateFormatter.dateStyle = .medium
+            customDateFormatter.timeStyle = .none
+            textField.text = customDateFormatter.string(from: datePicker.date)
+            customDateFormatter.dateStyle = .short
+            customDateFormatter.dateFormat = "dd.MM.yyyy"
+            dateValue = customDateFormatter.string(from: datePicker.date)
+        }
+        self.parrent?.view.endEditing(true)        
         ParamsDatePicker.delegate?.onDoneClick(name: name!, localDate: textField.text ?? "")
     }
     
@@ -57,9 +73,9 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
         abstractHide()
     }
     
-    func getValue(complition: @escaping (String?, String?, String?) -> ()) {
-        //Person.profileDict[self.tag] = (dateValue, textField.text)
-        complition(name, dateValue, textField.text)
+    func getValue(complition: @escaping (String?, AnyHashable?, String?) -> ()) {
+        let rawValue: AnyHashable? = onlyMonth ? monthValue : dateValue
+        complition(name, rawValue, textField.text)
     }
     
     

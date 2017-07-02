@@ -70,17 +70,17 @@ class ProfileViewController: UIViewController {
         
         let profileDict = dropStackView.getValue()
         
-        Person.instance.name = profileDict["name"]
-        Person.instance.sex = profileDict["sex"]
-        Person.instance.birthday = profileDict["birthday"]
-        Person.instance.country = profileDict["country"]
-        Person.instance.city = profileDict["city"]
-        Person.instance.about = profileDict["about"]
-        Person.instance.alcohol = profileDict["alcohol"]
-        Person.instance.smoking = profileDict["smoking"]
-        Person.instance.familyStatus = profileDict["familyStatus"]
-        Person.instance.childs = profileDict["childs"]
-        Person.instance.orientation = profileDict["orientation"]
+        Person.instance.name = profileDict["name"] as? String
+        Person.instance.sex = profileDict["sex"] as? String
+        Person.instance.birthday = profileDict["birthday"] as? String
+        Person.instance.country = profileDict["country"] as? String
+        Person.instance.city = profileDict["city"] as? String
+        Person.instance.about = profileDict["about"] as? String
+        Person.instance.alcohol = profileDict["alcohol"] as? String
+        Person.instance.smoking = profileDict["smoking"] as? String
+        Person.instance.familyStatus = profileDict["familyStatus"] as? String
+        Person.instance.childs = profileDict["childs"] as? String
+        Person.instance.orientation = profileDict["orientation"] as? String
         
         print (Person.instance)
         
@@ -89,7 +89,7 @@ class ProfileViewController: UIViewController {
         let mirror = Mirror(reflecting: Person.instance)
         
         for i in mirror.children.enumerated() {
-            if i.1.value as? String == nil || i.1.value as? String == "" {
+            if i.1.value as? String == nil || i.1.value as? String == "" || i.1.value as? String == NSLocalizedString("Not filled", comment: "Not filled") {
                 MessageBox.showMessage(parent: self, title: componentsArray[i.offset].paramKey, message: NSLocalizedString("Not filled", comment: "Not filled"))
                 return
             } else {

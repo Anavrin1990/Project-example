@@ -39,7 +39,7 @@ func addSpinner(_ view: UIView) {
 func searchCountries (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
     countryId = ""
     Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCountries&v=5.65&need_all=1&lang=en&count=1000") { (json) in
-        var countriesArray = [(String, String)]()
+        var countriesArray = [("", NSLocalizedString("Not filled", comment: "Not filled"))]
         let countries = json["response"]["items"].arrayValue
         for c in countries {
             let country = (c["id"].stringValue, c["title"].stringValue)
@@ -52,7 +52,7 @@ func searchCountries (_ complition: @escaping (_ content: [(String, [(String, St
 
 func searchCities (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
     Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCities&v=5.5&country_id=\(countryId)&lang=en&count=1000") { (json) in
-        var citiesArray = [(String, String)]()
+        var citiesArray = [("", NSLocalizedString("Not filled", comment: "Not filled"))]
         let cities = json["response"]["items"].arrayValue
         for c in cities {
             let city = (c["id"].stringValue, c["title"].stringValue)

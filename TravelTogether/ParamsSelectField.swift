@@ -48,32 +48,17 @@ class ParamsSelectField: ParamsAbstract, ParamsViewsProtocol {
         abstractHide()
     }
     
-    func getValue(complition: @escaping (String?, String?, String?) -> ()) {
+    func getValue(complition: @escaping (String?, AnyHashable?, String?) -> ()) {
         complition(name, rawResult, localResult)
     }
     
     @IBAction func selectField(_ sender: Any) {
-        Person.profileDict[self.tag] = (rawValue, localValue)
         
         rawResult = rawValue
         localResult = localValue
         
-        ParamsSelectField.delegate?.selectField(name: name!, localResult: localResult!)
-        
-//        ProfileViewController.paramsArray[ProfileViewController.selectedIndex!].stackView.subviews.forEach {
-//            if let field = $0 as? ParamsSelectField {
-//                field.checkImage.isHidden = true
-//                UIView.animate(withDuration: 0.3) {
-//                    field.hide()
-//                }                
-//            }
-//        }
-//        ProfileViewController.headersArray.enumerated().forEach {
-//            let text = Person.profileDict[$0.offset]?.1
-//            if text != "" && text != nil {
-//                $0.element.paramValue.text = text
-//            }
-//        }
+        ParamsSelectField.delegate?.selectField(name: name!, localResult: localResult!)        
+
         checkImage.isHidden = false
     }
     

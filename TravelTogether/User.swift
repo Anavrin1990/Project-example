@@ -14,4 +14,5 @@ struct User {
     static var uid: String?
     static var person: Person?
     static var icon: String?
+    static var travelsCount: Int?
 }
