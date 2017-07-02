@@ -49,6 +49,8 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             values["name"] = User.person?.name
             values["birthday"] = User.person?.birthday
             values["uid"] = User.uid            
+            values["sex"] = User.person?.sex
+            values["sex_createdate"] = (User.person?.sex)! + "_" + stringDate
             
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["travelsCount" : (User.travelsCount)! + 1], complition: {
                 
@@ -56,7 +58,10 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
                 Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").childByAutoId(), value: ["month" : month], complition: {})
                 
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("All").child(destination).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(User.person!.country!).child(destination).childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(User.person!.country!).child(destination).childByAutoId(), value: values, complition: {})                
+                
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("All").child(destination).child(month).childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(User.person!.country!).child(destination).child(month).childByAutoId(), value: values, complition: {})
                 
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("All").child(month).childByAutoId(), value: values, complition: {})
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(User.person!.country!).child(month).childByAutoId(), value: values, complition: {})
