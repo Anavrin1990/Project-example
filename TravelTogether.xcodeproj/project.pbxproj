@@ -41,6 +41,14 @@
 		0BDA50A51EDF333400FA7A5E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA50A41EDF333400FA7A5E /* MainViewController.swift */; };
 		0BDA50A71EDF34B700FA7A5E /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA50A61EDF34B700FA7A5E /* MainCollectionViewCell.swift */; };
 		0BDA50A91EDF370A00FA7A5E /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA50A81EDF370A00FA7A5E /* Person.swift */; };
+		0BE5910D1F0AB3F70017A866 /* BTNavigationDropdownMenu.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0BE591041F0AB3F70017A866 /* BTNavigationDropdownMenu.bundle */; };
+		0BE5910E1F0AB3F70017A866 /* BTNavigationDropdownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE591051F0AB3F70017A866 /* BTNavigationDropdownMenu.swift */; };
+		0BE5910F1F0AB3F70017A866 /* BTTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE591061F0AB3F70017A866 /* BTTitle.swift */; };
+		0BE591101F0AB3F70017A866 /* BTConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE591081F0AB3F70017A866 /* BTConfiguration.swift */; };
+		0BE591111F0AB3F70017A866 /* BTTableCellContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE591091F0AB3F70017A866 /* BTTableCellContentView.swift */; };
+		0BE591121F0AB3F70017A866 /* BTTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE5910A1F0AB3F70017A866 /* BTTableView.swift */; };
+		0BE591131F0AB3F70017A866 /* BTTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE5910B1F0AB3F70017A866 /* BTTableViewCell.swift */; };
+		0BE591141F0AB3F70017A866 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE5910C1F0AB3F70017A866 /* UIViewController+Extension.swift */; };
 		0BEBA0831EEC6C48001EE6EA /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEBA0821EEC6C48001EE6EA /* SearchTableViewController.swift */; };
 		0BF7455B1EE077F700F6A8E5 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */; };
 		DB2BAD730CBACD49BAA8FF7E /* Pods_TravelTogether.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B021ED4F573B2B7F43AFAB02 /* Pods_TravelTogether.framework */; };
@@ -83,6 +91,14 @@
 		0BDA50A41EDF333400FA7A5E /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		0BDA50A61EDF34B700FA7A5E /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		0BDA50A81EDF370A00FA7A5E /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		0BE591041F0AB3F70017A866 /* BTNavigationDropdownMenu.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = BTNavigationDropdownMenu.bundle; sourceTree = "<group>"; };
+		0BE591051F0AB3F70017A866 /* BTNavigationDropdownMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTNavigationDropdownMenu.swift; sourceTree = "<group>"; };
+		0BE591061F0AB3F70017A866 /* BTTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTTitle.swift; sourceTree = "<group>"; };
+		0BE591081F0AB3F70017A866 /* BTConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTConfiguration.swift; sourceTree = "<group>"; };
+		0BE591091F0AB3F70017A866 /* BTTableCellContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTTableCellContentView.swift; sourceTree = "<group>"; };
+		0BE5910A1F0AB3F70017A866 /* BTTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTTableView.swift; sourceTree = "<group>"; };
+		0BE5910B1F0AB3F70017A866 /* BTTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTTableViewCell.swift; sourceTree = "<group>"; };
+		0BE5910C1F0AB3F70017A866 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		0BEBA0821EEC6C48001EE6EA /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		5D15BD35CB9B96C0F30A4B57 /* Pods-TravelTogether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelTogether.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelTogether/Pods-TravelTogether.release.xcconfig"; sourceTree = "<group>"; };
@@ -128,7 +144,6 @@
 		0B0D96301EE3E87E00C2F1C4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0B7E63061F084254007DBDA6 /* DropStackView */,
 				0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */,
 				0BCB55501EFFB00500605F24 /* MonthPicker.swift */,
 				0BDA50A81EDF370A00FA7A5E /* Person.swift */,
@@ -215,9 +230,43 @@
 				0B0D962E1EE3E80000C2F1C4 /* Controllers */,
 				0B0D96301EE3E87E00C2F1C4 /* Models */,
 				0B0D962F1EE3E82B00C2F1C4 /* Cells */,
+				0BE591151F0AB6500017A866 /* Widgets */,
 				0B0D96311EE3E8AE00C2F1C4 /* Stuff */,
 			);
 			path = TravelTogether;
+			sourceTree = "<group>";
+		};
+		0BE591031F0AB3F70017A866 /* BTNavigationDropdownMenu */ = {
+			isa = PBXGroup;
+			children = (
+				0BE591041F0AB3F70017A866 /* BTNavigationDropdownMenu.bundle */,
+				0BE591051F0AB3F70017A866 /* BTNavigationDropdownMenu.swift */,
+				0BE591061F0AB3F70017A866 /* BTTitle.swift */,
+				0BE591071F0AB3F70017A866 /* Internal */,
+			);
+			name = BTNavigationDropdownMenu;
+			path = Source;
+			sourceTree = "<group>";
+		};
+		0BE591071F0AB3F70017A866 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				0BE591081F0AB3F70017A866 /* BTConfiguration.swift */,
+				0BE591091F0AB3F70017A866 /* BTTableCellContentView.swift */,
+				0BE5910A1F0AB3F70017A866 /* BTTableView.swift */,
+				0BE5910B1F0AB3F70017A866 /* BTTableViewCell.swift */,
+				0BE5910C1F0AB3F70017A866 /* UIViewController+Extension.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		0BE591151F0AB6500017A866 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				0BE591031F0AB3F70017A866 /* BTNavigationDropdownMenu */,
+				0B7E63061F084254007DBDA6 /* DropStackView */,
+			);
+			name = Widgets;
 			sourceTree = "<group>";
 		};
 		24EC2FA49A688FEEB7801BF8 /* Pods */ = {
@@ -301,6 +350,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B0D964E1EE4610F00C2F1C4 /* ParamsSelectField.xib in Resources */,
+				0BE5910D1F0AB3F70017A866 /* BTNavigationDropdownMenu.bundle in Resources */,
 				0BDA509B1EDF2D1800FA7A5E /* LaunchScreen.storyboard in Resources */,
 				0B0D96441EE425B600C2F1C4 /* ParamsDatePicker.xib in Resources */,
 				0BDA50A31EDF2E8F00FA7A5E /* GoogleService-Info.plist in Resources */,
@@ -371,15 +421,21 @@
 				0BAEE9601EF5456F00CCC0C1 /* RegisterViewController.swift in Sources */,
 				0BF7455B1EE077F700F6A8E5 /* SearchViewController.swift in Sources */,
 				0B0D96501EE462B700C2F1C4 /* ParamsSelectField.swift in Sources */,
+				0BE591141F0AB3F70017A866 /* UIViewController+Extension.swift in Sources */,
 				0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */,
+				0BE591131F0AB3F70017A866 /* BTTableViewCell.swift in Sources */,
+				0BE591121F0AB3F70017A866 /* BTTableView.swift in Sources */,
 				0B5062471EF65DF7003B5785 /* Parsing.swift in Sources */,
+				0BE591101F0AB3F70017A866 /* BTConfiguration.swift in Sources */,
 				0BDA50911EDF2D1800FA7A5E /* AppDelegate.swift in Sources */,
 				0BBA88DB1EE2FE2200CFE1C8 /* ParamsHeaderView.swift in Sources */,
 				0B0D96421EE410AD00C2F1C4 /* ParamsDropStack.swift in Sources */,
+				0BE5910E1F0AB3F70017A866 /* BTNavigationDropdownMenu.swift in Sources */,
 				0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */,
 				0B0D96351EE3F05400C2F1C4 /* CustomScrollView.swift in Sources */,
 				0BCB55511EFFB00500605F24 /* MonthPicker.swift in Sources */,
 				0BDA50A71EDF34B700FA7A5E /* MainCollectionViewCell.swift in Sources */,
+				0BE5910F1F0AB3F70017A866 /* BTTitle.swift in Sources */,
 				0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */,
 				0B273FEE1F079B910031D3C1 /* DropStackView.swift in Sources */,
 				0B2106331EE2CCC7001AE7D0 /* ProfileViewController.swift in Sources */,
@@ -394,6 +450,7 @@
 				0B273FEC1F0796D10031D3C1 /* CriteriaViewController.swift in Sources */,
 				0B0D96461EE4265900C2F1C4 /* ParamsDatePicker.swift in Sources */,
 				0BAEE9621EF545E200CCC0C1 /* User.swift in Sources */,
+				0BE591111F0AB3F70017A866 /* BTTableCellContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

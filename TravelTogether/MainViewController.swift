@@ -11,10 +11,12 @@ import FirebaseDatabase
 import FirebaseAuth
 import SwiftyJSON
 
-class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {    
+class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {
     
     static var needCheckAuth = true // включение проверки авторизации
     
+    var menuView: BTNavigationDropdownMenu!
+    let items = ["Most Popular", "Latest", "Trending", "Nearest", "Top Picks"]
     var travelsArray = [Travel]()
     var endIndex: Int?
     var lastPosition: Int?
@@ -52,17 +54,17 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        
-//        var q = 170628235713
-//        for _ in 0...20 {
-//            var value = [String : Int]()
-//            value["name"] = q
-//            value["createdate"] = q
-//            Request.updateChildValue(reference: Request.ref.child("Travels").child("All").childByAutoId(), value: value, complition: {})
-//            q += 10
-//        }
-        
-        
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0.0/255.0, green:180/255.0, blue:220/255.0, alpha: 1.0)
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        //        var q = 170628235713
+        //        for _ in 0...20 {
+        //            var value = [String : Int]()
+        //            value["name"] = q
+        //            value["createdate"] = q
+        //            Request.updateChildValue(reference: Request.ref.child("Travels").child("All").childByAutoId(), value: value, complition: {})
+        //            q += 10
+        //        }
         
         self.collectionView.alwaysBounceVertical = true
         
@@ -71,10 +73,38 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView?.addSubview(refreshControl)
         
         spinner.startAnimating()
-        
+        navigationDropdownMenu()
         spinnerSettings()
-
         firstRequest()
+    }
+    
+    func navigationDropdownMenu() {
+        menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: BTTitle.index(2), items: items)
+        
+        menuView.cellHeight = 50
+        menuView.cellBackgroundColor = self.navigationController?.navigationBar.barTintColor
+        menuView.cellSelectionColor = UIColor(red: 0.0/255.0, green:160.0/255.0, blue:195.0/255.0, alpha: 1.0)
+        menuView.shouldKeepSelectedCellColor = true
+        menuView.cellTextLabelColor = UIColor.white
+        menuView.cellTextLabelFont = UIFont(name: "System-Regular", size: 17)
+        menuView.cellTextLabelAlignment = .left // .Center // .Right // .Left
+        menuView.arrowPadding = 15
+        menuView.animationDuration = 0.5
+        menuView.maskBackgroundColor = UIColor.black
+        menuView.maskBackgroundOpacity = 0.3
+        menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> Void in
+            print("Did select item at index: \(indexPath)")
+            
+            let search = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
+            search.withTopConstraint = false
+            search.resultComplition = { (monthInt: String, monthString: String) in
+                print (monthString)
+                print (monthInt)
+            }
+            self.navigationController?.pushViewController(search, animated: true)
+        }
+        
+        self.navigationItem.titleView = menuView
     }
     
     func spinnerSettings() {
@@ -98,7 +128,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainCell", for: indexPath) as! MainCollectionViewCell        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainCell", for: indexPath) as! MainCollectionViewCell
         cell.nameAgeLabel.text = "\(travelsArray[indexPath.row].name ?? ""), \(travelsArray[indexPath.row].birthday?.getAge() ?? "")"
         cell.destinationLabel.text = "\(travelsArray[indexPath.row].destination ?? ""). \(travelsArray[indexPath.row].month?.getMonth() ?? "")"
         cell.profileImage.layer.cornerRadius = cell.profileImage.frame.width / 2
@@ -121,9 +151,9 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if segue.identifier == "showDetail" {
             if let indexPaths = collectionView?.indexPathsForSelectedItems {
                 let indexPath = indexPaths[0] as NSIndexPath
-//                let dvc = segue.destination as! DetailViewController
-//                dvc.model = self.modelsArray[indexPath.row]
-//                dvc.arrayPosition = indexPath.row
+                //                let dvc = segue.destination as! DetailViewController
+                //                dvc.model = self.modelsArray[indexPath.row]
+                //                dvc.arrayPosition = indexPath.row
             }
         }
     }
@@ -172,7 +202,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             } else {
                 Request.logOut{}
                 let registrationVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterNavigationController")
-                self.present(registrationVC!, animated: true, completion: nil)                
+                self.present(registrationVC!, animated: true, completion: nil)
             }
         })
     }
@@ -199,7 +229,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         DispatchQueue.main.async {
                             self.collectionView.reloadData()
                             self.spinner.stopAnimating()
-                            self.refreshControl.endRefreshing()                            
+                            self.refreshControl.endRefreshing()
                         }
                     })
                 }

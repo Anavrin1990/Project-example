@@ -24,6 +24,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     let searchBar = UISearchBar()
     let tableView = UITableView()
     let stackView = UIStackView()
+    var withTopConstraint = true
     
     var request: ((_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void)? // Выполняемая функция
     
@@ -31,6 +32,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     var filteredContentArray = [(String, String)]()
     
     var result: (String, String)?
+    var resultComplition: (((String, String)) -> ())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +62,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func setupScreen() {
-        let topConstant = UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height ?? 0)
+        let topConstant = withTopConstraint ? UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height ?? 0) : 0
         view.addSubview(stackView)
         stackView.addArrangedSubview(searchBar)
         stackView.addArrangedSubview(tableView)
@@ -84,6 +86,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
        
         result = searchTextIsEmpty ? (contentArray[indexPath.section].1[indexPath.row].0, contentArray[indexPath.section].1[indexPath.row].1) : (filteredContentArray[indexPath.row].0, filteredContentArray[indexPath.row].1)
         
+        resultComplition!(result!)
         SearchTableViewController.delegate?.getSearchResult(name: name, result: result!)
         self.navigationController?.popViewController(animated: true)
     }
