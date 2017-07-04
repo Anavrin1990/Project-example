@@ -16,7 +16,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     static var needCheckAuth = true // включение проверки авторизации
     
     var menuView: BTNavigationDropdownMenu!
-    let items = ["Most Popular", "Latest", "Trending", "Nearest", "Top Picks"]
+    let items = [("Most Popular", "sss"), ("req", "www")]
     var travelsArray = [Travel]()
     var endIndex: Int?
     var lastPosition: Int?
@@ -79,7 +79,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func navigationDropdownMenu() {
-        menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: BTTitle.index(2), items: items)
+        menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0].0, items: items)
         
         menuView.cellHeight = 50
         menuView.cellBackgroundColor = self.navigationController?.navigationBar.barTintColor
@@ -92,14 +92,21 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         menuView.animationDuration = 0.5
         menuView.maskBackgroundColor = UIColor.black
         menuView.maskBackgroundOpacity = 0.3
-        menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> Void in
+        menuView.setSelected(index: 0)
+        menuView.shouldChangeTitleText = false
+        menuView.didSelectItemAtIndexHandler = {(tableView, indexPath: Int) -> Void in
             print("Did select item at index: \(indexPath)")
+            let q = tableView as! BTTableView
+            
             
             let search = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
             search.withTopConstraint = false
+            search.request = searchCountries(_:)
             search.resultComplition = { (monthInt: String, monthString: String) in
-                print (monthString)
-                print (monthInt)
+                q.items = [("Country", monthString), ("Sex", "123")]
+                self.menuView.setMenuTitle(monthString)
+                self.menuView.layoutSubviews()
+                
             }
             self.navigationController?.pushViewController(search, animated: true)
         }

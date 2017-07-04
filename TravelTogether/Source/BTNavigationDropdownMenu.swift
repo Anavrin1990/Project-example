@@ -220,7 +220,7 @@ open class BTNavigationDropdownMenu: UIView {
         }
     }
     
-    open var didSelectItemAtIndexHandler: ((_ indexPath: Int) -> ())?
+    open var didSelectItemAtIndexHandler: ((_ tableView: UITableView, _ indexPath: Int) -> ())?
     open var isShown: Bool!
 
     fileprivate weak var navigationController: UINavigationController?
@@ -231,7 +231,7 @@ open class BTNavigationDropdownMenu: UIView {
     fileprivate var menuArrow: UIImageView!
     fileprivate var backgroundView: UIView!
     fileprivate var tableView: BTTableView!
-    fileprivate var items: [String]!
+    fileprivate var items: [(key: String, value: String)]!
     fileprivate var menuWrapper: UIView!
     
     required public init?(coder aDecoder: NSCoder) {
@@ -248,7 +248,7 @@ open class BTNavigationDropdownMenu: UIView {
         - title: A string to define title to be displayed.
         - items: The array of items to select
      */
-    public convenience init(navigationController: UINavigationController? = nil, containerView: UIView = UIApplication.shared.keyWindow!, title: String, items: [String]) {
+    public convenience init(navigationController: UINavigationController? = nil, containerView: UIView = UIApplication.shared.keyWindow!, title: String, items: [(key: String, value: String)]) {
         
         self.init(navigationController: navigationController, containerView: containerView, title: BTTitle.title(title), items: items)
     }
@@ -265,7 +265,7 @@ open class BTNavigationDropdownMenu: UIView {
         - title: An enum to define title to be displayed, can be a string or index of items.
         - items: The array of items to select
      */
-    public init(navigationController: UINavigationController? = nil, containerView: UIView = UIApplication.shared.keyWindow!, title: BTTitle, items: [String]) {
+    public init(navigationController: UINavigationController? = nil, containerView: UIView = UIApplication.shared.keyWindow!, title: BTTitle, items: [(key: String, value: String)]) {
         // Key window
         guard let window = UIApplication.shared.keyWindow else {
             super.init(frame: CGRect.zero)
@@ -286,7 +286,7 @@ open class BTNavigationDropdownMenu: UIView {
         switch title{
         case .index(let index):
             if index < items.count{
-                titleToDisplay = items[index]
+                titleToDisplay = items[index].value
             } else {
                 titleToDisplay = ""
             }
@@ -346,9 +346,9 @@ open class BTNavigationDropdownMenu: UIView {
             guard let selfie = self else {
                 return
             }
-            selfie.didSelectItemAtIndexHandler!(indexPath)
+            selfie.didSelectItemAtIndexHandler!((self?.tableView)!, indexPath)
             if selfie.shouldChangeTitleText! {
-                selfie.setMenuTitle("\(selfie.tableView.items[indexPath])")
+                selfie.setMenuTitle("\(selfie.tableView.items[indexPath].value)")
             }
             self?.hideMenu()
             self?.layoutSubviews()
@@ -400,7 +400,7 @@ open class BTNavigationDropdownMenu: UIView {
         }
     }
     
-    open func updateItems(_ items: [String]) {
+    open func updateItems(_ items: [(key: String, value: String)]) {
         if !items.isEmpty {
             self.tableView.items = items
             self.tableView.reloadData()
@@ -412,7 +412,7 @@ open class BTNavigationDropdownMenu: UIView {
         self.tableView.reloadData()
         
         if self.shouldChangeTitleText! {
-            self.setMenuTitle("\(self.tableView.items[index])")
+            self.setMenuTitle("\(self.tableView.items[index].value)")
         }
     }
     
@@ -510,7 +510,7 @@ open class BTNavigationDropdownMenu: UIView {
             })
     }
     
-    func setMenuTitle(_ title: String) {
+    open func setMenuTitle(_ title: String) {
         self.menuTitle.text = title
     }
     

@@ -30,18 +30,19 @@ class BTTableView: UITableView, UITableViewDelegate, UITableViewDataSource {
     var selectRowAtIndexPathHandler: ((_ indexPath: Int) -> ())?
     
     // Private properties
-    var items: [String] = []
+    var values = ["", ""]
+    var items: [(key: String, value: String)] = []
     var selectedIndexPath: Int?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(frame: CGRect, items: [String], title: String, configuration: BTConfiguration) {
+    init(frame: CGRect, items: [(key: String, value: String)], title: String, configuration: BTConfiguration) {
         super.init(frame: frame, style: UITableViewStyle.plain)
         
         self.items = items
-        self.selectedIndexPath = items.index(of: title)
+        self.selectedIndexPath = 0
         self.configuration = configuration
         
         // Setup table view
@@ -76,24 +77,26 @@ class BTTableView: UITableView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = BTTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "Cell", configuration: self.configuration)
-        cell.textLabel?.text = self.items[(indexPath as NSIndexPath).row]
-        cell.checkmarkIcon.isHidden = ((indexPath as NSIndexPath).row == selectedIndexPath) ? false : true
-        return cell
+        cell.textLabel?.text = self.items[(indexPath as NSIndexPath).row].key
+        cell.checkmarkIcon?.isHidden = ((indexPath as NSIndexPath).row == selectedIndexPath) ? false : true
+        cell.valueLabel.text = self.items[(indexPath as NSIndexPath).row].value
+        return cell 
     }
     
     // Table view delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedIndexPath = (indexPath as NSIndexPath).row
-        self.selectRowAtIndexPathHandler!((indexPath as NSIndexPath).row)
-        self.reloadData()
         let cell = tableView.cellForRow(at: indexPath) as? BTTableViewCell
         cell?.contentView.backgroundColor = self.configuration.cellSelectionColor
         cell?.textLabel?.textColor = self.configuration.selectedCellTextLabelColor
+        self.selectRowAtIndexPathHandler!((indexPath as NSIndexPath).row)
+        self.reloadData()
+        
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as? BTTableViewCell
-        cell?.checkmarkIcon.isHidden = true
+        cell?.checkmarkIcon?.isHidden = true
         cell?.contentView.backgroundColor = self.configuration.cellBackgroundColor
         cell?.textLabel?.textColor = self.configuration.cellTextLabelColor
     }

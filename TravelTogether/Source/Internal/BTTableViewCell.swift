@@ -27,11 +27,17 @@ class BTTableViewCell: UITableViewCell {
     let checkmarkIconWidth: CGFloat = 50
     let horizontalMargin: CGFloat = 20
     
+    var valueLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     var checkmarkIcon: UIImageView!
     var cellContentFrame: CGRect!
     var configuration: BTConfiguration!
     
-    init(style: UITableViewCellStyle, reuseIdentifier: String?, configuration: BTConfiguration) {
+    init(style: UITableViewCellStyle, reuseIdentifier: String?, withCheckMark: Bool = false, configuration: BTConfiguration) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.configuration = configuration
@@ -51,18 +57,27 @@ class BTTableViewCell: UITableViewCell {
             self.textLabel!.frame = CGRect(x: -horizontalMargin, y: 0, width: cellContentFrame.width, height: cellContentFrame.height)
         }
         
-        // Checkmark icon
-        if self.textLabel!.textAlignment == .center {
-            self.checkmarkIcon = UIImageView(frame: CGRect(x: cellContentFrame.width - checkmarkIconWidth, y: (cellContentFrame.height - 30)/2, width: 30, height: 30))
-        } else if self.textLabel!.textAlignment == .left {
-            self.checkmarkIcon = UIImageView(frame: CGRect(x: cellContentFrame.width - checkmarkIconWidth, y: (cellContentFrame.height - 30)/2, width: 30, height: 30))
+        if withCheckMark {
+            // Checkmark icon
+            if self.textLabel!.textAlignment == .center {
+                self.checkmarkIcon = UIImageView(frame: CGRect(x: cellContentFrame.width - checkmarkIconWidth, y: (cellContentFrame.height - 30)/2, width: 30, height: 30))
+            } else if self.textLabel!.textAlignment == .left {
+                self.checkmarkIcon = UIImageView(frame: CGRect(x: cellContentFrame.width - checkmarkIconWidth, y: (cellContentFrame.height - 30)/2, width: 30, height: 30))
+            } else {
+                self.checkmarkIcon = UIImageView(frame: CGRect(x: horizontalMargin, y: (cellContentFrame.height - 30)/2, width: 30, height: 30))
+            }
+            self.checkmarkIcon.isHidden = true
+            self.checkmarkIcon.image = self.configuration.checkMarkImage
+            self.checkmarkIcon.contentMode = UIViewContentMode.scaleAspectFill
+            self.contentView.addSubview(self.checkmarkIcon)
         } else {
-            self.checkmarkIcon = UIImageView(frame: CGRect(x: horizontalMargin, y: (cellContentFrame.height - 30)/2, width: 30, height: 30))
-        }
-        self.checkmarkIcon.isHidden = true
-        self.checkmarkIcon.image = self.configuration.checkMarkImage
-        self.checkmarkIcon.contentMode = UIViewContentMode.scaleAspectFill
-        self.contentView.addSubview(self.checkmarkIcon)
+            // Right label
+            self.contentView.addSubview(self.valueLabel)
+            valueLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
+            valueLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            valueLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(self.frame.width / 1.3)).isActive = true
+            valueLabel.textAlignment = .right
+        }        
         
         // Separator for cell
         let separator = BTTableCellContentView(frame: cellContentFrame)
