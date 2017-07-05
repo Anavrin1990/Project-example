@@ -29,6 +29,7 @@ final class BTConfiguration {
     var cellBackgroundColor: UIColor?
     var cellSeparatorColor: UIColor?
     var cellTextLabelColor: UIColor?
+    var cellValueLabelColor: UIColor?
     var selectedCellTextLabelColor: UIColor?
     var cellTextLabelFont: UIFont!
     var navigationBarTitleFont: UIFont!
@@ -58,23 +59,24 @@ final class BTConfiguration {
         
         // Default values
         self.menuTitleColor = UIColor.darkGray
-        self.cellHeight = 50
+        self.cellHeight = 44
         self.cellBackgroundColor = UIColor.white
         self.arrowTintColor = UIColor.white
-        self.cellSeparatorColor = UIColor.darkGray
+        self.cellSeparatorColor = UIColor.lightGray
         self.cellTextLabelColor = UIColor.darkGray
+        self.cellValueLabelColor = UIColor.lightGray
         self.selectedCellTextLabelColor = UIColor.darkGray
-        self.cellTextLabelFont = UIFont(name: "HelveticaNeue-Bold", size: 17)
-        self.navigationBarTitleFont = UIFont(name: "HelveticaNeue-Bold", size: 17)
+        self.cellTextLabelFont = UIFont.systemFont(ofSize: 17)
+        self.navigationBarTitleFont = UIFont.systemFont(ofSize: 17)
         self.cellTextLabelAlignment = NSTextAlignment.left
         self.cellSelectionColor = UIColor.lightGray
         self.checkMarkImage = UIImage(contentsOfFile: checkMarkImagePath!)
         self.shouldKeepSelectedCellColor = false
-        self.animationDuration = 0.5
+        self.animationDuration = 0.2
         self.arrowImage = UIImage(contentsOfFile: arrowImagePath!)
         self.arrowPadding = 15
         self.maskBackgroundColor = UIColor.black
         self.maskBackgroundOpacity = 0.3
-        self.shouldChangeTitleText = true
+        self.shouldChangeTitleText = false
     }
 }

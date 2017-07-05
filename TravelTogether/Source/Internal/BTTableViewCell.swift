@@ -73,6 +73,7 @@ class BTTableViewCell: UITableViewCell {
         } else {
             // Right label
             self.contentView.addSubview(self.valueLabel)
+            valueLabel.textColor = self.configuration.cellValueLabelColor
             valueLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
             valueLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             valueLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(self.frame.width / 1.3)).isActive = true

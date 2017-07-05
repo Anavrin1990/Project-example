@@ -88,6 +88,15 @@ open class BTNavigationDropdownMenu: UIView {
         }
     }
     
+    open var cellValueLabelColor: UIColor! {
+        get {
+            return self.configuration.cellValueLabelColor
+        }
+        set(value) {
+            self.configuration.cellValueLabelColor = value
+        }
+    }
+    
     // The color of the text inside a selected cell. Default is darkGrayColor()
     open var selectedCellTextLabelColor: UIColor! {
         get {
@@ -456,10 +465,6 @@ open class BTNavigationDropdownMenu: UIView {
         
         UIView.animate(
             withDuration: self.configuration.animationDuration * 1.5,
-            delay: 0,
-            usingSpringWithDamping: 0.7,
-            initialSpringVelocity: 0.5,
-            options: [],
             animations: {
                 self.tableView.frame.origin.y = CGFloat(-300)
                 self.backgroundView.alpha = self.configuration.maskBackgroundOpacity
@@ -478,10 +483,6 @@ open class BTNavigationDropdownMenu: UIView {
         
         UIView.animate(
             withDuration: self.configuration.animationDuration * 1.5,
-            delay: 0,
-            usingSpringWithDamping: 0.7,
-            initialSpringVelocity: 0.5,
-            options: [],
             animations: {
                 self.tableView.frame.origin.y = CGFloat(-200)
             }, completion: nil
@@ -489,9 +490,7 @@ open class BTNavigationDropdownMenu: UIView {
         
         // Animation
         UIView.animate(
-            withDuration: self.configuration.animationDuration,
-            delay: 0,
-            options: UIViewAnimationOptions(),
+            withDuration: self.configuration.animationDuration,            
             animations: {
                 self.tableView.frame.origin.y = -CGFloat(self.items.count) * self.configuration.cellHeight - 300
                 self.backgroundView.alpha = 0
@@ -512,6 +511,7 @@ open class BTNavigationDropdownMenu: UIView {
     
     open func setMenuTitle(_ title: String) {
         self.menuTitle.text = title
+        self.layoutSubviews()
     }
     
     func menuButtonTapped(_ sender: UIButton) {

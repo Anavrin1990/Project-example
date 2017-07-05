@@ -48,9 +48,7 @@ class BTTableView: UITableView, UITableViewDelegate, UITableViewDataSource {
         // Setup table view
         self.delegate = self
         self.dataSource = self
-        self.backgroundColor = UIColor.clear
-        self.separatorStyle = UITableViewCellSeparatorStyle.none
-        //        self.separatorEffect = UIBlurEffect(style: .Light)
+        self.backgroundColor = UIColor.clear        
         self.autoresizingMask = UIViewAutoresizing.flexibleWidth
         self.tableFooterView = UIView(frame: CGRect.zero)
     }

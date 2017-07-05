@@ -86,7 +86,9 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
        
         result = searchTextIsEmpty ? (contentArray[indexPath.section].1[indexPath.row].0, contentArray[indexPath.section].1[indexPath.row].1) : (filteredContentArray[indexPath.row].0, filteredContentArray[indexPath.row].1)
         
-        resultComplition!(result!)
+        if let resultComplition = resultComplition {
+             resultComplition(result!)
+        }
         SearchTableViewController.delegate?.getSearchResult(name: name, result: result!)
         self.navigationController?.popViewController(animated: true)
     }

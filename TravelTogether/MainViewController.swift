@@ -16,11 +16,12 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     static var needCheckAuth = true // включение проверки авторизации
     
     var menuView: BTNavigationDropdownMenu!
-    let items = [("Most Popular", "sss"), ("req", "www")]
+    
     var travelsArray = [Travel]()
     var endIndex: Int?
     var lastPosition: Int?
-    var countryDefault = "All"
+    var countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "All"
+    var sexDefault = UserDefaults.standard.value(forKey: "sexDefault") as? String ?? "All"
     
     let spinner: UIActivityIndicatorView = {
         let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -45,7 +46,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidAppear(_ animated: Bool) {
         if MainViewController.needCheckAuth {
-            Request.getUserInfo{
+            Request.getUserInfo {
+                self.countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "All"
                 self.checkAuth()
             }
         }
@@ -55,8 +57,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0.0/255.0, green:180/255.0, blue:220/255.0, alpha: 1.0)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
         //        var q = 170628235713
         //        for _ in 0...20 {
         //            var value = [String : Int]()
@@ -75,40 +76,38 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         spinner.startAnimating()
         navigationDropdownMenu()
         spinnerSettings()
-        firstRequest()
     }
     
     func navigationDropdownMenu() {
-        menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0].0, items: items)
+        let items = [(NSLocalizedString("Country", comment: "Country"), NSLocalizedString(countryDefault, comment: countryDefault)), (NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString(sexDefault, comment: sexDefault))]
         
-        menuView.cellHeight = 50
-        menuView.cellBackgroundColor = self.navigationController?.navigationBar.barTintColor
-        menuView.cellSelectionColor = UIColor(red: 0.0/255.0, green:160.0/255.0, blue:195.0/255.0, alpha: 1.0)
-        menuView.shouldKeepSelectedCellColor = true
-        menuView.cellTextLabelColor = UIColor.white
-        menuView.cellTextLabelFont = UIFont(name: "System-Regular", size: 17)
-        menuView.cellTextLabelAlignment = .left // .Center // .Right // .Left
-        menuView.arrowPadding = 15
-        menuView.animationDuration = 0.5
-        menuView.maskBackgroundColor = UIColor.black
-        menuView.maskBackgroundOpacity = 0.3
-        menuView.setSelected(index: 0)
-        menuView.shouldChangeTitleText = false
+        menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0].1, items: items)
+        
         menuView.didSelectItemAtIndexHandler = {(tableView, indexPath: Int) -> Void in
-            print("Did select item at index: \(indexPath)")
-            let q = tableView as! BTTableView
-            
-            
-            let search = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
-            search.withTopConstraint = false
-            search.request = searchCountries(_:)
-            search.resultComplition = { (monthInt: String, monthString: String) in
-                q.items = [("Country", monthString), ("Sex", "123")]
-                self.menuView.setMenuTitle(monthString)
-                self.menuView.layoutSubviews()
-                
+            let tableView = tableView as! BTTableView
+            let searchController = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
+            searchController.withTopConstraint = false
+            if indexPath == 0 {
+                emptyCellCountryName = NSLocalizedString("All", comment: "All")
+                searchController.request = searchCountries(_:)
+            } else {
+                searchController.contentArray = [(NSLocalizedString("Sex", comment: "Sex"), [("all", NSLocalizedString("All", comment: "All")), ("male", NSLocalizedString("Male", comment: "Male")), ("female", NSLocalizedString("Female", comment: "Female"))])]
             }
-            self.navigationController?.pushViewController(search, animated: true)
+            searchController.resultComplition = { (rawValue: String, localValue: String) in
+                tableView.items[indexPath] = (items[indexPath].0, localValue)
+                if indexPath == 0 {
+                     self.menuView.setMenuTitle(localValue)
+                    UserDefaults.standard.set(localValue, forKey: "countryDefault")
+                    self.countryDefault = localValue
+                } else {
+                    UserDefaults.standard.set(rawValue, forKey: "sexDefault")
+                    self.sexDefault = rawValue
+                }
+                self.firstRequest()
+            }
+            self.navigationController?.pushViewController(searchController, animated: true)
+            
+            
         }
         
         self.navigationItem.titleView = menuView
@@ -203,6 +202,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                                 return
                             }
                             MainViewController.needCheckAuth = false
+                            self.menuView.setMenuTitle(self.countryDefault)
+                            self.firstRequest()
                         }
                     })
                 }
