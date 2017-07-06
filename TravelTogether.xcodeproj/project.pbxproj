@@ -150,8 +150,8 @@
 				0BCB55501EFFB00500605F24 /* MonthPicker.swift */,
 				0BDA50A81EDF370A00FA7A5E /* Person.swift */,
 				0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */,
-				0BAEE9611EF545E200CCC0C1 /* User.swift */,
 				0A8EC4971F0E65A800B91B4A /* Travel.swift */,
+				0BAEE9611EF545E200CCC0C1 /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";

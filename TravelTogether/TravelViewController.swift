@@ -77,10 +77,8 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             } else if monthTextField.text == "" {
                 MessageBox.showMessage(parent: self, title: NSLocalizedString("Please select month", comment: "Please select month"), message: "")
             }
-        }
-        
+        }        
     }
-   
     
     func getSearchResult(name: String?, result: (String, String)) {
         self.destination = result.1

@@ -111,21 +111,17 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.spinner.startAnimating()
                 self.firstRequest()
             }
-            
             self.navigationController?.pushViewController(searchController, animated: true)
-            
-            
         }
-        
         self.navigationItem.titleView = menuView
     }
     
-    func spinnerSettings() {
-        
+    func spinnerSettings() {        
         collectionView?.addSubview(spinner)
         NSLayoutConstraint(item: spinner, attribute: .centerX, relatedBy: .equal, toItem: collectionView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: collectionView, attribute: .centerY, multiplier: 0.85, constant: 0).isActive = true
     }
+    
     @IBAction func logout(_ sender: Any) {
         MessageBox.showDialog(parent: self, title: NSLocalizedString("Sign out", comment: "Sign out"), message: NSLocalizedString("Do you want to sign out?", comment: "Do you want to sign out?")) {
             Request.logOut {
@@ -152,7 +148,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     // Размер ячеек
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
-        
         return CGSize(width: cellWidth/1.02 , height: cellWidth*1.3 )
     }
     
