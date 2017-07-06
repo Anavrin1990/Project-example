@@ -51,6 +51,19 @@ extension String {
         }
         return nil
     }
+    
+    func toSex() -> String? {
+        if self == "createdate" {
+            return NSLocalizedString("All", comment: "All")
+        }
+        if self == "male_createdate" {
+            return NSLocalizedString("Male", comment: "Male")
+        }
+        if self == "female_createdate" {
+            return NSLocalizedString("Female", comment: "Female")
+        }
+        return nil
+    }
 }
 
 extension Int {

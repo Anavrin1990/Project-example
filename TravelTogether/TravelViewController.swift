@@ -50,7 +50,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             values["birthday"] = User.person?.birthday
             values["uid"] = User.uid            
             values["sex"] = User.person?.sex
-            values["sex_createdate"] = (User.person?.sex)! + "_" + stringDate
+            values["\(User.person!.sex!)_createdate"] = Int(stringDate)
             
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["travelsCount" : (User.travelsCount)! + 1], complition: {
                 

@@ -21,7 +21,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var endIndex: Int?
     var lastPosition: Int?
     var countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "All"
-    var sexDefault = UserDefaults.standard.value(forKey: "sexDefault") as? String ?? "All"
+    var sexDefault = UserDefaults.standard.value(forKey: "sexDefault") as? String ?? "createdate"
     
     let spinner: UIActivityIndicatorView = {
         let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -79,20 +79,24 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func navigationDropdownMenu() {
-        let items = [(NSLocalizedString("Country", comment: "Country"), NSLocalizedString(countryDefault, comment: countryDefault)), (NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString(sexDefault, comment: sexDefault))]
+        
+        let items = [(NSLocalizedString("Country", comment: "Country"), NSLocalizedString(countryDefault, comment: countryDefault)), (NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString(sexDefault.toSex()!, comment: sexDefault.toSex()!))]
         
         menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0].1, items: items)
         
         menuView.didSelectItemAtIndexHandler = {(tableView, indexPath: Int) -> Void in
             let tableView = tableView as! BTTableView
+            
             let searchController = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
             searchController.withTopConstraint = false
+            
             if indexPath == 0 {
                 emptyCellCountryName = NSLocalizedString("All", comment: "All")
                 searchController.request = searchCountries(_:)
             } else {
-                searchController.contentArray = [(NSLocalizedString("Sex", comment: "Sex"), [("all", NSLocalizedString("All", comment: "All")), ("male", NSLocalizedString("Male", comment: "Male")), ("female", NSLocalizedString("Female", comment: "Female"))])]
+                searchController.contentArray = [(NSLocalizedString("Sex", comment: "Sex"), [("createdate", NSLocalizedString("All", comment: "All")), ("male_createdate", NSLocalizedString("Male", comment: "Male")), ("female_createdate", NSLocalizedString("Female", comment: "Female"))])]
             }
+            
             searchController.resultComplition = { (rawValue: String, localValue: String) in
                 tableView.items[indexPath] = (items[indexPath].0, localValue)
                 if indexPath == 0 {
@@ -105,6 +109,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
                 self.firstRequest()
             }
+            
             self.navigationController?.pushViewController(searchController, animated: true)
             
             
