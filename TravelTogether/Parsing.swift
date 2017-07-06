@@ -51,6 +51,8 @@ class Parsing {
                 let travel = Travel(destination: value.1["destination"].stringValue,
                                     month: value.1["month"].intValue,
                                     createDate: value.1["createdate"].intValue,
+                                    male_createdate: value.1["male_createdate"].intValue,
+                                    female_createdate: value.1["female_createdate"].intValue,
                                     name: value.1["name"].stringValue,
                                     birthday: value.1["birthday"].stringValue,
                                     icon: value.1["icon"].stringValue)
@@ -72,16 +74,15 @@ class Parsing {
                 let travel = Travel(destination: value.1["destination"].stringValue,
                                     month: value.1["month"].intValue,
                                     createDate: value.1["createdate"].intValue,
+                                    male_createdate: value.1["male_createdate"].intValue,
+                                    female_createdate: value.1["female_createdate"].intValue,
                                     name: value.1["name"].stringValue,
                                     birthday: value.1["birthday"].stringValue,
                                     icon: value.1["icon"].stringValue)
                 preArray.append(travel)
-                preArray.sort(by: { (first, second) -> Bool in
-                    guard let firstCreateDate = first.createDate, let secondCreateDate = second.createDate else {return false}
-                    return firstCreateDate < secondCreateDate
-                })
+                
             }
-            preArray.reverse()
+            
             complition(preArray)
         }
     }

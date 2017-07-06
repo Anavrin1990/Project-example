@@ -25,17 +25,7 @@ struct Person {
     var orientation: String?    
 }
 
-struct Travel {
-    
-    static var instance = Travel()
-    
-    var destination: String?
-    var month: Int?
-    var createDate: Int?
-    var name: String?
-    var birthday: String?
-    var icon: String?
-}
+
 
 
 
