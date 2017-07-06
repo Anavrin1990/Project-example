@@ -11,7 +11,7 @@ import UIKit
 import FirebaseDatabase
 
 var imageCache = NSCache<AnyObject, AnyObject>()
-let reqLimit: UInt = 20 // Лимит запроса
+let reqLimit: UInt = 15 // Лимит запроса
 var countryId = ""
 
 let spinner: UIActivityIndicatorView = {

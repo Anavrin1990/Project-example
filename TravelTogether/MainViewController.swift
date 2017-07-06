@@ -58,14 +58,15 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationController?.navigationBar.isTranslucent = false
         
-        //        var q = 170628235713
-        //        for _ in 0...20 {
-        //            var value = [String : Int]()
-        //            value["name"] = q
-        //            value["createdate"] = q
-        //            Request.updateChildValue(reference: Request.ref.child("Travels").child("All").childByAutoId(), value: value, complition: {})
-        //            q += 10
-        //        }
+//                var q = 179976175556
+//                for i in 0...20 {
+//                    var value = [String : Any]()
+//                    value["name"] = "male" + String(i)
+//                    value["createdate"] = q
+//                    value["male_createdate"] = q
+//                    Request.updateChildValue(reference: Request.ref.child("Travels").child("All").child("All").childByAutoId(), value: value, complition: {})
+//                    q += 10
+//                }
         
         self.collectionView.alwaysBounceVertical = true
         
@@ -107,6 +108,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     UserDefaults.standard.set(rawValue, forKey: "sexDefault")
                     self.sexDefault = rawValue
                 }
+                self.spinner.startAnimating()
                 self.firstRequest()
             }
             
@@ -310,6 +312,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     
                     resultArray.reverse()
                     for i in resultArray {
+                        if self.sexDefault == "male_createdate", i.male_createdate == 0 {
+                            continue
+                        } else if self.sexDefault == "female_createdate", i.female_createdate == 0 {
+                            continue
+                        }
                         self.travelsArray.append(i)
                     }
                 })
