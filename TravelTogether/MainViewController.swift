@@ -20,8 +20,10 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var travelsArray = [Travel]()
     var endIndex: Int?
     var lastPosition: Int?
+    
     var countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "AllCountries"
     var sexDefault = UserDefaults.standard.value(forKey: "sexDefault") as? String ?? "createdate"
+    var ageDefault = UserDefaults.standard.value(forKey: "ageDefault") as? String ?? "AllAges"
     
     let spinner: UIActivityIndicatorView = {
         let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -58,15 +60,15 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationController?.navigationBar.isTranslucent = false
         
-//                var q = 179976175556
-//                for i in 0...20 {
-//                    var value = [String : Any]()
-//                    value["name"] = "male" + String(i)
-//                    value["createdate"] = q
-//                    value["male_createdate"] = q
-//                    Request.updateChildValue(reference: Request.ref.child("Travels").child("All").child("All").childByAutoId(), value: value, complition: {})
-//                    q += 10
-//                }
+        //                var q = 179976175556
+        //                for i in 0...20 {
+        //                    var value = [String : Any]()
+        //                    value["name"] = "male" + String(i)
+        //                    value["createdate"] = q
+        //                    value["male_createdate"] = q
+        //                    Request.updateChildValue(reference: Request.ref.child("Travels").child("All").child("All").childByAutoId(), value: value, complition: {})
+        //                    q += 10
+        //                }
         
         self.collectionView.alwaysBounceVertical = true
         
@@ -81,7 +83,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func navigationDropdownMenu() {
         
-        let items = [(NSLocalizedString("Country", comment: "Country"), NSLocalizedString(countryDefault, comment: countryDefault)), (NSLocalizedString("Sex", comment: "Sex"), NSLocalizedString(sexDefault.toSex()!, comment: sexDefault.toSex()!))]
+        let items = [(NSLocalizedString("Country", comment: "Country"), countryDefault.toCountry()), (NSLocalizedString("Sex", comment: "Sex"), sexDefault.toSex()), (NSLocalizedString("Age", comment: "Age"), ageDefault.toAgeRange())]
         
         menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0].1, items: items)
         
@@ -92,21 +94,34 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             searchController.withTopConstraint = false
             
             if indexPath == 0 {
-                emptyCellCountryName = "AllCountries"
+                emptyCellCountryName = ("AllCountries", NSLocalizedString("All countries", comment: "All countries") )
                 searchController.request = searchCountries(_:)
-            } else {
+            } else if indexPath == 1 {
                 searchController.contentArray = [(NSLocalizedString("Sex", comment: "Sex"), [("createdate", NSLocalizedString("All", comment: "All")), ("male_createdate", NSLocalizedString("Male", comment: "Male")), ("female_createdate", NSLocalizedString("Female", comment: "Female"))])]
+            } else if indexPath == 2 {
+                var rangeArray = [(rawValue: String, localValue: String)]()
+                for range in iterateEnum(AgeRange.self) {
+                    rangeArray.append((rawValue: range.rawValue, localValue: range.localValue))
+                }
+                searchController.contentArray = [(NSLocalizedString("Age range", comment: "Age range"), rangeArray)]
             }
             
             searchController.resultComplition = { (rawValue: String, localValue: String) in
                 tableView.items[indexPath] = (items[indexPath].0, localValue)
-                if indexPath == 0 {
-                     self.menuView.setMenuTitle(localValue)
-                    UserDefaults.standard.set(localValue, forKey: "countryDefault")
-                    self.countryDefault = localValue
-                } else {
+                if indexPath == 0 {                    
+                    self.menuView.setMenuTitle(localValue)
+                    let value = rawValue == "AllCountries" ? rawValue : localValue
+                    UserDefaults.standard.set(value, forKey: "countryDefault")
+                    UserDefaults.standard.synchronize()
+                    self.countryDefault = value
+                } else if indexPath == 1 {
                     UserDefaults.standard.set(rawValue, forKey: "sexDefault")
+                    UserDefaults.standard.synchronize()
                     self.sexDefault = rawValue
+                } else if indexPath == 2 {
+                    UserDefaults.standard.set(rawValue, forKey: "ageDefault")
+                    UserDefaults.standard.synchronize()
+                    self.ageDefault = rawValue
                 }
                 self.spinner.startAnimating()
                 self.firstRequest()
@@ -116,7 +131,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.navigationItem.titleView = menuView
     }
     
-    func spinnerSettings() {        
+    func spinnerSettings() {
         collectionView?.addSubview(spinner)
         NSLayoutConstraint(item: spinner, attribute: .centerX, relatedBy: .equal, toItem: collectionView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: collectionView, attribute: .centerY, multiplier: 0.85, constant: 0).isActive = true
@@ -195,7 +210,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         guard error == nil else {return}
                         if let snap = snapshot?.value as? NSDictionary {
                             let json = JSON(snap)
-                            let travelsCount = json["travelsCount"].intValue 
+                            let travelsCount = json["travelsCount"].intValue
                             if travelsCount == 0 {
                                 let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "TravelNavigationController")
                                 DispatchQueue.main.async {
@@ -204,7 +219,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                                 return
                             }
                             MainViewController.needCheckAuth = false
-                            self.menuView.setMenuTitle(self.countryDefault)
+                            self.menuView.setMenuTitle(self.countryDefault.toCountry())
                             self.firstRequest()
                         }
                     })
@@ -218,8 +233,9 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func firstRequest () {
+        imageCache.removeAllObjects()
         
-        Request.requestSingleByChildLastIndex(reference: Request.ref.child("Travels").child("AllTravels").child(countryDefault).child("AllRanges"), child: sexDefault) { (snapshot, error) in
+        Request.requestSingleByChildLastIndex(reference: Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(ageDefault), child: sexDefault) { (snapshot, error) in
             guard error == nil else {print (error as Any); return}
             
             Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
@@ -232,7 +248,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.lastPosition = travelsArray.first?.createDate
                 }
                 
-                Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("AllTravels").child(self.countryDefault).child("AllRanges"), child: self.sexDefault, limit: reqLimit) { (snapshot, error) in
+                Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("AllTravels").child(self.countryDefault).child(self.ageDefault), child: self.sexDefault, limit: reqLimit) { (snapshot, error) in
                     guard error == nil else {print (error as Any); return}
                     
                     Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
@@ -263,7 +279,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                             self.endIndex = self.travelsArray.last?.female_createdate
                         } else {
                             self.endIndex = self.travelsArray.last?.createDate
-                        }                        
+                        }
                         
                         DispatchQueue.main.async {
                             self.collectionView.reloadData()
@@ -284,7 +300,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             guard let lastPosition = self.lastPosition else {return}
             guard endIndex > lastPosition else {return}
             
-            Request.requestSingleNextByChild(reference: Request.ref.child("Travels").child("AllTravels").child(countryDefault).child("AllRanges"), child: sexDefault, ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
+            Request.requestSingleNextByChild(reference: Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(ageDefault), child: sexDefault, ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
                 
                 guard error == nil else {print (error as Any); return}
                 
@@ -303,7 +319,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                             return firstCreateDate < secondCreateDate
                         } else {
                             return first.createDate! < second.createDate!
-                        }                        
+                        }
                     })
                     
                     resultArray.reverse()

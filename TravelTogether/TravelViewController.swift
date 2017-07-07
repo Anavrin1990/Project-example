@@ -59,24 +59,24 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
                 Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").childByAutoId(), value: ["month" : month], complition: {})
                 
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child(destination).child(ageRange).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child(destination).child("AllRanges").childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child(destination).child("AllAges").childByAutoId(), value: values, complition: {})
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(User.person!.country!).child(destination).child(ageRange).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(User.person!.country!).child(destination).child("AllRanges").childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(User.person!.country!).child(destination).child("AllAges").childByAutoId(), value: values, complition: {})
                 
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child(destination).child(month).child(ageRange).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child(destination).child(month).child("AllRanges").childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child(destination).child(month).child("AllAges").childByAutoId(), value: values, complition: {})
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(User.person!.country!).child(destination).child(month).child(ageRange).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(User.person!.country!).child(destination).child(month).child("AllRanges").childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(User.person!.country!).child(destination).child(month).child("AllAges").childByAutoId(), value: values, complition: {})
                 
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child(month).child(ageRange).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child(month).child("AllRanges").childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child(month).child("AllAges").childByAutoId(), value: values, complition: {})
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(User.person!.country!).child(month).child(ageRange).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(User.person!.country!).child(month).child("AllRanges").childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(User.person!.country!).child(month).child("AllAges").childByAutoId(), value: values, complition: {})
                 
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child(ageRange).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllRanges").childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllAges").childByAutoId(), value: values, complition: {})
                 Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(User.person!.country!).child(ageRange).childByAutoId(), value: values, complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(User.person!.country!).child("AllRanges").childByAutoId(), value: values, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(User.person!.country!).child("AllAges").childByAutoId(), value: values, complition: {})
                 
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 SearchTableViewController.delegate = nil

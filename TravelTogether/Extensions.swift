@@ -54,11 +54,9 @@ extension String {
     
     func getAgeRange () -> String? {
         if let stringAge = self.getAge() {
-            let age = Int(stringAge)!
+            let age = Int(stringAge)!            
             
-            if age < 18 {
-                return AgeRange.toEighteen.rawValue
-            } else if age >= 18, age <= 29 {
+            if age <= 29 {
                 return AgeRange.toThirty.rawValue
             } else if age >= 30, age <= 39 {
                 return AgeRange.toForty.rawValue
@@ -75,7 +73,7 @@ extension String {
         return nil
     }
     
-    func toSex() -> String? {
+    func toSex() -> String {
         if self == "createdate" {
             return NSLocalizedString("All", comment: "All")
         }
@@ -85,7 +83,23 @@ extension String {
         if self == "female_createdate" {
             return NSLocalizedString("Female", comment: "Female")
         }
-        return nil
+        return self
+    }
+    
+    func toCountry() -> String {
+        if self == "AllCountries" {
+            return NSLocalizedString("All countries", comment: "All countries")
+        }
+        return self
+    }
+    
+    func toAgeRange() -> String {
+        for range in iterateEnum(AgeRange.self) {
+            if self == range.rawValue {
+                return range.localValue
+            }
+        }
+        return self
     }
 }
 

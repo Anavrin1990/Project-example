@@ -35,11 +35,11 @@ func addSpinner(_ view: UIView) {
     NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 0.85, constant: 0).isActive = true
 }
 
-var emptyCellCountryName = NSLocalizedString("Not filled", comment: "Not filled")
+var emptyCellCountryName = ("", NSLocalizedString("Not filled", comment: "Not filled"))
 func searchCountries (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
     countryId = ""
     Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCountries&v=5.65&need_all=1&lang=en&count=1000") { (json) in
-        var countriesArray = [("", emptyCellCountryName)]
+        var countriesArray = [emptyCellCountryName]
         let countries = json["response"]["items"].arrayValue
         for c in countries {
             let country = (c["id"].stringValue, c["title"].stringValue)

@@ -82,9 +82,8 @@ class BTTableViewCell: UITableViewCell {
         
         // Separator for cell
         let separator = BTTableCellContentView(frame: cellContentFrame)
-        if let cellSeparatorColor = self.configuration.cellSeparatorColor {
-            separator.separatorColor = cellSeparatorColor
-        }
+        separator.separatorColor = #colorLiteral(red: 0.846993506, green: 0.8470956087, blue: 0.8469588161, alpha: 1)
+        
         self.contentView.addSubview(separator)
     }
     

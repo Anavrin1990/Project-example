@@ -128,6 +128,7 @@ class ProfileViewController: UIViewController {
             userProperties["uid"] = uid
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {
                 UserDefaults.standard.set(Person.instance.country, forKey: "countryDefault")
+                UserDefaults.standard.synchronize()
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 SearchTableViewController.delegate = nil
             })
@@ -137,7 +138,7 @@ class ProfileViewController: UIViewController {
     
     func addDropList() {
         
-        emptyCellCountryName = NSLocalizedString("Not filled", comment: "Not filled")
+        emptyCellCountryName = ("", NSLocalizedString("Not filled", comment: "Not filled"))
         let nameField = ParamsTextField.initFromNib()
         nameField.setView(placeholder: NSLocalizedString("Enter your name", comment: "Enter your name"), parrent: self, name: "name", rawValue: nil)
         componentsArray.append(("name", NSLocalizedString("Name", comment: "Name"), [nameField], nil))

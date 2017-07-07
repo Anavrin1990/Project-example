@@ -62,7 +62,7 @@ final class BTConfiguration {
         self.cellHeight = 44
         self.cellBackgroundColor = UIColor.white
         self.arrowTintColor = UIColor.white
-        self.cellSeparatorColor = UIColor.lightGray
+        self.cellSeparatorColor = #colorLiteral(red: 0.846993506, green: 0.8470956087, blue: 0.8469588161, alpha: 1)
         self.cellTextLabelColor = UIColor.darkGray
         self.cellValueLabelColor = UIColor.lightGray
         self.selectedCellTextLabelColor = UIColor.darkGray
