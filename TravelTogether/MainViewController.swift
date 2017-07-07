@@ -20,7 +20,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var travelsArray = [Travel]()
     var endIndex: Int?
     var lastPosition: Int?
-    var countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "All"
+    var countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "AllCountries"
     var sexDefault = UserDefaults.standard.value(forKey: "sexDefault") as? String ?? "createdate"
     
     let spinner: UIActivityIndicatorView = {
@@ -47,7 +47,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     override func viewDidAppear(_ animated: Bool) {
         if MainViewController.needCheckAuth {
             Request.getUserInfo {
-                self.countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "All"
+                self.countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "AllCountries"
                 self.checkAuth()
             }
         }
@@ -92,7 +92,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             searchController.withTopConstraint = false
             
             if indexPath == 0 {
-                emptyCellCountryName = NSLocalizedString("All", comment: "All")
+                emptyCellCountryName = "AllCountries"
                 searchController.request = searchCountries(_:)
             } else {
                 searchController.contentArray = [(NSLocalizedString("Sex", comment: "Sex"), [("createdate", NSLocalizedString("All", comment: "All")), ("male_createdate", NSLocalizedString("Male", comment: "Male")), ("female_createdate", NSLocalizedString("Female", comment: "Female"))])]
@@ -195,7 +195,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         guard error == nil else {return}
                         if let snap = snapshot?.value as? NSDictionary {
                             let json = JSON(snap)
-                            let travelsCount = json["travelsCount"].intValue
+                            let travelsCount = json["travelsCount"].intValue 
                             if travelsCount == 0 {
                                 let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "TravelNavigationController")
                                 DispatchQueue.main.async {
@@ -218,7 +218,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func firstRequest () {
-        Request.requestSingleByChildLastIndex(reference: Request.ref.child("Travels").child("All").child(countryDefault), child: sexDefault) { (snapshot, error) in
+        
+        Request.requestSingleByChildLastIndex(reference: Request.ref.child("Travels").child("AllTravels").child(countryDefault).child("AllRanges"), child: sexDefault) { (snapshot, error) in
             guard error == nil else {print (error as Any); return}
             
             Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
@@ -231,7 +232,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.lastPosition = travelsArray.first?.createDate
                 }
                 
-                Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("All").child(self.countryDefault), child: self.sexDefault, limit: reqLimit) { (snapshot, error) in
+                Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("AllTravels").child(self.countryDefault).child("AllRanges"), child: self.sexDefault, limit: reqLimit) { (snapshot, error) in
                     guard error == nil else {print (error as Any); return}
                     
                     Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
@@ -283,7 +284,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             guard let lastPosition = self.lastPosition else {return}
             guard endIndex > lastPosition else {return}
             
-            Request.requestSingleNextByChild(reference: Request.ref.child("Travels").child("All").child(countryDefault), child: sexDefault, ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
+            Request.requestSingleNextByChild(reference: Request.ref.child("Travels").child("AllTravels").child(countryDefault).child("AllRanges"), child: sexDefault, ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
                 
                 guard error == nil else {print (error as Any); return}
                 

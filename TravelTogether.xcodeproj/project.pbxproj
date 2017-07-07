@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A8EC4981F0E65A800B91B4A /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8EC4971F0E65A800B91B4A /* Travel.swift */; };
+		0AF1DCC61F0F4FEB0073D54D /* AgeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF1DCC51F0F4FEB0073D54D /* AgeRange.swift */; };
 		0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */; };
 		0B0D96351EE3F05400C2F1C4 /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */; };
 		0B0D963A1EE402F100C2F1C4 /* ParamsTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B0D96391EE402F100C2F1C4 /* ParamsTextField.xib */; };
@@ -57,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		0A8EC4971F0E65A800B91B4A /* Travel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Travel.swift; sourceTree = "<group>"; };
+		0AF1DCC51F0F4FEB0073D54D /* AgeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeRange.swift; sourceTree = "<group>"; };
 		0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
 		0B0D96391EE402F100C2F1C4 /* ParamsTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsTextField.xib; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		0B0D96301EE3E87E00C2F1C4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0AF1DCC51F0F4FEB0073D54D /* AgeRange.swift */,
 				0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */,
 				0BCB55501EFFB00500605F24 /* MonthPicker.swift */,
 				0BDA50A81EDF370A00FA7A5E /* Person.swift */,
@@ -455,6 +458,7 @@
 				0B0D96461EE4265900C2F1C4 /* ParamsDatePicker.swift in Sources */,
 				0BAEE9621EF545E200CCC0C1 /* User.swift in Sources */,
 				0BE591111F0AB3F70017A866 /* BTTableCellContentView.swift in Sources */,
+				0AF1DCC61F0F4FEB0073D54D /* AgeRange.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
