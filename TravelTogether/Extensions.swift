@@ -93,6 +93,13 @@ extension String {
         return self
     }
     
+    func toCity() -> String {
+        if self == "AllCities" {
+            return NSLocalizedString("AllCities", comment: "AllCities")
+        }
+        return self
+    }
+    
     func toAgeRange() -> String {
         for range in iterateEnum(AgeRange.self) {
             if self == range.rawValue {

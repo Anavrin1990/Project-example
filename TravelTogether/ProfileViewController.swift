@@ -80,9 +80,7 @@ class ProfileViewController: UIViewController {
         Person.instance.smoking = profileDict["smoking"] as? String
         Person.instance.familyStatus = profileDict["familyStatus"] as? String
         Person.instance.childs = profileDict["childs"] as? String
-        Person.instance.orientation = profileDict["orientation"] as? String
-        
-        print (Person.instance)
+        Person.instance.orientation = profileDict["orientation"] as? String        
         
         var userProperties = [AnyHashable : Any]()
         
@@ -138,7 +136,7 @@ class ProfileViewController: UIViewController {
     
     func addDropList() {
         
-        emptyCellCountryName = ("", NSLocalizedString("Not filled", comment: "Not filled"))
+        emptySearchName = ("", NSLocalizedString("Not filled", comment: "Not filled"))
         let nameField = ParamsTextField.initFromNib()
         nameField.setView(placeholder: NSLocalizedString("Enter your name", comment: "Enter your name"), parrent: self, name: "name", rawValue: nil)
         componentsArray.append(("name", NSLocalizedString("Name", comment: "Name"), [nameField], nil))

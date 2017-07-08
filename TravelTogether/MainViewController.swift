@@ -22,8 +22,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var lastPosition: Int?
     
     var countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "AllCountries"
+    var cityDefault = UserDefaults.standard.value(forKey: "cityDefault") as? String ?? "AllCities"
     var sexDefault = UserDefaults.standard.value(forKey: "sexDefault") as? String ?? "createdate"
     var ageDefault = UserDefaults.standard.value(forKey: "ageDefault") as? String ?? "AllAges"
+    var destinationDefault = UserDefaults.standard.value(forKey: "destinationDefault") as? String ?? "AllCountries"
+    var monthDefault = UserDefaults.standard.value(forKey: "monthDefault") as? String ?? "AllMonths"
     
     let spinner: UIActivityIndicatorView = {
         let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -83,7 +86,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func navigationDropdownMenu() {
         
-        let items = [(NSLocalizedString("Country", comment: "Country"), countryDefault.toCountry()), (NSLocalizedString("Sex", comment: "Sex"), sexDefault.toSex()), (NSLocalizedString("Age", comment: "Age"), ageDefault.toAgeRange())]
+        let items = [(NSLocalizedString("Country", comment: "Country"), countryDefault.toCountry()), (NSLocalizedString("City", comment: "City"), cityDefault.toCountry()), (NSLocalizedString("Sex", comment: "Sex"), sexDefault.toSex()), (NSLocalizedString("Age", comment: "Age"), ageDefault.toAgeRange())]
         
         menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0].1, items: items)
         
@@ -94,11 +97,17 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             searchController.withTopConstraint = false
             
             if indexPath == 0 {
-                emptyCellCountryName = ("AllCountries", NSLocalizedString("All countries", comment: "All countries") )
+                emptySearchName = ("AllCountries", NSLocalizedString("All countries", comment: "All countries"))
                 searchController.request = searchCountries(_:)
+                
             } else if indexPath == 1 {
-                searchController.contentArray = [(NSLocalizedString("Sex", comment: "Sex"), [("createdate", NSLocalizedString("All", comment: "All")), ("male_createdate", NSLocalizedString("Male", comment: "Male")), ("female_createdate", NSLocalizedString("Female", comment: "Female"))])]
+                emptySearchName = ("AllCities", NSLocalizedString("All cities", comment: "All cities"))
+                searchController.request = searchCities(_:)
+                
             } else if indexPath == 2 {
+                searchController.contentArray = [(NSLocalizedString("Sex", comment: "Sex"), [("createdate", NSLocalizedString("All", comment: "All")), ("male_createdate", NSLocalizedString("Male", comment: "Male")), ("female_createdate", NSLocalizedString("Female", comment: "Female"))])]
+                
+            } else if indexPath == 3 {
                 var rangeArray = [(rawValue: String, localValue: String)]()
                 for range in iterateEnum(AgeRange.self) {
                     rangeArray.append((rawValue: range.rawValue, localValue: range.localValue))
@@ -108,17 +117,33 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             searchController.resultComplition = { (rawValue: String, localValue: String) in
                 tableView.items[indexPath] = (items[indexPath].0, localValue)
-                if indexPath == 0 {                    
+                
+                if indexPath == 0 {
+                    
+                    countryId = rawValue
                     self.menuView.setMenuTitle(localValue)
                     let value = rawValue == "AllCountries" ? rawValue : localValue
                     UserDefaults.standard.set(value, forKey: "countryDefault")
-                    UserDefaults.standard.synchronize()
+                    UserDefaults.standard.set(rawValue, forKey: "countryId")                    
                     self.countryDefault = value
+                    
+                    tableView.items[1] = (items[indexPath].1, "AllCities")
+                    UserDefaults.standard.set("AllCities", forKey: "cityDefault")
+                    UserDefaults.standard.synchronize()
+                    self.cityDefault = "AllCities"
+                    
                 } else if indexPath == 1 {
+                    let value = rawValue == "AllCities" ? rawValue : localValue
+                    UserDefaults.standard.set(value, forKey: "cityDefault")
+                    UserDefaults.standard.synchronize()
+                    self.cityDefault = value
+                    
+                } else if indexPath == 2 {
                     UserDefaults.standard.set(rawValue, forKey: "sexDefault")
                     UserDefaults.standard.synchronize()
                     self.sexDefault = rawValue
-                } else if indexPath == 2 {
+                    
+                } else if indexPath == 3 {
                     UserDefaults.standard.set(rawValue, forKey: "ageDefault")
                     UserDefaults.standard.synchronize()
                     self.ageDefault = rawValue
@@ -232,10 +257,26 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         })
     }
     
-    func firstRequest () {
-        imageCache.removeAllObjects()
+    func getReference() -> FIRDatabaseReference {
+        let cityDefault = countryDefault == "AllCountries" ? "AllCities" : self.cityDefault
         
-        Request.requestSingleByChildLastIndex(reference: Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(ageDefault), child: sexDefault) { (snapshot, error) in
+        var reference = Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(cityDefault).child(ageDefault)
+        
+        if destinationDefault != "AllCountries" {
+            reference = Request.ref.child("Travels").child("Destination").child(countryDefault).child(cityDefault).child(destinationDefault).child(ageDefault)
+            
+        } else if monthDefault != "AllMonths" {
+            reference = Request.ref.child("Travels").child("Months").child(countryDefault).child(cityDefault).child(monthDefault).child(ageDefault)
+            
+        } else if destinationDefault != "AllCountries" && monthDefault != "AllMonths" {
+            reference = Request.ref.child("Travels").child("Match").child(countryDefault).child(cityDefault).child(destinationDefault).child(monthDefault).child(ageDefault)
+        }
+        return reference
+    }
+    
+    func firstRequest () {
+        
+        Request.requestSingleByChildLastIndex(reference: getReference(), child: sexDefault) { (snapshot, error) in
             guard error == nil else {print (error as Any); return}
             
             Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
@@ -248,7 +289,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.lastPosition = travelsArray.first?.createDate
                 }
                 
-                Request.requestSingleFirstByChild(reference: Request.ref.child("Travels").child("AllTravels").child(self.countryDefault).child(self.ageDefault), child: self.sexDefault, limit: reqLimit) { (snapshot, error) in
+                Request.requestSingleFirstByChild(reference: self.getReference(), child: self.sexDefault, limit: reqLimit) { (snapshot, error) in
                     guard error == nil else {print (error as Any); return}
                     
                     Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
@@ -300,7 +341,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             guard let lastPosition = self.lastPosition else {return}
             guard endIndex > lastPosition else {return}
             
-            Request.requestSingleNextByChild(reference: Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(ageDefault), child: sexDefault, ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
+            Request.requestSingleNextByChild(reference: getReference(), child: sexDefault, ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
                 
                 guard error == nil else {print (error as Any); return}
                 

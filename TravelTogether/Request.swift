@@ -86,16 +86,14 @@ class Request {
             }) { (error) in
                 complition(nil, error)
             }
-            print ("First single request (byKey)")
         } else {
             reference.queryOrderedByKey().queryLimited(toLast: limit!).observeSingleEvent(of: .value, with: { (snapshot) in
                 complition(snapshot, nil)
             }) { (error) in
                 complition(nil, error)
             }
-            print ("First single request (byKey)")
         }
-        
+        print ("First single request (byKey)")
         
     }
     
@@ -107,16 +105,14 @@ class Request {
             }) { (error) in
                 complition(nil, error)
             }
-            print ("First single request (byChild)")
         } else {
             reference.queryOrdered(byChild: child).queryLimited(toLast: limit!).observeSingleEvent(of: .value, with: { (snapshot) in
                 complition(snapshot, nil)
             }) { (error) in
                 complition(nil, error)
             }
-            print ("First single request (byChild)")
         }
-        
+        print ("First single request (byChild)")
     }
     
     static func requestSingleNextByChild<T> (reference: FIRDatabaseReference, child: String, ending: T, limit: UInt?, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
@@ -126,17 +122,15 @@ class Request {
                 complition(snapshot, nil)
             }) { (error) in
                 complition(nil, error)
-            }
-            print ("Next single request (byChild)")
+            }            
         } else {
             reference.queryOrdered(byChild: child).queryEnding(atValue: ending).queryLimited(toLast: limit!).observeSingleEvent(of: .value, with: { (snapshot) in
                 complition(snapshot, nil)
             }) { (error) in
                 complition(nil, error)
             }
-            print ("Next single request (byChild)")
         }
-        
+        print ("Next single request (byChild)")
     }
     
     static func requestSearchEqual (reference: FIRDatabaseReference, equal: String, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?, _ ref: FIRDatabaseReference?) -> ()) {        
