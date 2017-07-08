@@ -21,8 +21,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var endIndex: Int?
     var lastPosition: Int?
     
-    var countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "AllCountries"
-    var cityDefault = UserDefaults.standard.value(forKey: "cityDefault") as? String ?? "AllCities"
+    var countryDefault = ""
+    var cityDefault = ""
     var sexDefault = UserDefaults.standard.value(forKey: "sexDefault") as? String ?? "createdate"
     var ageDefault = UserDefaults.standard.value(forKey: "ageDefault") as? String ?? "AllAges"
     var destinationDefault = UserDefaults.standard.value(forKey: "destinationDefault") as? String ?? "AllCountries"
@@ -52,7 +52,9 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     override func viewDidAppear(_ animated: Bool) {
         if MainViewController.needCheckAuth {
             Request.getUserInfo {
-                self.countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? "AllCountries"
+                self.countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? User.person?.country ?? "AllCountries"
+                self.cityDefault = UserDefaults.standard.value(forKey: "cityDefault") as? String ?? User.person?.city ?? "AllCities"
+                countryId = UserDefaults.standard.value(forKey: "countryId") as? String ?? User.countryId ?? ""
                 self.checkAuth()
             }
         }
@@ -80,7 +82,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView?.addSubview(refreshControl)
         
         spinner.startAnimating()
-        navigationDropdownMenu()
+        
         spinnerSettings()
     }
     
@@ -138,11 +140,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.destinationDefault = "AllCountries"
                 self.monthDefault = "AllMonths"
                 
-                self.menuView.setMenuTitle(User.person!.country!)
-                
-                for item in items.enumerated() {
-                    tableView.items[item.offset] = (item.element.0, item.element.1)
-                }
+                self.menuView.setMenuTitle(User.person!.country!)                
                 
                 UserDefaults.standard.set(User.countryId, forKey: "countryId")
                 UserDefaults.standard.set(User.person!.country!, forKey: "countryDefault")
@@ -153,6 +151,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 UserDefaults.standard.set("AllMonths", forKey: "monthDefault")
                 UserDefaults.standard.synchronize()
                 self.spinner.startAnimating()
+                self.navigationDropdownMenu()
                 self.firstRequest()
                 return
             }
@@ -292,6 +291,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                                 return
                             }
                             MainViewController.needCheckAuth = false
+                            self.navigationDropdownMenu()
                             self.menuView.setMenuTitle(self.countryDefault.toCountry())
                             self.firstRequest()
                         }
@@ -310,14 +310,15 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         var reference = Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(cityDefault).child(ageDefault)
         
-        if destinationDefault != "AllCountries" {
+        if destinationDefault != "AllCountries" && monthDefault != "AllMonths" {
+            reference = Request.ref.child("Travels").child("Match").child(countryDefault).child(cityDefault).child(destinationDefault).child(monthDefault).child(ageDefault)
+            
+        } else if destinationDefault != "AllCountries" {
             reference = Request.ref.child("Travels").child("Destinations").child(countryDefault).child(cityDefault).child(destinationDefault).child(ageDefault)
             
         } else if monthDefault != "AllMonths" {
             reference = Request.ref.child("Travels").child("Months").child(countryDefault).child(cityDefault).child(monthDefault).child(ageDefault)
             
-        } else if destinationDefault != "AllCountries" && monthDefault != "AllMonths" {
-            reference = Request.ref.child("Travels").child("Match").child(countryDefault).child(cityDefault).child(destinationDefault).child(monthDefault).child(ageDefault)
         }
         return reference
     }
