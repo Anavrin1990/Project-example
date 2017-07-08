@@ -140,7 +140,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.destinationDefault = "AllCountries"
                 self.monthDefault = "AllMonths"
                 
-                self.menuView.setMenuTitle(User.person!.country!)                
+                self.menuView.setMenuTitle(User.person!.country!)
                 
                 UserDefaults.standard.set(User.countryId, forKey: "countryId")
                 UserDefaults.standard.set(User.person!.country!, forKey: "countryDefault")
@@ -167,9 +167,10 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     UserDefaults.standard.set(rawValue, forKey: "countryId")
                     self.countryDefault = value
                     
-                    tableView.items[1] = (items[indexPath].1, "AllCities")
-                    UserDefaults.standard.set("AllCities", forKey: "cityDefault")
                     self.cityDefault = "AllCities"
+                    tableView.items[1] = (items[indexPath].1, self.cityDefault.toCity())
+                    UserDefaults.standard.set("AllCities", forKey: "cityDefault")
+                   
                     
                 } else if indexPath == 1 {
                     let value = rawValue == "AllCities" ? rawValue : localValue
