@@ -32,7 +32,7 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
         if onlyMonth {
             textField.inputView = monthPicker
             monthValue = monthPicker.currentMonth
-            self.textField.text = monthPicker.months[monthPicker.currentMonth - 1]
+            self.textField.text = MonthPickerView.months[monthPicker.currentMonth - 1]
         } else {
             datePicker.datePickerMode = .date
             textField.inputView = datePicker

@@ -124,13 +124,14 @@ class ProfileViewController: UIViewController {
                 
             }
             userProperties["uid"] = uid
+            userProperties["countryId"] = countryId
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {
                 UserDefaults.standard.set(Person.instance.country, forKey: "countryDefault")
+                UserDefaults.standard.set(Person.instance.city, forKey: "cityDefault")
                 UserDefaults.standard.synchronize()
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 SearchTableViewController.delegate = nil
-            })
-            
+            })            
         }
     }
     

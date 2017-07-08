@@ -13,7 +13,18 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
     
     var currentMonth = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!.component(.month, from: NSDate() as Date)
     
-    var months: [String]!
+    static var months = [NSLocalizedString("January", comment: "January"),
+                         NSLocalizedString("February", comment: "February"),
+                         NSLocalizedString("March", comment: "March"),
+                         NSLocalizedString("April", comment: "April"),
+                         NSLocalizedString("May", comment: "May"),
+                         NSLocalizedString("June", comment: "June"),
+                         NSLocalizedString("July", comment: "July"),
+                         NSLocalizedString("August", comment: "August"),
+                         NSLocalizedString("September", comment: "September"),
+                         NSLocalizedString("October", comment: "October"),
+                         NSLocalizedString("November", comment: "November"),
+                         NSLocalizedString("December", comment: "December")]
     
     var month: Int = 0 {
         didSet {
@@ -35,14 +46,14 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
     
     func commonSetup() {
         
-        // population months with localized names
-        var months: [String] = []
-        var month = 0
-        for _ in 1...12 {
-            months.append(DateFormatter().monthSymbols[month].capitalized)
-            month += 1
-        }
-        self.months = months
+//        // population months with localized names
+//        var months: [String] = []
+//        var month = 0
+//        for _ in 1...12 {
+//            months.append(DateFormatter().monthSymbols[month].capitalized)
+//            month += 1
+//        }
+//        MonthPickerView.months = months
         
         self.delegate = self
         self.dataSource = self
@@ -58,16 +69,16 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return months[row]
+        return MonthPickerView.months[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return months.count
+        return MonthPickerView.months.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let monthInt = self.selectedRow(inComponent: 0)+1
-        let monthString = self.months[row]
+        let monthString = MonthPickerView.months[row]
         
         if let block = onDateSelected {
             block(monthInt, monthString)

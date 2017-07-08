@@ -86,7 +86,13 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func navigationDropdownMenu() {
         
-        let items = [(NSLocalizedString("Country", comment: "Country"), countryDefault.toCountry()), (NSLocalizedString("City", comment: "City"), cityDefault.toCountry()), (NSLocalizedString("Sex", comment: "Sex"), sexDefault.toSex()), (NSLocalizedString("Age", comment: "Age"), ageDefault.toAgeRange())]
+        let items = [(NSLocalizedString("Country", comment: "Country"), countryDefault.toCountry()),
+                     (NSLocalizedString("City", comment: "City"), cityDefault.toCity()),
+                     (NSLocalizedString("Sex", comment: "Sex"), sexDefault.toSex()),
+                     (NSLocalizedString("Age", comment: "Age"), ageDefault.toAgeRange()),
+                     (NSLocalizedString("Destination", comment: "Destination"), destinationDefault.toCountry()),
+                     (NSLocalizedString("Month", comment: "Month"), monthDefault.toMonth()),
+                     (NSLocalizedString("Reset", comment: "Reset"), "")]
         
         menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0].1, items: items)
         
@@ -113,41 +119,83 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     rangeArray.append((rawValue: range.rawValue, localValue: range.localValue))
                 }
                 searchController.contentArray = [(NSLocalizedString("Age range", comment: "Age range"), rangeArray)]
+            } else if indexPath == 4 {
+                emptySearchName = ("AllCountries", NSLocalizedString("All countries", comment: "All countries"))
+                searchController.request = searchCountries(_:)
+                
+            } else if indexPath == 5 {
+                var monthArray = [(rawValue: "AllMonths", localValue: "All months")]
+                for month in MonthPickerView.months.enumerated() {
+                    monthArray.append((rawValue: String(month.offset + 1), localValue: month.element))
+                }
+                searchController.contentArray = [(NSLocalizedString("Months", comment: "Months"), monthArray)]
+                
+            } else if indexPath == 6 {
+                self.countryDefault = User.person!.country!
+                self.cityDefault = User.person!.city!
+                self.sexDefault = "createdate"
+                self.ageDefault = "AllAges"
+                self.destinationDefault = "AllCountries"
+                self.monthDefault = "AllMonths"
+                
+                self.menuView.setMenuTitle(User.person!.country!)
+                
+                for item in items.enumerated() {
+                    tableView.items[item.offset] = (item.element.0, item.element.1)
+                }
+                
+                UserDefaults.standard.set(User.countryId, forKey: "countryId")
+                UserDefaults.standard.set(User.person!.country!, forKey: "countryDefault")
+                UserDefaults.standard.set(User.person!.city!, forKey: "cityDefault")
+                UserDefaults.standard.set("createdate", forKey: "sexDefault")
+                UserDefaults.standard.set("AllAges", forKey: "ageDefault")
+                UserDefaults.standard.set("AllCountries", forKey: "destinationDefault")
+                UserDefaults.standard.set("AllMonths", forKey: "monthDefault")
+                UserDefaults.standard.synchronize()
+                self.spinner.startAnimating()
+                self.firstRequest()
+                return
             }
             
             searchController.resultComplition = { (rawValue: String, localValue: String) in
                 tableView.items[indexPath] = (items[indexPath].0, localValue)
                 
                 if indexPath == 0 {
-                    
                     countryId = rawValue
                     self.menuView.setMenuTitle(localValue)
                     let value = rawValue == "AllCountries" ? rawValue : localValue
                     UserDefaults.standard.set(value, forKey: "countryDefault")
-                    UserDefaults.standard.set(rawValue, forKey: "countryId")                    
+                    UserDefaults.standard.set(rawValue, forKey: "countryId")
                     self.countryDefault = value
                     
                     tableView.items[1] = (items[indexPath].1, "AllCities")
                     UserDefaults.standard.set("AllCities", forKey: "cityDefault")
-                    UserDefaults.standard.synchronize()
                     self.cityDefault = "AllCities"
                     
                 } else if indexPath == 1 {
                     let value = rawValue == "AllCities" ? rawValue : localValue
                     UserDefaults.standard.set(value, forKey: "cityDefault")
-                    UserDefaults.standard.synchronize()
                     self.cityDefault = value
                     
                 } else if indexPath == 2 {
                     UserDefaults.standard.set(rawValue, forKey: "sexDefault")
-                    UserDefaults.standard.synchronize()
                     self.sexDefault = rawValue
                     
                 } else if indexPath == 3 {
                     UserDefaults.standard.set(rawValue, forKey: "ageDefault")
-                    UserDefaults.standard.synchronize()
                     self.ageDefault = rawValue
+                    
+                } else if indexPath == 4 {
+                    let value = rawValue == "AllCountries" ? rawValue : localValue
+                    UserDefaults.standard.set(value, forKey: "destinationDefault")
+                    self.destinationDefault = value
+                    
+                } else if indexPath == 5 {
+                    UserDefaults.standard.set(rawValue, forKey: "monthDefault")
+                    self.monthDefault = rawValue
                 }
+                
+                UserDefaults.standard.synchronize()
                 self.spinner.startAnimating()
                 self.firstRequest()
             }
@@ -263,7 +311,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         var reference = Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(cityDefault).child(ageDefault)
         
         if destinationDefault != "AllCountries" {
-            reference = Request.ref.child("Travels").child("Destination").child(countryDefault).child(cityDefault).child(destinationDefault).child(ageDefault)
+            reference = Request.ref.child("Travels").child("Destinations").child(countryDefault).child(cityDefault).child(destinationDefault).child(ageDefault)
             
         } else if monthDefault != "AllMonths" {
             reference = Request.ref.child("Travels").child("Months").child(countryDefault).child(cityDefault).child(monthDefault).child(ageDefault)

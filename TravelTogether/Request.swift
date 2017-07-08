@@ -169,6 +169,7 @@ class Request {
                     User.icon = json["icon"].stringValue
                     User.email = json["email"].stringValue
                     User.travelsCount = json["travelsCount"].intValue
+                    User.countryId = json["countryId"].stringValue
                     complition()                    
                 } else {
                     complition()

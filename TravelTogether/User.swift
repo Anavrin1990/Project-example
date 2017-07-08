@@ -15,4 +15,5 @@ struct User {
     static var person: Person?
     static var icon: String?
     static var travelsCount: Int?
+    static var countryId: String?
 }

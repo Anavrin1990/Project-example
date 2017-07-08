@@ -119,7 +119,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
         
         let pickerView = MonthPickerView()
         self.monthNumber = String(pickerView.currentMonth)
-        self.monthString = pickerView.months[pickerView.currentMonth - 1]
+        self.monthString = MonthPickerView.months[pickerView.currentMonth - 1]
         
         pickerView.onDateSelected = { (monthInt: Int, monthString: String) in
             self.monthNumber = String(monthInt)

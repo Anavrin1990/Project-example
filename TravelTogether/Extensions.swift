@@ -95,7 +95,19 @@ extension String {
     
     func toCity() -> String {
         if self == "AllCities" {
-            return NSLocalizedString("AllCities", comment: "AllCities")
+            return NSLocalizedString("All cities", comment: "All cities")
+        }
+        return self
+    }
+    
+    func toMonth() -> String {
+        if self == "AllMonths" {
+            return NSLocalizedString("All months", comment: "All months")
+        }
+        if let month = Int(self) {
+            if let result = month.getMonth() {
+                return result
+            }
         }
         return self
     }
@@ -113,7 +125,7 @@ extension String {
 extension Int {
     func getMonth () -> String? {
         if self <= 12, self != 0 {
-            return DateFormatter().monthSymbols[self - 1]
+            return MonthPickerView.months[self - 1]
         }
         return nil        
     }
