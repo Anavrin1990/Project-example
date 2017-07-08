@@ -168,8 +168,11 @@ class Request {
                     User.person = person
                     User.icon = json["icon"].stringValue
                     User.email = json["email"].stringValue
-                    User.travelsCount = json["travelsCount"].intValue
                     User.countryId = json["countryId"].stringValue
+                    User.firstTravel = json["firstTravel"].stringValue
+                    User.secondTravel = json["secondTravel"].stringValue
+                    User.thirdTravel = json["thirdTravel"].stringValue
+                    
                     complition()                    
                 } else {
                     complition()

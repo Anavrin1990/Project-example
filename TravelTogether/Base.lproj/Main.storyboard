@@ -89,9 +89,14 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Yzc-x7-OK1">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="s4W-wz-RNc">
+                        <barButtonItem key="leftBarButtonItem" title="Exit" id="s4W-wz-RNc">
                             <connections>
                                 <action selector="logout:" destination="BYZ-38-t0r" id="Bv0-Fe-R8G"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="qfA-fi-ztS">
+                            <connections>
+                                <action selector="addTravel:" destination="BYZ-38-t0r" id="m2G-eF-gTB"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -527,7 +532,13 @@
                             <constraint firstItem="mSD-xP-XY0" firstAttribute="top" secondItem="doW-93-iCK" secondAttribute="bottom" constant="8" id="nAY-HU-tcM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="jTD-TW-DFj"/>
+                    <navigationItem key="navigationItem" id="jTD-TW-DFj">
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="whA-85-q4a">
+                            <connections>
+                                <action selector="cancelClick:" destination="3Sa-Ri-VVx" id="6hw-05-R4C"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="monthTextField" destination="mSD-xP-XY0" id="EFL-K8-Lni"/>
                         <outlet property="selectButton" destination="doW-93-iCK" id="6zH-go-hdR"/>

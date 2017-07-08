@@ -210,6 +210,16 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: collectionView, attribute: .centerY, multiplier: 0.85, constant: 0).isActive = true
     }
     
+    
+    @IBAction func addTravel(_ sender: Any) {
+        guard User.thirdTravel == "" else {
+            MessageBox.showMessage(parent: self, title: NSLocalizedString("Maximum is 3 travels", comment: "Maximum is 3 travels"), message: "")
+            return
+        }
+        let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "TravelNavigationController")
+        self.present(profileVC!, animated: true, completion: nil)
+    }
+    
     @IBAction func logout(_ sender: Any) {
         MessageBox.showDialog(parent: self, title: NSLocalizedString("Sign out", comment: "Sign out"), message: NSLocalizedString("Do you want to sign out?", comment: "Do you want to sign out?")) {
             Request.logOut {
@@ -283,8 +293,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         guard error == nil else {return}
                         if let snap = snapshot?.value as? NSDictionary {
                             let json = JSON(snap)
-                            let travelsCount = json["travelsCount"].intValue
-                            if travelsCount == 0 {
+                            let travelsCount = json["firstTravel"].stringValue
+                            if travelsCount == "" {
                                 let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "TravelNavigationController")
                                 DispatchQueue.main.async {
                                     self.present(profileVC!, animated: true)

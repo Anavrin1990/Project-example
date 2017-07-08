@@ -13,7 +13,9 @@ struct User {
     static var email: String?
     static var uid: String?
     static var person: Person?
-    static var icon: String?
-    static var travelsCount: Int?
+    static var icon: String?    
     static var countryId: String?
+    static var firstTravel: String?
+    static var secondTravel: String?
+    static var thirdTravel: String?
 }

@@ -62,6 +62,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func setupScreen() {
+        let bottomConstant = self.tabBarController?.tabBar.frame.height
         let topConstant = withTopConstraint ? UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height ?? 0) : 0
         view.addSubview(stackView)
         stackView.addArrangedSubview(searchBar)
@@ -71,7 +72,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
         stackView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         stackView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: topConstant).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -(bottomConstant ?? 0)).isActive = true
         addSpinner(view)
     }
     

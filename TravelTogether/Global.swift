@@ -40,6 +40,9 @@ func searchCountries (_ complition: @escaping (_ content: [(String, [(String, St
     //countryId = ""
     Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCountries&v=5.65&need_all=1&lang=en&count=1000") { (json) in
         var countriesArray = [emptySearchName]
+        if emptySearchName == ("", "") {
+            countriesArray = []
+        }
         let countries = json["response"]["items"].arrayValue
         for c in countries {
             let country = (c["id"].stringValue, c["title"].stringValue)
@@ -54,6 +57,9 @@ var countryId = UserDefaults.standard.value(forKey: "countryId") as? String ?? "
 func searchCities (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
     Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCities&v=5.5&country_id=\(countryId)&lang=en&count=1000") { (json) in
         var citiesArray = [emptySearchName]
+        if emptySearchName == ("", "") {
+            citiesArray = []
+        }
         let cities = json["response"]["items"].arrayValue
         for c in cities {
             let city = (c["id"].stringValue, c["title"].stringValue)
