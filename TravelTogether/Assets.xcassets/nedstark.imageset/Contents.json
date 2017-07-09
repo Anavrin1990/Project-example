@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Таня.jpg",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "nedstark@2x.png",
       "scale" : "2x"
     },
     {
