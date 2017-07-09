@@ -32,6 +32,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         userMessagesRef.observe(.childAdded, with: { (snapshot) in
             
             let messageId = snapshot.key
+            let q = snapshot.value as! Int
+            print (q)
             let messagesRef = FIRDatabase.database().reference().child("messages").child(messageId)
             messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -274,7 +276,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        print (indexPath.row)
+        
     }
     
     fileprivate func setupCell(_ cell: ChatMessageCell, message: Message) {
@@ -377,10 +379,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId).child(toId)
             
             let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId: 1])
+            userMessagesRef.updateChildValues([messageId: timestamp])
             
             let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId)
-            recipientUserMessagesRef.updateChildValues([messageId: 1])
+            recipientUserMessagesRef.updateChildValues([messageId: timestamp])
         }
     }
     
