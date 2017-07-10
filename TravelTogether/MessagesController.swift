@@ -33,32 +33,29 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class MessagesController: UITableViewController {
+class MessagesController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    var messages = [Message]()
+    var messagesDictionary = [String: Message]()
 
+    @IBOutlet weak var tableView: UITableView!
     let cellId = "cellId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        
-        let image = UIImage(named: "new_message_icon")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
-        
         checkIfUserIsLoggedIn()
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
-//        observeMessages()
-        
         tableView.allowsMultipleSelectionDuringEditing = true
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         guard let uid = FIRAuth.auth()?.currentUser?.uid else {
             return
@@ -67,7 +64,7 @@ class MessagesController: UITableViewController {
         let message = self.messages[indexPath.row]
         
         if let chatPartnerId = message.chatPartnerId() {
-            FIRDatabase.database().reference().child("user-messages").child(uid).child(chatPartnerId).removeValue(completionBlock: { (error, ref) in
+            FIRDatabase.database().reference().child("UserMessages").child(uid).child(chatPartnerId).removeValue(completionBlock: { (error, ref) in
                 
                 if error != nil {
                     print("Failed to delete message:", error!)
@@ -85,19 +82,18 @@ class MessagesController: UITableViewController {
         }
     }
     
-    var messages = [Message]()
-    var messagesDictionary = [String: Message]()
+    
     
     func observeUserMessages() {
         guard let uid = FIRAuth.auth()?.currentUser?.uid else {
             return
         }
         
-        let ref = FIRDatabase.database().reference().child("user-messages").child(uid)
+        let ref = FIRDatabase.database().reference().child("UserMessages").child(uid)
         ref.observe(.childAdded, with: { (snapshot) in
             
             let userId = snapshot.key
-            FIRDatabase.database().reference().child("user-messages").child(uid).child(userId).observe(.childAdded, with: { (snapshot) in
+            FIRDatabase.database().reference().child("UserMessages").child(uid).child(userId).observe(.childAdded, with: { (snapshot) in
                 
                 let messageId = snapshot.key
                 self.fetchMessageWithMessageId(messageId)
@@ -117,7 +113,7 @@ class MessagesController: UITableViewController {
     }                            
     
     fileprivate func fetchMessageWithMessageId(_ messageId: String) {
-        let messagesReference = FIRDatabase.database().reference().child("messages").child(messageId)
+        let messagesReference = FIRDatabase.database().reference().child("Messages").child(messageId)
         
         messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -155,11 +151,11 @@ class MessagesController: UITableViewController {
         })
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
         let message = messages[indexPath.row]
@@ -168,25 +164,25 @@ class MessagesController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let message = messages[indexPath.row]
         
         guard let chatPartnerId = message.chatPartnerId() else {
             return
         }
         
-        let ref = FIRDatabase.database().reference().child("users").child(chatPartnerId)
+        let ref = FIRDatabase.database().reference().child("Users").child(chatPartnerId)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let dictionary = snapshot.value as? [String: AnyObject] else {
                 return
             }
             
             var user = User(dictionary: dictionary)
-            user.id = chatPartnerId
+            user.uid = chatPartnerId
             self.showChatControllerForUser(user)
             
             }, withCancel: nil)
@@ -213,7 +209,7 @@ class MessagesController: UITableViewController {
             return
         }
         
-        FIRDatabase.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+        FIRDatabase.database().reference().child("Users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
 //                self.navigationItem.title = dictionary["name"] as? String
@@ -245,8 +241,8 @@ class MessagesController: UITableViewController {
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 20
         profileImageView.clipsToBounds = true
-        if let profileImageUrl = user.profileImageUrl {
-            profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+        if let profileImageUrl = user.icon {
+            profileImageView.getImage(url: profileImageUrl)
         }
         
         containerView.addSubview(profileImageView)
@@ -261,7 +257,7 @@ class MessagesController: UITableViewController {
         let nameLabel = UILabel()
         
         containerView.addSubview(nameLabel)
-        nameLabel.text = user.name
+        nameLabel.text = user.person?.name
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         //need x,y,width,height anchors
         nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true

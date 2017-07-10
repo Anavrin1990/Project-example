@@ -26,19 +26,16 @@ class NewMessageController: UITableViewController {
     }
     
     func fetchUser() {
-        FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
+        FIRDatabase.database().reference().child("Users").observe(.childAdded, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 var user = User(dictionary: dictionary)
-                user.id = snapshot.key
+                user.uid = snapshot.key
                 self.users.append(user)
                 
-                //this will crash because of background thread, so lets use dispatch_async to fix
-                DispatchQueue.main.async(execute: { 
+                DispatchQueue.main.async {
                     self.tableView.reloadData()
-                })
-                
-//                user.name = dictionary["name"]
+                }
             }
             
             }, withCancel: nil)
@@ -56,11 +53,11 @@ class NewMessageController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
         let user = users[indexPath.row]
-        cell.textLabel?.text = user.name
+        cell.textLabel?.text = user.person?.name
         cell.detailTextLabel?.text = user.email
         
-        if let profileImageUrl = user.profileImageUrl {            
-            cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+        if let profileImageUrl = user.icon {
+            cell.profileImageView.getImage(url: profileImageUrl)
         }
         
         return cell
@@ -73,8 +70,7 @@ class NewMessageController: UITableViewController {
     var messagesController: MessagesController?
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        dismiss(animated: true) { 
-            print("Dismiss completed")
+        dismiss(animated: true) {
             let user = self.users[indexPath.row]
             self.messagesController?.showChatControllerForUser(user)
         }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A304C111F136EF000096768 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A304C101F136EF000096768 /* DetailViewController.swift */; };
 		0A8EC4981F0E65A800B91B4A /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8EC4971F0E65A800B91B4A /* Travel.swift */; };
 		0AF1DCC61F0F4FEB0073D54D /* AgeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF1DCC51F0F4FEB0073D54D /* AgeRange.swift */; };
 		0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */; };
@@ -66,6 +67,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A304C101F136EF000096768 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		0A8EC4971F0E65A800B91B4A /* Travel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Travel.swift; sourceTree = "<group>"; };
 		0AF1DCC51F0F4FEB0073D54D /* AgeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeRange.swift; sourceTree = "<group>"; };
 		0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */,
+				0A304C101F136EF000096768 /* DetailViewController.swift */,
 				0BDA50A41EDF333400FA7A5E /* MainViewController.swift */,
 				0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */,
 				0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */,
@@ -245,7 +248,7 @@
 		0BDA508F1EDF2D1800FA7A5E /* TravelTogether */ = {
 			isa = PBXGroup;
 			children = (
-				0BDA94181F1286D00004B76D /* New Group */,
+				0BDA94181F1286D00004B76D /* Chat */,
 				0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */,
 				0B86048C1EEF03C40090CAF3 /* Global.swift */,
 				0BC4965B1EED563100505FD2 /* Request.swift */,
@@ -261,7 +264,7 @@
 			path = TravelTogether;
 			sourceTree = "<group>";
 		};
-		0BDA94181F1286D00004B76D /* New Group */ = {
+		0BDA94181F1286D00004B76D /* Chat */ = {
 			isa = PBXGroup;
 			children = (
 				0BDA94191F1286D70004B76D /* ChatInputContainerView.swift */,
@@ -274,7 +277,7 @@
 				0BDA94271F12870C0004B76D /* NewMessageController.swift */,
 				0BDA94291F1287140004B76D /* UserCell.swift */,
 			);
-			name = "New Group";
+			name = Chat;
 			sourceTree = "<group>";
 		};
 		0BE591031F0AB3F70017A866 /* BTNavigationDropdownMenu */ = {
@@ -483,6 +486,7 @@
 				0BE5910F1F0AB3F70017A866 /* BTTitle.swift in Sources */,
 				0BDA942A1F1287140004B76D /* UserCell.swift in Sources */,
 				0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */,
+				0A304C111F136EF000096768 /* DetailViewController.swift in Sources */,
 				0B273FEE1F079B910031D3C1 /* DropStackView.swift in Sources */,
 				0BDA94221F1286FD0004B76D /* LoginController+handlers.swift in Sources */,
 				0B2106331EE2CCC7001AE7D0 /* ProfileViewController.swift in Sources */,

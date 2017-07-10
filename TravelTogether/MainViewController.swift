@@ -170,7 +170,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.cityDefault = "AllCities"
                     tableView.items[1] = (items[indexPath].1, self.cityDefault.toCity())
                     UserDefaults.standard.set("AllCities", forKey: "cityDefault")
-                   
+                    
                     
                 } else if indexPath == 1 {
                     let value = rawValue == "AllCities" ? rawValue : localValue
@@ -254,12 +254,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
+        if segue.identifier == "ShowDetail" {
             if let indexPaths = collectionView?.indexPathsForSelectedItems {
                 let indexPath = indexPaths[0] as NSIndexPath
-                //                let dvc = segue.destination as! DetailViewController
-                //                dvc.model = self.modelsArray[indexPath.row]
-                //                dvc.arrayPosition = indexPath.row
+                let dvc = segue.destination as! DetailViewController
+                dvc.userUid = travelsArray[indexPath.row].uid
             }
         }
     }

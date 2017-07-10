@@ -33,10 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 //        statusBarView.backgroundColor = UINavigationBar.appearance().barTintColor
 //        self.window?.rootViewController?.view.insertSubview(statusBarView, at: 1)
         
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.makeKeyAndVisible()
-        
-        window?.rootViewController = UINavigationController(rootViewController: MessagesController())
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//        window?.makeKeyAndVisible()
+//        
+//        window?.rootViewController = UINavigationController(rootViewController: MessagesController())
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         

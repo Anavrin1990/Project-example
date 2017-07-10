@@ -15,7 +15,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     var user: User? {
         didSet {
-            navigationItem.title = user?.name
+            navigationItem.title = user?.person?.name
             
             observeMessages()
         }
@@ -24,17 +24,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var messages = [Message]()
     
     func observeMessages() {
-        guard let uid = FIRAuth.auth()?.currentUser?.uid, let toId = user?.id else {
+        guard let uid = FIRAuth.auth()?.currentUser?.uid, let toId = user?.uid else {
             return
         }
         
-        let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(uid).child(toId)
+        let userMessagesRef = FIRDatabase.database().reference().child("UserMessages").child(uid).child(toId)
         userMessagesRef.observe(.childAdded, with: { (snapshot) in
             
             let messageId = snapshot.key
-            let q = snapshot.value as! Int
-            print (q)
-            let messagesRef = FIRDatabase.database().reference().child("messages").child(messageId)
+            
+            let messagesRef = FIRDatabase.database().reference().child("Messages").child(messageId)
             messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 guard let dictionary = snapshot.value as? [String: AnyObject] else {
@@ -129,7 +128,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
         
         uploadTask.observe(.success) { (snapshot) in
-            self.navigationItem.title = self.user?.name
+            self.navigationItem.title = self.user?.person?.name
         }
     }
     
@@ -280,8 +279,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     fileprivate func setupCell(_ cell: ChatMessageCell, message: Message) {
-        if let profileImageUrl = self.user?.profileImageUrl {
-            cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+        if let profileImageUrl = self.user?.icon {
+            cell.profileImageView.getImage(url: profileImageUrl)
         }
         
         if message.fromId == FIRAuth.auth()?.currentUser?.uid {
@@ -304,7 +303,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
         
         if let messageImageUrl = message.imageUrl {
-            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageUrl)
+            cell.messageImageView.getImage(url: messageImageUrl)
             cell.messageImageView.isHidden = false
             cell.bubbleView.backgroundColor = UIColor.clear
         } else {
@@ -356,9 +355,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     fileprivate func sendMessageWithProperties(_ properties: [String: AnyObject]) {
-        let ref = FIRDatabase.database().reference().child("messages")
+        let ref = FIRDatabase.database().reference().child("Messages")
         let childRef = ref.childByAutoId()
-        let toId = user!.id!
+        let toId = user!.uid!
         let fromId = FIRAuth.auth()!.currentUser!.uid
         let timestamp = Int(Date().timeIntervalSince1970)
         
@@ -376,12 +375,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             self.inputContainerView.inputTextField.text = nil
             
-            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId).child(toId)
+            let userMessagesRef = FIRDatabase.database().reference().child("UserMessages").child(fromId).child(toId)
             
             let messageId = childRef.key
             userMessagesRef.updateChildValues([messageId: timestamp])
             
-            let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId)
+            let recipientUserMessagesRef = FIRDatabase.database().reference().child("UserMessages").child(toId).child(fromId)
             recipientUserMessagesRef.updateChildValues([messageId: timestamp])
         }
     }
