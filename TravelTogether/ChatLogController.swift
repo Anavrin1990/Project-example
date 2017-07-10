@@ -13,63 +13,22 @@ import AVFoundation
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    var messages = [Message]() {
+        didSet {
+            endIndex = messages.first?.timestamp as? Int ?? 0
+        }
+    }
+    
+    var loadMore = false
+    var lastIndex: Int?
+    var endIndex: Int?
+    let cellId = "cellId"
+    
     var user: User? {
         didSet {
             navigationItem.title = user?.person?.name
-            
             observeMessages()
         }
-    }
-    
-    var messages = [Message]()
-    
-    func observeMessages() {
-        guard let uid = FIRAuth.auth()?.currentUser?.uid, let toId = user?.uid else {
-            return
-        }
-        
-        let userMessagesRef = FIRDatabase.database().reference().child("UserMessages").child(uid).child(toId)
-        userMessagesRef.observe(.childAdded, with: { (snapshot) in
-            
-            let messageId = snapshot.key
-            
-            let messagesRef = FIRDatabase.database().reference().child("Messages").child(messageId)
-            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                guard let dictionary = snapshot.value as? [String: AnyObject] else {
-                    return
-                }
-                
-                self.messages.append(Message(dictionary: dictionary))
-                DispatchQueue.main.async(execute: {
-                    self.collectionView?.reloadData()
-                    //scroll to the last index
-                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                })
-                
-                }, withCancel: nil)
-            
-            }, withCancel: nil)
-    }
-    
-    
-    
-    let cellId = "cellId"
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-//        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-        collectionView?.alwaysBounceVertical = true
-        collectionView?.backgroundColor = UIColor.white
-        collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
-        
-        collectionView?.keyboardDismissMode = .interactive
-        
-        setupKeyboardObservers()
     }
     
     lazy var inputContainerView: ChatInputContainerView = {
@@ -77,6 +36,47 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         chatInputContainerView.chatLogController = self
         return chatInputContainerView
     }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        collectionView?.alwaysBounceVertical = true
+        collectionView?.backgroundColor = UIColor.white
+        collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.keyboardDismissMode = .interactive
+        
+        setupKeyboardObservers()
+    }
+    
+    func observeMessages() {
+        guard let uid = User.uid, let toId = user?.uid else {
+            return
+        }
+        
+        let userMessagesRef = Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toLast: reqLimit)
+        userMessagesRef.observe(.childAdded, with: { (snapshot) in
+            
+            let messageId = snapshot.key
+            
+            let messagesRef = Request.ref.child("Messages").child(messageId)
+            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let dictionary = snapshot.value as? [String: AnyObject] else {
+                    return
+                }
+                self.messages.append(Message(dictionary: dictionary))
+                
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                }
+                
+            }, withCancel: nil)
+            
+        }, withCancel: nil)
+    }
     
     func handleUploadTap() {
         let imagePickerController = UIImagePickerController()
@@ -138,7 +138,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let imageGenerator = AVAssetImageGenerator(asset: asset)
         
         do {
-        
+            
             let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
             return UIImage(cgImage: thumbnailCGImage)
             
@@ -203,9 +203,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-//        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+        //
+        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func handleKeyboardDidShow() {
@@ -229,9 +229,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
         
         containerViewBottomAnchor?.constant = -keyboardFrame!.height
-        UIView.animate(withDuration: keyboardDuration!, animations: { 
+        UIView.animate(withDuration: keyboardDuration!, animations: {
             self.view.layoutIfNeeded()
-        }) 
+        })
     }
     
     func handleKeyboardWillHide(_ notification: Notification) {
@@ -240,7 +240,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         containerViewBottomAnchor?.constant = 0
         UIView.animate(withDuration: keyboardDuration!, animations: {
             self.view.layoutIfNeeded()
-        }) 
+        })
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -276,6 +276,35 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        guard let uid = User.uid, let toId = user?.uid else {return}
+        guard indexPath.row == 0 else {return}
+        guard loadMore else {loadMore = true; return}
+        
+        
+        let userMessagesRef = Request.ref.child("UserMessages").child(uid).child(toId).queryOrderedByValue().queryEnding(atValue: self.endIndex! - 1).queryLimited(toLast: reqLimit)
+        
+        userMessagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let messageId = snapshot.key
+            
+//            let messagesRef = Request.ref.child("Messages").child(messageId)
+//            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+//                
+//                guard let dictionary = snapshot.value as? [String: AnyObject] else {
+//                    return
+//                }
+//                self.messages.insert(Message(dictionary: dictionary), at: 0)
+//                
+//                DispatchQueue.main.async {
+//                    self.collectionView?.reloadData()
+//                    //                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+//                    //                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+//                }
+//                
+//            }, withCancel: nil)
+            
+        }, withCancel: nil)
         
     }
     
@@ -356,7 +385,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     fileprivate func sendMessageWithProperties(_ properties: [String: AnyObject]) {
-        let ref = FIRDatabase.database().reference().child("Messages")
+        let ref = Request.ref.child("Messages")
         let childRef = ref.childByAutoId()
         let toId = user!.uid!
         let fromId = FIRAuth.auth()!.currentUser!.uid
@@ -376,12 +405,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             self.inputContainerView.inputTextField.text = nil
             
-            let userMessagesRef = FIRDatabase.database().reference().child("UserMessages").child(fromId).child(toId)
+            let userMessagesRef = Request.ref.child("UserMessages").child(fromId).child(toId)
             
             let messageId = childRef.key
             userMessagesRef.updateChildValues([messageId: timestamp])
             
-            let recipientUserMessagesRef = FIRDatabase.database().reference().child("UserMessages").child(toId).child(fromId)
+            let recipientUserMessagesRef = Request.ref.child("UserMessages").child(toId).child(fromId)
             recipientUserMessagesRef.updateChildValues([messageId: timestamp])
         }
     }
@@ -426,8 +455,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 
                 zoomingImageView.center = keyWindow.center
                 
-                }, completion: { (completed) in
-//                    do nothing
+            }, completion: { (completed) in
+                //                    do nothing
             })
             
         }
@@ -445,9 +474,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 self.blackBackgroundView?.alpha = 0
                 self.inputContainerView.alpha = 1
                 
-                }, completion: { (completed) in
-                    zoomOutImageView.removeFromSuperview()
-                    self.startingImageView?.isHidden = false
+            }, completion: { (completed) in
+                zoomOutImageView.removeFromSuperview()
+                self.startingImageView?.isHidden = false
             })
         }
     }

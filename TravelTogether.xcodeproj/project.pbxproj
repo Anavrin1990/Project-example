@@ -47,8 +47,6 @@
 		0BDA941A1F1286D70004B76D /* ChatInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94191F1286D70004B76D /* ChatInputContainerView.swift */; };
 		0BDA941C1F1286DF0004B76D /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA941B1F1286DF0004B76D /* ChatLogController.swift */; };
 		0BDA941E1F1286E50004B76D /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA941D1F1286E50004B76D /* ChatMessageCell.swift */; };
-		0BDA94201F1286F80004B76D /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA941F1F1286F80004B76D /* LoginController.swift */; };
-		0BDA94221F1286FD0004B76D /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94211F1286FD0004B76D /* LoginController+handlers.swift */; };
 		0BDA94241F1287030004B76D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94231F1287030004B76D /* Message.swift */; };
 		0BDA94261F1287080004B76D /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94251F1287080004B76D /* MessagesController.swift */; };
 		0BDA94281F12870C0004B76D /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94271F12870C0004B76D /* NewMessageController.swift */; };
@@ -109,8 +107,6 @@
 		0BDA94191F1286D70004B76D /* ChatInputContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInputContainerView.swift; sourceTree = "<group>"; };
 		0BDA941B1F1286DF0004B76D /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		0BDA941D1F1286E50004B76D /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
-		0BDA941F1F1286F80004B76D /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		0BDA94211F1286FD0004B76D /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		0BDA94231F1287030004B76D /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		0BDA94251F1287080004B76D /* MessagesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
 		0BDA94271F12870C0004B76D /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
@@ -145,9 +141,11 @@
 		0B0D962E1EE3E80000C2F1C4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0BDA941B1F1286DF0004B76D /* ChatLogController.swift */,
 				0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */,
 				0A304C101F136EF000096768 /* DetailViewController.swift */,
 				0BDA50A41EDF333400FA7A5E /* MainViewController.swift */,
+				0BDA94251F1287080004B76D /* MessagesController.swift */,
 				0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */,
 				0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */,
 				0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */,
@@ -248,7 +246,6 @@
 		0BDA508F1EDF2D1800FA7A5E /* TravelTogether */ = {
 			isa = PBXGroup;
 			children = (
-				0BDA94181F1286D00004B76D /* Chat */,
 				0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */,
 				0B86048C1EEF03C40090CAF3 /* Global.swift */,
 				0BC4965B1EED563100505FD2 /* Request.swift */,
@@ -268,12 +265,8 @@
 			isa = PBXGroup;
 			children = (
 				0BDA94191F1286D70004B76D /* ChatInputContainerView.swift */,
-				0BDA941B1F1286DF0004B76D /* ChatLogController.swift */,
 				0BDA941D1F1286E50004B76D /* ChatMessageCell.swift */,
-				0BDA941F1F1286F80004B76D /* LoginController.swift */,
-				0BDA94211F1286FD0004B76D /* LoginController+handlers.swift */,
 				0BDA94231F1287030004B76D /* Message.swift */,
-				0BDA94251F1287080004B76D /* MessagesController.swift */,
 				0BDA94271F12870C0004B76D /* NewMessageController.swift */,
 				0BDA94291F1287140004B76D /* UserCell.swift */,
 			);
@@ -307,6 +300,7 @@
 		0BE591151F0AB6500017A866 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				0BDA94181F1286D00004B76D /* Chat */,
 				0BE591031F0AB3F70017A866 /* BTNavigationDropdownMenu */,
 				0B7E63061F084254007DBDA6 /* DropStackView */,
 			);
@@ -488,14 +482,12 @@
 				0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */,
 				0A304C111F136EF000096768 /* DetailViewController.swift in Sources */,
 				0B273FEE1F079B910031D3C1 /* DropStackView.swift in Sources */,
-				0BDA94221F1286FD0004B76D /* LoginController+handlers.swift in Sources */,
 				0B2106331EE2CCC7001AE7D0 /* ProfileViewController.swift in Sources */,
 				0B0D964C1EE4469D00C2F1C4 /* ParamsAbstract.swift in Sources */,
 				0BDA94241F1287030004B76D /* Message.swift in Sources */,
 				0BC4965C1EED563100505FD2 /* Request.swift in Sources */,
 				0B95FC3A1EF06ACC00C315F6 /* MessageBox.swift in Sources */,
 				0B0D964A1EE431FB00C2F1C4 /* Extensions.swift in Sources */,
-				0BDA94201F1286F80004B76D /* LoginController.swift in Sources */,
 				0BCD648E1EFE741300B93F82 /* TravelViewController.swift in Sources */,
 				0B0D963C1EE4055500C2F1C4 /* ParamsTextField.swift in Sources */,
 				0A8EC4981F0E65A800B91B4A /* Travel.swift in Sources */,
