@@ -27,7 +27,7 @@ class DetailViewController: UIViewController {
 
     @IBAction func onChatClick(_ sender: Any) {
         guard let user = self.user else {return}
-        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        let chatLogController = storyboard?.instantiateViewController(withIdentifier: "ChatLogController") as! ChatLogController
         chatLogController.user = user
         navigationController?.pushViewController(chatLogController, animated: true)
     }

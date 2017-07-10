@@ -254,7 +254,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        let nameLabel = UILabel()
+        let nameLabel = UILabel() 
         
         containerView.addSubview(nameLabel)
         nameLabel.text = user.person?.name
@@ -274,7 +274,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func showChatControllerForUser(_ user: User) {
-        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        let chatLogController = storyboard?.instantiateViewController(withIdentifier: "ChatLogController") as! ChatLogController
         chatLogController.user = user
         navigationController?.pushViewController(chatLogController, animated: true)
     }
