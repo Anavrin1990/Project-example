@@ -74,13 +74,13 @@ extension String {
     }
     
     func toSex() -> String {
-        if self == "createdate" {
+        if self == "AllSex" {
             return NSLocalizedString("All", comment: "All")
         }
-        if self == "male_createdate" {
+        if self == "Male" {
             return NSLocalizedString("Male", comment: "Male")
         }
-        if self == "female_createdate" {
+        if self == "Female" {
             return NSLocalizedString("Female", comment: "Female")
         }
         return self

@@ -23,7 +23,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     var countryDefault = ""
     var cityDefault = ""
-    var sexDefault = UserDefaults.standard.value(forKey: "sexDefault") as? String ?? "createdate"
+    var sexDefault = UserDefaults.standard.value(forKey: "sexDefault") as? String ?? "AllSex"
     var ageDefault = UserDefaults.standard.value(forKey: "ageDefault") as? String ?? "AllAges"
     var destinationDefault = UserDefaults.standard.value(forKey: "destinationDefault") as? String ?? "AllCountries"
     var monthDefault = UserDefaults.standard.value(forKey: "monthDefault") as? String ?? "AllMonths"
@@ -113,7 +113,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 searchController.request = searchCities(_:)
                 
             } else if indexPath == 2 {
-                searchController.contentArray = [(NSLocalizedString("Sex", comment: "Sex"), [("createdate", NSLocalizedString("All", comment: "All")), ("male_createdate", NSLocalizedString("Male", comment: "Male")), ("female_createdate", NSLocalizedString("Female", comment: "Female"))])]
+                searchController.contentArray = [(NSLocalizedString("Sex", comment: "Sex"), [("AllSex", NSLocalizedString("All", comment: "All")), ("Male", NSLocalizedString("Male", comment: "Male")), ("Female", NSLocalizedString("Female", comment: "Female"))])]
                 
             } else if indexPath == 3 {
                 var rangeArray = [(rawValue: String, localValue: String)]()
@@ -318,22 +318,31 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func getReference() -> FIRDatabaseReference {
         let cityDefault = countryDefault == "AllCountries" ? "AllCities" : self.cityDefault
         
-        var reference = Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(cityDefault).child(ageDefault)
+        var reference = Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(cityDefault).child(ageDefault).child(sexDefault)
         
         if destinationDefault != "AllCountries" && monthDefault != "AllMonths" {
-            reference = Request.ref.child("Travels").child("Match").child(countryDefault).child(cityDefault).child(destinationDefault).child(monthDefault).child(ageDefault)
+            reference = Request.ref.child("Travels").child("Match").child(countryDefault).child(cityDefault).child(destinationDefault).child(monthDefault).child(ageDefault).child(sexDefault)
             
         } else if destinationDefault != "AllCountries" {
-            reference = Request.ref.child("Travels").child("Destinations").child(countryDefault).child(cityDefault).child(destinationDefault).child(ageDefault)
+            reference = Request.ref.child("Travels").child("Destinations").child(countryDefault).child(cityDefault).child(destinationDefault).child(ageDefault).child(sexDefault)
             
         } else if monthDefault != "AllMonths" {
-            reference = Request.ref.child("Travels").child("Months").child(countryDefault).child(cityDefault).child(monthDefault).child(ageDefault)
+            reference = Request.ref.child("Travels").child("Months").child(countryDefault).child(cityDefault).child(monthDefault).child(ageDefault).child(sexDefault)
             
         }
         return reference
     }
     
     func firstRequest () {
+        
+        // Перепиливаем запрос
+        getReference().queryLimited(toLast: 1).observeSingleEvent(of: .value, andPreviousSiblingKeyWith: { (snapshot) in
+            print(snapshot)
+            print("")
+        }) { (error) in
+            print (error.localizedDescription)
+            return
+        }
         
         Request.requestSingleByChildLastIndex(reference: getReference(), child: sexDefault) { (snapshot, error) in
             guard error == nil else {print (error as Any); return}
