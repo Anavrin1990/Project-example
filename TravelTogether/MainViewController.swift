@@ -135,7 +135,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             } else if indexPath == 6 {
                 self.countryDefault = User.person!.country!
                 self.cityDefault = User.person!.city!
-                self.sexDefault = "createdate"
+                self.sexDefault = "AllSex"
                 self.ageDefault = "AllAges"
                 self.destinationDefault = "AllCountries"
                 self.monthDefault = "AllMonths"
@@ -145,7 +145,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 UserDefaults.standard.set(User.countryId, forKey: "countryId")
                 UserDefaults.standard.set(User.person!.country!, forKey: "countryDefault")
                 UserDefaults.standard.set(User.person!.city!, forKey: "cityDefault")
-                UserDefaults.standard.set("createdate", forKey: "sexDefault")
+                UserDefaults.standard.set("AllSex", forKey: "sexDefault")
                 UserDefaults.standard.set("AllAges", forKey: "ageDefault")
                 UserDefaults.standard.set("AllCountries", forKey: "destinationDefault")
                 UserDefaults.standard.set("AllMonths", forKey: "monthDefault")
@@ -168,7 +168,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.countryDefault = value
                     
                     self.cityDefault = "AllCities"
-                    tableView.items[1] = (items[indexPath].1, self.cityDefault.toCity())
+                    tableView.items[1] = (items[indexPath + 1].0, self.cityDefault.toCity())
                     UserDefaults.standard.set("AllCities", forKey: "cityDefault")
                     
                     
@@ -335,27 +335,12 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func firstRequest () {
         
-        // Перепиливаем запрос
-        getReference().queryLimited(toLast: 1).observeSingleEvent(of: .value, andPreviousSiblingKeyWith: { (snapshot) in
-            print(snapshot)
-            print("")
-        }) { (error) in
-            print (error.localizedDescription)
-            return
-        }
-        
         Request.requestSingleByChildLastIndex(reference: getReference(), child: sexDefault) { (snapshot, error) in
             guard error == nil else {print (error as Any); return}
             
             Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
                 
-                if self.sexDefault == "male_createdate" {
-                    self.lastPosition = travelsArray.first?.male_createdate
-                } else if self.sexDefault == "female_createdate"{
-                    self.lastPosition = travelsArray.first?.female_createdate
-                } else {
-                    self.lastPosition = travelsArray.first?.createDate
-                }
+                self.lastPosition = travelsArray.first?.createDate
                 
                 Request.requestSingleFirstByChild(reference: self.getReference(), child: self.sexDefault, limit: reqLimit) { (snapshot, error) in
                     guard error == nil else {print (error as Any); return}
@@ -365,30 +350,12 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         
                         self.travelsArray.sort(by: { (first, second) -> Bool in
                             
-                            if self.sexDefault == "male_createdate" {
-                                guard let firstCreateDate = first.male_createdate, let secondCreateDate = second.male_createdate else {
-                                    return false
-                                }
-                                return firstCreateDate < secondCreateDate
-                            } else if self.sexDefault == "female_createdate"{
-                                guard let firstCreateDate = first.female_createdate, let secondCreateDate = second.female_createdate else {
-                                    return false
-                                }
-                                return firstCreateDate < secondCreateDate
-                            } else {
-                                return first.createDate! < second.createDate!
-                            }
+                            return first.createDate! < second.createDate!
                         })
                         
                         self.travelsArray.reverse()
                         
-                        if self.sexDefault == "male_createdate" {
-                            self.endIndex = self.travelsArray.last?.male_createdate
-                        } else if self.sexDefault == "female_createdate"{
-                            self.endIndex = self.travelsArray.last?.female_createdate
-                        } else {
-                            self.endIndex = self.travelsArray.last?.createDate
-                        }
+                        self.endIndex = self.travelsArray.last?.createDate
                         
                         DispatchQueue.main.async {
                             self.collectionView.reloadData()
@@ -415,40 +382,16 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 
                 Parsing.travelsParseSecond(snapshot, complition: { (preArray) in
                     var resultArray = preArray.sorted(by: { (first, second) -> Bool in
-                        
-                        if self.sexDefault == "male_createdate" {
-                            guard let firstCreateDate = first.male_createdate, let secondCreateDate = second.male_createdate else {
-                                return false
-                            }
-                            return firstCreateDate < secondCreateDate
-                        } else if self.sexDefault == "female_createdate" {
-                            guard let firstCreateDate = first.female_createdate, let secondCreateDate = second.female_createdate else {
-                                return false
-                            }
-                            return firstCreateDate < secondCreateDate
-                        } else {
-                            return first.createDate! < second.createDate!
-                        }
+                        return first.createDate! < second.createDate!
                     })
                     
                     resultArray.reverse()
                     for i in resultArray {
-                        if self.sexDefault == "male_createdate", i.male_createdate == 0 {
-                            continue
-                        } else if self.sexDefault == "female_createdate", i.female_createdate == 0 {
-                            continue
-                        }
                         self.travelsArray.append(i)
                     }
                 })
                 
-                if self.sexDefault == "male_createdate" {
-                    self.endIndex = self.travelsArray.last?.male_createdate
-                } else if self.sexDefault == "female_createdate"{
-                    self.endIndex = self.travelsArray.last?.female_createdate
-                } else {
-                    self.endIndex = self.travelsArray.last?.createDate
-                }
+                self.endIndex = self.travelsArray.last?.createDate
                 
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
