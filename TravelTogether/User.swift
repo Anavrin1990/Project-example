@@ -18,4 +18,24 @@ struct User {
     static var firstTravel: String?
     static var secondTravel: String?
     static var thirdTravel: String?
+    
+    var email: String?
+    var uid: String?
+    var person: Person?
+    var icon: String?
+    var countryId: String?    
+    var firstTravel: String?
+    var secondTravel: String?
+    var thirdTravel: String?
+    
+}
+
+extension User {
+    
+    init(dictionary: [String: AnyObject]) {
+        self.uid = dictionary["uid"] as? String
+        self.person?.name = dictionary["name"] as? String
+        self.email = dictionary["email"] as? String
+        self.icon = dictionary["icon"] as? String
+    }
 }

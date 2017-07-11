@@ -20,4 +20,5 @@ struct Travel {
     var name: String?
     var birthday: String?
     var icon: String?
+    var uid: String?
 }
