@@ -57,23 +57,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let userMessagesRef = Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toLast: reqLimit)
         userMessagesRef.observe(.childAdded, with: { (snapshot) in
             
-            let messageId = snapshot.key
+            guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
+            self.messages.append(Message(dictionary: dictionary))
             
-            let messagesRef = Request.ref.child("Messages").child(messageId)
-            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                guard let dictionary = snapshot.value as? [String: AnyObject] else {
-                    return
-                }
-                self.messages.append(Message(dictionary: dictionary))
-                
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
-                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                }
-                
-            }, withCancel: nil)
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            }
             
         }, withCancel: nil)
     }
@@ -408,10 +399,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             let userMessagesRef = Request.ref.child("UserMessages").child(fromId).child(toId)
             
             let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId: timestamp])
+            userMessagesRef.updateChildValues([messageId: values])
             
             let recipientUserMessagesRef = Request.ref.child("UserMessages").child(toId).child(fromId)
-            recipientUserMessagesRef.updateChildValues([messageId: timestamp])
+            recipientUserMessagesRef.updateChildValues([messageId: values])
         }
     }
     

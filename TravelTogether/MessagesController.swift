@@ -91,8 +91,15 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
             let userId = snapshot.key
             Request.ref.child("UserMessages").child(uid).child(userId).queryLimited(toLast: 1).observe(.childAdded, with: { (snapshot) in
                 
-                let messageId = snapshot.key
-                self.fetchMessageWithMessageId(messageId)
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    let message = Message(dictionary: dictionary)
+                    
+                    if let chatPartnerId = message.chatPartnerId() {
+                        self.messagesDictionary[chatPartnerId] = message
+                    }
+                    
+                    self.attemptReloadOfTable()
+                }
                 
                 }, withCancel: nil)
             
@@ -106,25 +113,9 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
             self.attemptReloadOfTable()
             
             }, withCancel: nil)
-    }                            
-    
-    fileprivate func fetchMessageWithMessageId(_ messageId: String) {
-        let messagesReference = FIRDatabase.database().reference().child("Messages").child(messageId)
-        
-        messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let dictionary = snapshot.value as? [String: AnyObject] {
-                let message = Message(dictionary: dictionary)
-                
-                if let chatPartnerId = message.chatPartnerId() {
-                    self.messagesDictionary[chatPartnerId] = message
-                }
-                
-                self.attemptReloadOfTable()
-            }
-            
-            }, withCancel: nil)
     }
+    
+    
     
     fileprivate func attemptReloadOfTable() {
         self.timer?.invalidate()
