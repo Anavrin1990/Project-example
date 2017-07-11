@@ -59,6 +59,8 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             travelValues["birthday"] = User.person?.birthday
             travelValues["uid"] = User.uid
             travelValues["sex"] = User.person?.sex            
+            travelValues["country"] = User.person?.country
+            travelValues["city"] = User.person?.city
             
             if User.firstTravel == "" {
                 travelId = User.uid! + "_first"

@@ -15,8 +15,8 @@ struct Travel {
     var destination: String?
     var month: Int?
     var createDate: Int?
-    var male_createdate: Int?
-    var female_createdate: Int?
+    var country: String?
+    var city: String?
     var name: String?
     var birthday: String?
     var icon: String?
