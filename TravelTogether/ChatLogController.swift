@@ -50,14 +50,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     func observeMessages() {
-        guard let uid = User.uid, let toId = user?.uid else {
-            return
-        }
-        
-        let userMessagesRef = Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toLast: reqLimit)
-        userMessagesRef.observe(.childAdded, with: { (snapshot) in
+        guard let uid = User.uid, let toId = user?.uid else {return}
+        Request.observeRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toLast: reqLimit), type: .childAdded) { (snapshot, error) in
+            guard error == nil else {return}
             
-            guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
+            guard let dictionary = snapshot?.value as? [String: AnyObject] else {return}
             self.messages.append(Message(dictionary: dictionary))
             
             DispatchQueue.main.async {
@@ -65,8 +62,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
                 self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
             }
-            
-        }, withCancel: nil)
+        }        
     }
     
     func handleUploadTap() {
@@ -94,7 +90,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     fileprivate func handleVideoSelectedForUrl(_ url: URL) {
         let filename = UUID().uuidString + ".mov"
-        let uploadTask = FIRStorage.storage().reference().child("message_movies").child(filename).putFile(url, metadata: nil, completion: { (metadata, error) in
+        let uploadTask = Request.storageRef.child("message_movies").child(filename).putFile(url, metadata: nil, completion: { (metadata, error) in
             
             if error != nil {
                 print("Failed upload of video:", error!)
@@ -159,7 +155,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     fileprivate func uploadToFirebaseStorageUsingImage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
         let imageName = UUID().uuidString
-        let ref = FIRStorage.storage().reference().child("message_images").child(imageName)
+        let ref = Request.storageRef.child("message_images").child(imageName)
         
         if let uploadData = UIImageJPEGRepresentation(image, 0.2) {
             ref.put(uploadData, metadata: nil, completion: { (metadata, error) in
@@ -379,7 +375,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let ref = Request.ref.child("Messages")
         let childRef = ref.childByAutoId()
         let toId = user!.uid!
-        let fromId = FIRAuth.auth()!.currentUser!.uid
+        let fromId = User.uid!
         let timestamp = Int(Date().timeIntervalSince1970)
         
         var values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "timestamp": timestamp as AnyObject]
@@ -388,21 +384,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         //key $0, value $1
         properties.forEach({values[$0] = $1})
         
-        childRef.updateChildValues(values) { (error, ref) in
-            if error != nil {
-                print(error!)
-                return
-            }
+        Request.updateChildValue(reference: childRef, value: values) {
             
             self.inputContainerView.inputTextField.text = nil
             
             let userMessagesRef = Request.ref.child("UserMessages").child(fromId).child(toId)
             
             let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId: values])
+            Request.updateChildValue(reference: userMessagesRef, value: [messageId : values], complition: {})
             
             let recipientUserMessagesRef = Request.ref.child("UserMessages").child(toId).child(fromId)
-            recipientUserMessagesRef.updateChildValues([messageId: values])
+            Request.updateChildValue(reference: recipientUserMessagesRef, value: [messageId : values], complition: {})
         }
     }
     

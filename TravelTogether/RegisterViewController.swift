@@ -100,7 +100,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                     if let email = User.email {
                         Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
                     } else {
-                        Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(uid), limit: nil, complition: { (snapshot, error) in
+                        Request.singleRequest(reference: Request.ref.child("Users").child(uid).queryOrderedByKey(), type: .value, complition: { (snapshot, error) in
                             guard error == nil else {return}
                             if let snap = snapshot?.value as? NSDictionary {
                                 let json = JSON(snap)

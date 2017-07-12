@@ -17,7 +17,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         guard let uid = userUid else {return}
         
-        Request.requestSearchEqual(reference: Request.ref.child("Users"), equal: uid) { (snapshot, error, reference) in
+        Request.singleRequest(reference: Request.ref.child("Users").queryOrderedByKey().queryEqual(toValue: uid), type: .value) { (snapshot, error) in
             guard error == nil else {print (error?.localizedDescription as Any); return}
             Parsing.usersParse(snapshot, complition: { (user) in
                 self.user = user

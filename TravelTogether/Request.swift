@@ -26,11 +26,12 @@ class Request {
             if result.error == nil {
                 let json = JSON(result.value as Any)
                 complition(json)
+                print ("------GET JSON ANSWER -> \(url)\n\(json)")
             } else {
-                print (result.error?.localizedDescription as Any)
+                print ("------GET JSON ERROR -> \(url)\n\(result.error?.localizedDescription as Any)")
             }
         }
-        print ("Get JSON")
+        print ("------GET JSON REQUEST -> \(url)")
     }
     
     // Получить изображение
@@ -38,109 +39,66 @@ class Request {
         guard let url = url else {return}
         guard url != "" else {return}
         request(url).responseData { (data) in
+            print ("------GET IMAGE ANSWER -> \(url)\n\(data.data as Any)")
             complition(data.data)
         }
+        print ("------GET IMAGE REQUEST -> \(url)")
     }
     
+    // Загрузка медиа
     static func storagePutData (reference: FIRStorageReference, data: Data, complition: @escaping (_ snapshot: FIRStorageMetadata?, _ error: Error?) -> ()) {
         
         reference.put(data, metadata: nil) { (metadata, error) in
             if error != nil {
                 complition(nil, error)
+                print ("------STORAGE PUT ERROR -> \(reference)\n\(error?.localizedDescription as Any)")
             } else {
                 complition(metadata, nil)
+                print ("------STORAGE PUT COMPLITED -> \(reference)")
             }
         }
-        print ("Storage put data")
+        print ("------STORAGE PUT DATA -> \(reference)")
     }
     
     // Обновление значения
-    static func updateChildValue (reference: FIRDatabaseReference, value: [AnyHashable : Any], complition: @escaping () ->()) {
+    static func updateChildValue(reference: FIRDatabaseReference, value: [AnyHashable : Any], complition: @escaping () ->()) {
         
         reference.updateChildValues(value) { (error, success) in
             if error != nil {
-                print (error?.localizedDescription as Any)
+                print ("------UPDATE ERROR -> \(reference.ref)\n\(error?.localizedDescription as Any)")
             } else {
                 complition()
+                print ("------UPDATE COMPLITED -> \(reference.ref)")
             }
         }
-        print ("Update child value")
+        print ("------UPDATE REQUEST -> \(reference.ref)")
     }
     
-    // Узнать последний индекс
-    static func requestSingleByChildLastIndex (reference: FIRDatabaseReference, child: String, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
+    // Сингл запрос
+    static func singleRequest(reference: FIRDatabaseQuery, type: FIRDataEventType, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> Void) {
         
-        reference.queryOrdered(byChild: child).queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
+        reference.observeSingleEvent(of: type, with: { (snapshot) in
             complition(snapshot, nil)
+            print ("------SINGLE ANSWER -> \(reference.ref)\n\(snapshot)")
         }) { (error) in
             complition(nil, error)
+            print ("------SINGLE ANSWER ERROR -> \(reference.ref)\n\(error.localizedDescription)")
         }
-        print ("Request last index")        
+        print ("------SINGLE REQUEST -> \(reference.ref)")
     }
     
-    static func requestSingleFirstByKey (reference: FIRDatabaseReference, limit: UInt?, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
+    // Наблюдающий запрос
+    static func observeRequest(reference: FIRDatabaseQuery, type: FIRDataEventType, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> Void) {
         
-        if limit == nil {
-            reference.queryOrderedByKey().observeSingleEvent(of: .value, with: { (snapshot) in
-                complition(snapshot, nil)
-            }) { (error) in
-                complition(nil, error)
-            }
-        } else {
-            reference.queryOrderedByKey().queryLimited(toLast: limit!).observeSingleEvent(of: .value, with: { (snapshot) in
-                complition(snapshot, nil)
-            }) { (error) in
-                complition(nil, error)
-            }
-        }
-        print ("First single request (byKey)")
-        
-    }
-    
-    static func requestSingleFirstByChild (reference: FIRDatabaseReference, child: String, limit: UInt?, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
-        
-        if limit == nil {
-            reference.queryOrdered(byChild: child).observeSingleEvent(of: .value, with: { (snapshot) in
-                complition(snapshot, nil)
-            }) { (error) in
-                complition(nil, error)
-            }
-        } else {
-            reference.queryOrdered(byChild: child).queryLimited(toLast: limit!).observeSingleEvent(of: .value, with: { (snapshot) in
-                complition(snapshot, nil)
-            }) { (error) in
-                complition(nil, error)
-            }
-        }
-        print ("First single request (byChild)")
-    }
-    
-    static func requestSingleNextByChild<T> (reference: FIRDatabaseReference, child: String, ending: T, limit: UInt?, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> ()) {
-        
-        if limit == nil {
-            reference.queryOrdered(byChild: child).queryEnding(atValue: ending).observeSingleEvent(of: .value, with: { (snapshot) in
-                complition(snapshot, nil)
-            }) { (error) in
-                complition(nil, error)
-            }            
-        } else {
-            reference.queryOrdered(byChild: child).queryEnding(atValue: ending).queryLimited(toLast: limit!).observeSingleEvent(of: .value, with: { (snapshot) in
-                complition(snapshot, nil)
-            }) { (error) in
-                complition(nil, error)
-            }
-        }
-        print ("Next single request (byChild)")
-    }
-    
-    static func requestSearchEqual (reference: FIRDatabaseReference, equal: String, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?, _ ref: FIRDatabaseReference?) -> ()) {        
-        reference.queryOrderedByKey().queryEqual(toValue: equal).observeSingleEvent(of: .value, with: { (snapshot) in
-            complition(snapshot, nil, reference)
+        reference.observe(type, with: { (snapshot) in
+            complition(snapshot, nil)
+            print ("------OBSERVE ANSWER -> \(reference.ref)\n\(snapshot)")
         }) { (error) in
-            complition(nil, error, nil)
+            complition(nil, error)
+            print ("------OBSERVE ANSWER ERROR -> \(reference.ref)\n\(error.localizedDescription)")
         }
-        print ("Request search equal")
-    }
+        print ("------OBSERVE REQUEST -> \(reference.ref)")
+    }    
     
     // Юзер инфо
     static func getUserInfo(complition: @escaping() -> ()) {
@@ -150,7 +108,7 @@ class Request {
                 User.email = user.email
             }
             User.uid = user.uid
-            Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(User.uid!), limit: nil, complition: { (snapshot, error) in
+            Request.singleRequest(reference: Request.ref.child("Users").child(User.uid!).queryOrderedByKey(), type: .value, complition: { (snapshot, error) in
                 guard error == nil else {return}
                 if let snap = snapshot?.value as? NSDictionary {
                     let json = JSON(snap)
@@ -173,15 +131,18 @@ class Request {
                     User.secondTravel = json["secondTravel"].stringValue
                     User.thirdTravel = json["thirdTravel"].stringValue
                     
-                    complition()                    
+                    complition()
+                    print ("------GET USER INFO SUCCESS\n\(json)")
                 } else {
                     complition()
+                    print ("------GET USER INFO ERROR\n\(error?.localizedDescription as Any)")
                 }
             })
         } else {
+            print ("------NOT AUTHORIZED")
             complition()
         }
-        print ("Get user info")
+        print ("------GET USER INFO REQUEST")
     }
     
     static func logOut(complition: @escaping() -> ()) {
@@ -192,7 +153,7 @@ class Request {
             User.email = nil
             User.uid = nil
             complition()
-            print ("Sign out succes")
+            print ("SING OUT SUCCESS")
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
         }

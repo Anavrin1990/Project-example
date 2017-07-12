@@ -11,25 +11,25 @@ import Firebase
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 
@@ -37,7 +37,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var messages = [Message]()
     var messagesDictionary = [String: Message]()
-
+    
     @IBOutlet weak var tableView: UITableView!
     let cellId = "cellId"
     
@@ -74,9 +74,9 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
                 self.messagesDictionary.removeValue(forKey: chatPartnerId)
                 self.attemptReloadOfTable()
                 
-//                //this is one way of updating the table, but its actually not that safe..
-//                self.messages.removeAtIndex(indexPath.row)
-//                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                //                //this is one way of updating the table, but its actually not that safe..
+                //                self.messages.removeAtIndex(indexPath.row)
+                //                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
                 
             })
         }
@@ -86,33 +86,35 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         guard let uid = User.uid else {return}
         
         let ref = Request.ref.child("UserMessages").child(uid)
-        ref.observe(.childAdded, with: { (snapshot) in
+        Request.observeRequest(reference: ref, type: .childAdded) { (snapshot, error) in
+            guard error == nil else {return}
+            guard let userId = snapshot?.key else {return}
             
-            let userId = snapshot.key
-            Request.ref.child("UserMessages").child(uid).child(userId).queryLimited(toLast: 1).observe(.childAdded, with: { (snapshot) in
+            Request.observeRequest(reference: Request.ref.child("UserMessages").child(uid).child(userId).queryLimited(toLast: 1), type: .childAdded, complition: { (snapshot, error) in
+                guard error == nil else {return}
                 
-                if let dictionary = snapshot.value as? [String: AnyObject] {
+                if let dictionary = snapshot?.value as? [String: AnyObject] {
                     let message = Message(dictionary: dictionary)
                     
                     if let chatPartnerId = message.chatPartnerId() {
                         self.messagesDictionary[chatPartnerId] = message
                     }
-                    
                     self.attemptReloadOfTable()
                 }
-                
-                }, withCancel: nil)
-            
-            }, withCancel: nil)
+            })
+        }
         
-        ref.observe(.childRemoved, with: { (snapshot) in
+        Request.observeRequest(reference: ref, type: .childRemoved) { (snapshot, error) in
+            guard error == nil else {return}
+            guard let snapshot = snapshot else {return}
             print(snapshot.key)
             print(self.messagesDictionary)
             
             self.messagesDictionary.removeValue(forKey: snapshot.key)
             self.attemptReloadOfTable()
-            
-            }, withCancel: nil)
+        }
+        
+        
     }
     
     
@@ -130,7 +132,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         self.messages.sort(by: { (message1, message2) -> Bool in
             
             return message1.timestamp?.int32Value > message2.timestamp?.int32Value
-        })        
+        })
         
         DispatchQueue.main.async(execute: {
             self.tableView.reloadData()
@@ -158,21 +160,17 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         let message = messages[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let chatPartnerId = message.chatPartnerId() else {
-            return
-        }
+        guard let chatPartnerId = message.chatPartnerId() else {return}
         
         let ref = Request.ref.child("Users").child(chatPartnerId)
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let dictionary = snapshot.value as? [String: AnyObject] else {
-                return
-            }
+        Request.singleRequest(reference: ref, type: .value) { (snapshot, error) in
+            guard error == nil else {return}
+            guard let dictionary = snapshot?.value as? [String: AnyObject] else {return}
             
             var user = User(dictionary: dictionary)
             user.uid = chatPartnerId
             self.showChatControllerForUser(user)
-            
-            }, withCancel: nil)
+        }
     }
     
     func handleNewMessage() {
@@ -203,6 +201,6 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         navigationController?.pushViewController(chatLogController, animated: true)
     }    
     
-
+    
 }
 

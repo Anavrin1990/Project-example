@@ -51,7 +51,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidAppear(_ animated: Bool) {
         if MainViewController.needCheckAuth {
-            Request.getUserInfo {
+            Request.getUserInfo {                
                 self.countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? User.person?.country ?? "AllCountries"
                 self.cityDefault = UserDefaults.standard.value(forKey: "cityDefault") as? String ?? User.person?.city ?? "AllCities"
                 countryId = UserDefaults.standard.value(forKey: "countryId") as? String ?? User.countryId ?? ""
@@ -74,6 +74,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         //                    Request.updateChildValue(reference: Request.ref.child("Travels").child("All").child("All").childByAutoId(), value: value, complition: {})
         //                    q += 10
         //                }
+                
         
         self.collectionView.alwaysBounceVertical = true
         
@@ -276,7 +277,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             present(registrationVC!, animated: true, completion: nil)
             return
         }
-        Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(User.uid!), limit: nil, complition: { (snapshot, error) in
+        Request.singleRequest(reference: Request.ref.child("Users").child(User.uid!).queryOrderedByKey(), type: .value, complition: { (snapshot, error) in
             guard error == nil else {return}
             if let snap = snapshot?.value as? NSDictionary {
                 let json = JSON(snap)
@@ -288,7 +289,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     }
                     return
                 } else {
-                    Request.requestSingleFirstByKey(reference: Request.ref.child("Users").child(User.uid!), limit: nil, complition: { (snapshot, error) in
+                    Request.singleRequest(reference: Request.ref.child("Users").child(User.uid!).queryOrderedByKey(), type: .value, complition: { (snapshot, error) in
                         guard error == nil else {return}
                         if let snap = snapshot?.value as? NSDictionary {
                             let json = JSON(snap)
@@ -335,16 +336,20 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func firstRequest () {
         
-        Request.requestSingleByChildLastIndex(reference: getReference(), child: sexDefault) { (snapshot, error) in
+        // Last index
+        Request.singleRequest(reference: getReference().queryOrdered(byChild: "createdate").queryLimited(toFirst: 1), type: .value) { (snapshot, error) in
             guard error == nil else {print (error as Any); return}
             
+            // Parse
             Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
                 
                 self.lastPosition = travelsArray.first?.createDate
                 
-                Request.requestSingleFirstByChild(reference: self.getReference(), child: self.sexDefault, limit: reqLimit) { (snapshot, error) in
+                // Get Travels
+                Request.singleRequest(reference: self.getReference().queryOrdered(byChild: "createdate").queryLimited(toLast: reqLimit), type: .value) { (snapshot, error) in
                     guard error == nil else {print (error as Any); return}
                     
+                    // Parse
                     Parsing.travelsParseFirst(snapshot, complition: { (travelsArray) in
                         self.travelsArray = travelsArray
                         
@@ -376,10 +381,12 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             guard let lastPosition = self.lastPosition else {return}
             guard endIndex > lastPosition else {return}
             
-            Request.requestSingleNextByChild(reference: getReference(), child: sexDefault, ending: endIndex - 1, limit: reqLimit, complition: { (snapshot, error) in
+            // Get more travels
+            Request.singleRequest(reference: getReference().queryOrdered(byChild: "createdate").queryEnding(atValue: endIndex - 1).queryLimited(toLast: reqLimit), type: .value, complition: { (snapshot, error) in
                 
                 guard error == nil else {print (error as Any); return}
                 
+                // Parse
                 Parsing.travelsParseSecond(snapshot, complition: { (preArray) in
                     var resultArray = preArray.sorted(by: { (first, second) -> Bool in
                         return first.createDate! < second.createDate!
@@ -399,9 +406,5 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             })
         }
         
-    }
-    
-    
-    
-    
+    }    
 }
