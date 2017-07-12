@@ -51,7 +51,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidAppear(_ animated: Bool) {
         if MainViewController.needCheckAuth {
-            Request.getUserInfo {                
+            Request.getUserInfo {
                 self.countryDefault = UserDefaults.standard.value(forKey: "countryDefault") as? String ?? User.person?.country ?? "AllCountries"
                 self.cityDefault = UserDefaults.standard.value(forKey: "cityDefault") as? String ?? User.person?.city ?? "AllCities"
                 countryId = UserDefaults.standard.value(forKey: "countryId") as? String ?? User.countryId ?? ""
