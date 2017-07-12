@@ -123,7 +123,13 @@ class ProfileViewController: UIViewController {
                 }
                 
             }
-            userProperties["uid"] = uid
+            let date = Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.yy"
+            
+            let stringDate = dateFormatter.string(from: date)
+            userProperties["registrationDate"] = stringDate
+            userProperties["uid"] = uid            
             userProperties["countryId"] = countryId
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {
                 UserDefaults.standard.set(Person.instance.country, forKey: "countryDefault")

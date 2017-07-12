@@ -10,6 +10,34 @@ import UIKit
 
 class CriteriaViewController: UIViewController {
     
+//    public override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if self.collectionView!.isDragging {
+//            if isCloseToTop() {
+//                
+//                guard let uid = User.uid, let toId = user?.uid else {return}
+//                let userMessagesRef = Request.ref.child("UserMessages").child(uid).child(toId).queryOrdered(byChild: "timestamp").queryEnding(atValue: self.endIndex! - 1).queryLimited(toLast: reqLimit)
+//                
+//                Request.singleRequest(reference: userMessagesRef, type: .value) { (snapshot, error) in
+//                    guard error == nil else {return}
+//                    
+//                    if let snapshots = snapshot?.children.allObjects as? [FIRDataSnapshot] {
+//                        for snap in snapshots.reversed() {
+//                            if let dictionary = snap.value as? [String : Any] {
+//                                self.messages.insert(Message(dictionary: dictionary), at: 0)
+//                            }
+//                        }
+//                        DispatchQueue.main.async {
+//                            let oldOffsetReversed = self.collectionView!.collectionViewLayout.collectionViewContentSize.height - self.collectionView!.contentOffset.y
+//                            self.collectionView!.reloadData()
+//                            let offset =  self.collectionView!.collectionViewLayout.collectionViewContentSize.height - oldOffsetReversed
+//                            self.collectionView!.contentOffset = CGPoint(x: self.collectionView!.contentOffset.x, y: offset)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
     var componentsArray = [(header: String, paramKey: String, fields: [ParamsAbstract]?, instantiateVC: UIViewController?)]()
 
     @IBOutlet weak var dropStackView: DropStackView! {

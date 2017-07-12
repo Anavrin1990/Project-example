@@ -18,6 +18,7 @@ struct User {
     static var firstTravel: String?
     static var secondTravel: String?
     static var thirdTravel: String?
+    static var registrationDate: String?
     
     var email: String?
     var uid: String?
@@ -33,9 +34,9 @@ struct User {
 extension User {
     
     init(dictionary: [String: AnyObject]) {
+        self.email = dictionary["email"] as? String
         self.uid = dictionary["uid"] as? String
         self.person?.name = dictionary["name"] as? String
-        self.email = dictionary["email"] as? String
-        self.icon = dictionary["icon"] as? String
+        self.icon = dictionary["icon"] as? String       
     }
 }

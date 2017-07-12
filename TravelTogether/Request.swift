@@ -26,12 +26,12 @@ class Request {
             if result.error == nil {
                 let json = JSON(result.value as Any)
                 complition(json)
-                print ("------GET JSON ANSWER -> \(url)\n\(json)")
+                if showLogs {print ("------GET JSON ANSWER -> \(url)\n\(json)")}
             } else {
-                print ("------GET JSON ERROR -> \(url)\n\(result.error?.localizedDescription as Any)")
+                if showLogs { print ("------GET JSON ERROR -> \(url)\n\(result.error?.localizedDescription as Any)")}
             }
         }
-        print ("------GET JSON REQUEST -> \(url)")
+        if showLogs {print ("------GET JSON REQUEST -> \(url)")}
     }
     
     // Получить изображение
@@ -39,10 +39,10 @@ class Request {
         guard let url = url else {return}
         guard url != "" else {return}
         request(url).responseData { (data) in
-            print ("------GET IMAGE ANSWER -> \(url)\n\(data.data as Any)")
+            if showLogs {print ("------GET IMAGE ANSWER -> \(url)\n\(data.data as Any)")}
             complition(data.data)
         }
-        print ("------GET IMAGE REQUEST -> \(url)")
+        if showLogs {print ("------GET IMAGE REQUEST -> \(url)")}
     }
     
     // Загрузка медиа
@@ -51,13 +51,13 @@ class Request {
         reference.put(data, metadata: nil) { (metadata, error) in
             if error != nil {
                 complition(nil, error)
-                print ("------STORAGE PUT ERROR -> \(reference)\n\(error?.localizedDescription as Any)")
+                if showLogs {print ("------STORAGE PUT ERROR -> \(reference)\n\(error?.localizedDescription as Any)")}
             } else {
                 complition(metadata, nil)
-                print ("------STORAGE PUT COMPLITED -> \(reference)")
+                if showLogs {print ("------STORAGE PUT COMPLITED -> \(reference)")}
             }
         }
-        print ("------STORAGE PUT DATA -> \(reference)")
+        if showLogs {print ("------STORAGE PUT DATA -> \(reference)")}
     }
     
     // Обновление значения
@@ -65,13 +65,13 @@ class Request {
         
         reference.updateChildValues(value) { (error, success) in
             if error != nil {
-                print ("------UPDATE ERROR -> \(reference.ref)\n\(error?.localizedDescription as Any)")
+                if showLogs {print ("------UPDATE ERROR -> \(reference.ref)\n\(error?.localizedDescription as Any)")}
             } else {
                 complition()
-                print ("------UPDATE COMPLITED -> \(reference.ref)")
+                if showLogs {print ("------UPDATE COMPLITED -> \(reference.ref)")}
             }
         }
-        print ("------UPDATE REQUEST -> \(reference.ref)")
+        if showLogs {print ("------UPDATE REQUEST -> \(reference.ref)")}
     }
     
     // Сингл запрос
@@ -79,12 +79,12 @@ class Request {
         
         reference.observeSingleEvent(of: type, with: { (snapshot) in
             complition(snapshot, nil)
-            print ("------SINGLE ANSWER -> \(reference.ref)\n\(snapshot)")
+            if showLogs {print ("------SINGLE ANSWER -> \(reference.ref)\n\(snapshot)")}
         }) { (error) in
             complition(nil, error)
-            print ("------SINGLE ANSWER ERROR -> \(reference.ref)\n\(error.localizedDescription)")
+            if showLogs {print ("------SINGLE ANSWER ERROR -> \(reference.ref)\n\(error.localizedDescription)")}
         }
-        print ("------SINGLE REQUEST -> \(reference.ref)")
+        if showLogs {print ("------SINGLE REQUEST -> \(reference.ref)")}
     }
     
     // Наблюдающий запрос
@@ -92,12 +92,12 @@ class Request {
         
         reference.observe(type, with: { (snapshot) in
             complition(snapshot, nil)
-            print ("------OBSERVE ANSWER -> \(reference.ref)\n\(snapshot)")
+            if showLogs {print ("------OBSERVE ANSWER -> \(reference.ref)\n\(snapshot)")}
         }) { (error) in
             complition(nil, error)
-            print ("------OBSERVE ANSWER ERROR -> \(reference.ref)\n\(error.localizedDescription)")
+            if showLogs {print ("------OBSERVE ANSWER ERROR -> \(reference.ref)\n\(error.localizedDescription)")}
         }
-        print ("------OBSERVE REQUEST -> \(reference.ref)")
+        if showLogs {print ("------OBSERVE REQUEST -> \(reference.ref)")}
     }    
     
     // Юзер инфо
@@ -130,19 +130,20 @@ class Request {
                     User.firstTravel = json["firstTravel"].stringValue
                     User.secondTravel = json["secondTravel"].stringValue
                     User.thirdTravel = json["thirdTravel"].stringValue
+                    User.registrationDate = json["registrationDate"].stringValue
                     
                     complition()
-                    print ("------GET USER INFO SUCCESS\n\(json)")
+                    if showLogs {print ("------GET USER INFO SUCCESS\n\(json)")}
                 } else {
                     complition()
-                    print ("------GET USER INFO ERROR\n\(error?.localizedDescription as Any)")
+                    if showLogs {print ("------GET USER INFO ERROR\n\(error?.localizedDescription as Any)")}
                 }
             })
         } else {
-            print ("------NOT AUTHORIZED")
+            if showLogs {print ("------NOT AUTHORIZED")}
             complition()
         }
-        print ("------GET USER INFO REQUEST")
+        if showLogs {print ("------GET USER INFO REQUEST")}
     }
     
     static func logOut(complition: @escaping() -> ()) {
@@ -153,9 +154,9 @@ class Request {
             User.email = nil
             User.uid = nil
             complition()
-            print ("SING OUT SUCCESS")
+            if showLogs {print ("SING OUT SUCCESS")}
         } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
+            if showLogs {print ("Error signing out: %@", signOutError)}
         }
     }
     

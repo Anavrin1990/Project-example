@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import FirebaseDatabase
 
+let showLogs = true
+
 var imageCache = NSCache<AnyObject, AnyObject>()
 let reqLimit: UInt = 15 // Лимит запроса
 

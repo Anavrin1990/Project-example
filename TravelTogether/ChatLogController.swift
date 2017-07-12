@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import MobileCoreServices
 import AVFoundation
+import SwiftyJSON
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -23,7 +24,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var lastIndex: Int?
     var endIndex: Int?
     let cellId = "cellId"
-    
+    var counter = 0
     var user: User? {
         didSet {
             navigationItem.title = user?.person?.name
@@ -51,18 +52,25 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func observeMessages() {
         guard let uid = User.uid, let toId = user?.uid else {return}
-        Request.observeRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toLast: reqLimit), type: .childAdded) { (snapshot, error) in
-            guard error == nil else {return}
-            
-            guard let dictionary = snapshot?.value as? [String: AnyObject] else {return}
-            self.messages.append(Message(dictionary: dictionary))
-            
-            DispatchQueue.main.async {
-                self.collectionView?.reloadData()
-                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        Request.singleRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toFirst: 1), type: .value) { (snapshot, errir) in
+            if let snap = snapshot?.value as? NSDictionary {
+                let json = JSON(snap).first
+                self.lastIndex = json?.1["timestamp"].intValue
+                
+                Request.observeRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toLast: reqLimit), type: .childAdded) { (snapshot, error) in
+                    guard error == nil else {return}
+                    
+                    guard let dictionary = snapshot?.value as? [String: AnyObject] else {return}
+                    self.messages.append(Message(dictionary: dictionary))
+                    
+                    DispatchQueue.main.async {
+                        self.collectionView?.reloadData()
+                        let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                        self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                    }
+                }
             }
-        }        
+        }
     }
     
     func handleUploadTap() {
@@ -264,36 +272,36 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
+        guard collectionView.isDragging else {return}
+        guard let lastIndex = self.lastIndex else {return}
+        guard let endIndex = self.endIndex else {return}
         guard let uid = User.uid, let toId = user?.uid else {return}
-        guard indexPath.row == 0 else {return}
-        guard loadMore else {loadMore = true; return}
+        guard indexPath.row < 5 else {return}
+        guard endIndex > lastIndex else {return }
         
         
-        let userMessagesRef = Request.ref.child("UserMessages").child(uid).child(toId).queryOrderedByValue().queryEnding(atValue: self.endIndex! - 1).queryLimited(toLast: reqLimit)
+        let userMessagesRef = Request.ref.child("UserMessages").child(uid).child(toId).queryOrdered(byChild: "timestamp").queryEnding(atValue: endIndex - 1).queryLimited(toLast: reqLimit)
         
-        userMessagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+        Request.singleRequest(reference: userMessagesRef, type: .value) { (snapshot, error) in
+            guard error == nil else {return}
             
-            let messageId = snapshot.key
-            
-//            let messagesRef = Request.ref.child("Messages").child(messageId)
-//            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-//                
-//                guard let dictionary = snapshot.value as? [String: AnyObject] else {
-//                    return
-//                }
-//                self.messages.insert(Message(dictionary: dictionary), at: 0)
-//                
-//                DispatchQueue.main.async {
-//                    self.collectionView?.reloadData()
-//                    //                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-//                    //                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-//                }
-//                
-//            }, withCancel: nil)
-            
-        }, withCancel: nil)
+            if let snapshots = snapshot?.children.allObjects as? [FIRDataSnapshot] {
+                for snap in snapshots.reversed() {
+                    if let dictionary = snap.value as? [String : Any] {
+                        self.messages.insert(Message(dictionary: dictionary), at: 0)
+                    }
+                }
+                DispatchQueue.main.async {
+                    let oldOffsetReversed = self.collectionView!.collectionViewLayout.collectionViewContentSize.height - self.collectionView!.contentOffset.y
+                    self.collectionView!.reloadData()
+                    let offset =  self.collectionView!.collectionViewLayout.collectionViewContentSize.height - oldOffsetReversed
+                    self.collectionView!.contentOffset = CGPoint(x: self.collectionView!.contentOffset.x, y: offset)
+                }
+            }
+        }
         
     }
+
     
     fileprivate func setupCell(_ cell: ChatMessageCell, message: Message) {
         if let profileImageUrl = self.user?.icon {
