@@ -53,21 +53,25 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func observeMessages() {
         guard let uid = User.uid, let toId = user?.uid else {return}
         Request.singleRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toFirst: 1), type: .value) { (snapshot, errir) in
+            
+            var lastIndex: Int?
+            
             if let snap = snapshot?.value as? NSDictionary {
                 let json = JSON(snap).first
-                self.lastIndex = json?.1["timestamp"].intValue
+                lastIndex = json?.1["timestamp"].intValue
+            }
+            Request.observeRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toLast: reqLimit), type: .childAdded) { (snapshot, error) in
+                guard error == nil else {return}
                 
-                Request.observeRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toLast: reqLimit), type: .childAdded) { (snapshot, error) in
-                    guard error == nil else {return}
-                    
-                    guard let dictionary = snapshot?.value as? [String: AnyObject] else {return}
-                    self.messages.append(Message(dictionary: dictionary))
-                    
-                    DispatchQueue.main.async {
-                        self.collectionView?.reloadData()
-                        let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                        self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                    }
+                guard let dictionary = snapshot?.value as? [String: AnyObject] else {return}
+                self.messages.append(Message(dictionary: dictionary))
+                
+                self.lastIndex = lastIndex ?? self.messages[0].timestamp as? Int
+                
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                 }
             }
         }
