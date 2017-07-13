@@ -276,7 +276,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         guard let lastIndex = self.lastIndex else {return}
         guard let endIndex = self.endIndex else {return}
         guard let uid = User.uid, let toId = user?.uid else {return}
-        guard indexPath.row < 5 else {return}
+        guard indexPath.row == 0 else {return}
         guard endIndex > lastIndex else {return }
         
         
