@@ -76,6 +76,9 @@ PODS:
   - ImageSlideshow (1.2.0):
     - ImageSlideshow/Core (= 1.2.0)
   - ImageSlideshow/Core (1.2.0)
+  - JSQMessagesViewController (7.3.4):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
   - Protobuf (3.3.0)
   - SwiftyJSON (3.1.4)
 
@@ -91,6 +94,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - GoogleSignIn
   - ImageSlideshow
+  - JSQMessagesViewController
   - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -112,9 +116,11 @@ SPEC CHECKSUMS:
   GTMOAuth2: 7fc9c10f5c745f4d9850419ea88889fe3baa6b7d
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
   ImageSlideshow: c1395dcf33f7dba407fd21df0e8c315e8941e209
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 2aff354873d86686fe5786de0afd4e7952a19af1
+PODFILE CHECKSUM: 8617d3f94e19e30745fb9cef7711a218154451e7
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.1.1

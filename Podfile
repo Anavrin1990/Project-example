@@ -17,5 +17,6 @@ pod 'GoogleSignIn'
 pod 'FBSDKCoreKit'
 pod 'FBSDKShareKit'
 pod 'FBSDKLoginKit'
+pod 'JSQMessagesViewController'
 
 end

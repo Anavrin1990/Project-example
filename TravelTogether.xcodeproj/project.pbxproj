@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A304C111F136EF000096768 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A304C101F136EF000096768 /* DetailViewController.swift */; };
 		0A8EC4981F0E65A800B91B4A /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8EC4971F0E65A800B91B4A /* Travel.swift */; };
+		0ABE6A861F18DC1A001F3ECB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABE6A851F18DC1A001F3ECB /* ChatViewController.swift */; };
 		0AF1DCC61F0F4FEB0073D54D /* AgeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF1DCC51F0F4FEB0073D54D /* AgeRange.swift */; };
 		0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */; };
 		0B0D96351EE3F05400C2F1C4 /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */; };
@@ -67,6 +68,7 @@
 /* Begin PBXFileReference section */
 		0A304C101F136EF000096768 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		0A8EC4971F0E65A800B91B4A /* Travel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Travel.swift; sourceTree = "<group>"; };
+		0ABE6A851F18DC1A001F3ECB /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		0AF1DCC51F0F4FEB0073D54D /* AgeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeRange.swift; sourceTree = "<group>"; };
 		0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 		0B0D962E1EE3E80000C2F1C4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0ABE6A851F18DC1A001F3ECB /* ChatViewController.swift */,
 				0BDA941B1F1286DF0004B76D /* ChatLogController.swift */,
 				0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */,
 				0A304C101F136EF000096768 /* DetailViewController.swift */,
@@ -415,7 +418,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		607A81A40533D97B1B8BD455 /* [CP] Embed Pods Frameworks */ = {
@@ -498,6 +501,7 @@
 				0B0D96461EE4265900C2F1C4 /* ParamsDatePicker.swift in Sources */,
 				0BAEE9621EF545E200CCC0C1 /* User.swift in Sources */,
 				0BE591111F0AB3F70017A866 /* BTTableCellContentView.swift in Sources */,
+				0ABE6A861F18DC1A001F3ECB /* ChatViewController.swift in Sources */,
 				0AF1DCC61F0F4FEB0073D54D /* AgeRange.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
