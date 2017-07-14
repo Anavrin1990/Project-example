@@ -115,9 +115,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         
-    }
-    
-    
+    }    
     
     fileprivate func attemptReloadOfTable() {
         self.timer?.invalidate()
@@ -191,14 +189,12 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
             
             observeUserMessages()
         }
-    }
-    
-    
+    }    
     
     func showChatControllerForUser(_ user: User) {
-        let chatLogController = storyboard?.instantiateViewController(withIdentifier: "ChatLogController") as! ChatLogController
-        chatLogController.user = user
-        navigationController?.pushViewController(chatLogController, animated: true)
+        let chatViewController = storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
+        chatViewController.user = user
+        navigationController?.pushViewController(chatViewController, animated: true)
     }    
     
     
