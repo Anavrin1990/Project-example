@@ -29,11 +29,7 @@ class ChatViewController: JSQMessagesViewController {
             navigationItem.title = user?.person?.name
             observeMessages()
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)        
-    }
+    }    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,11 +148,12 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
+        guard text != "" else {return}
         
         let properties = ["text": text, "senderName" : User.person?.name]
         sendMessageWithProperties(properties as [String : AnyObject])
        
-        self.keyboardController.textView.text = nil
+        self.keyboardController.textView.text = ""
         collectionView.reloadData()
         
         //let indexPath = IndexPath(item: self.chatMessages.count - 1, section: 0)
@@ -220,9 +217,9 @@ class ChatViewController: JSQMessagesViewController {
         return kJSQMessagesCollectionViewCellLabelHeightDefault
     }
     
-    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAt indexPath: IndexPath!) -> CGFloat {
-        return kJSQMessagesCollectionViewCellLabelHeightDefault
-    }
+//    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAt indexPath: IndexPath!) -> CGFloat {
+//        return kJSQMessagesCollectionViewCellLabelHeightDefault
+//    }
 
 }
 
