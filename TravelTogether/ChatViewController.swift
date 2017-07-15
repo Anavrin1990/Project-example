@@ -49,6 +49,7 @@ class ChatViewController: JSQMessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        automaticallyScrollsToMostRecentMessage = false
         self.senderId = User.uid
         self.senderDisplayName = User.person?.name
         self.navigationController?.delegate = self
