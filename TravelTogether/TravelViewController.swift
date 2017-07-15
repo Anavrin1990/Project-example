@@ -78,120 +78,120 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             
             let userSex = User.person!.sex!.capitalized
             
-            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: [travelKey : travelId], complition: {
+            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: [travelKey : travelId], completion: {
                 
                 
                 // Update Criteria
-                Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").child(travelId), value: ["destination" : destination], complition: {})
-                Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").child(travelId), value: ["month" : month], complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").child(travelId), value: ["destination" : destination], completion: {})
+                Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").child(travelId), value: ["month" : month], completion: {})
                 
                 
                 // Update UsersTravels
-                Request.updateChildValue(reference: Request.ref.child("UsersTravels").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("UsersTravels").child(travelId), value: travelValues, completion: {})
                 
                 // Update Destinations
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child("AllCities").child(destination).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child("AllCities").child(destination).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child("AllCities").child(destination).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child("AllCities").child(destination).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child("AllCities").child(destination).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child("AllCities").child(destination).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child("AllCities").child(destination).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child("AllCountries").child("AllCities").child(destination).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child("AllCities").child(destination).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child("AllCities").child(destination).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child("AllCities").child(destination).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child("AllCities").child(destination).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child(userCity).child(destination).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child(userCity).child(destination).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child(userCity).child(destination).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child(userCity).child(destination).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child("AllCities").child(destination).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child("AllCities").child(destination).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child("AllCities").child(destination).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child("AllCities").child(destination).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child(userCity).child(destination).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child(userCity).child(destination).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child(userCity).child(destination).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Destinations").child(userCountry).child(userCity).child(destination).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
                 
                 // Update Match
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child("AllCities").child(destination).child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child("AllCities").child(destination).child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child("AllCities").child(destination).child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child("AllCities").child(destination).child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child("AllCities").child(destination).child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child("AllCities").child(destination).child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child("AllCities").child(destination).child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child("AllCountries").child("AllCities").child(destination).child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child("AllCities").child(destination).child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child("AllCities").child(destination).child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child("AllCities").child(destination).child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child("AllCities").child(destination).child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child(userCity).child(destination).child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child(userCity).child(destination).child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child(userCity).child(destination).child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child(userCity).child(destination).child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child("AllCities").child(destination).child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child("AllCities").child(destination).child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child("AllCities").child(destination).child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child("AllCities").child(destination).child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child(userCity).child(destination).child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child(userCity).child(destination).child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child(userCity).child(destination).child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Match").child(userCountry).child(userCity).child(destination).child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
                 
                 // Update Months
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child("AllCities").child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child("AllCities").child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child("AllCities").child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child("AllCities").child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child("AllCities").child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child("AllCities").child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child("AllCities").child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child("AllCountries").child("AllCities").child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child("AllCities").child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child("AllCities").child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child("AllCities").child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child("AllCities").child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child(userCity).child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child(userCity).child(month).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child(userCity).child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child(userCity).child(month).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child("AllCities").child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child("AllCities").child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child("AllCities").child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child("AllCities").child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child(userCity).child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child(userCity).child(month).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child(userCity).child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("Months").child(userCountry).child(userCity).child(month).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
                 
                 // Update AllTravels
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllCities").child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllCities").child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllCities").child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllCities").child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllCities").child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllCities").child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllCities").child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child("AllCountries").child("AllCities").child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child("AllCities").child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child("AllCities").child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child("AllCities").child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child("AllCities").child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child(userCity).child(ageRange).child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child(userCity).child(ageRange).child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child(userCity).child(ageRange).child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child(userCity).child(ageRange).child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child("AllCities").child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child("AllCities").child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child("AllCities").child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child("AllCities").child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child(userCity).child("AllAges").child("AllSex").child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child(userCity).child("AllAges").child("AllSex").child(travelId), value: travelValues, completion: {})
                 
-                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child(userCity).child("AllAges").child(userSex).child(travelId), value: travelValues, complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Travels").child("AllTravels").child(userCountry).child(userCity).child("AllAges").child(userSex).child(travelId), value: travelValues, completion: {})
                 
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 SearchTableViewController.delegate = nil

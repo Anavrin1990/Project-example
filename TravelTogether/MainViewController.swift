@@ -277,7 +277,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             present(registrationVC!, animated: true, completion: nil)
             return
         }
-        Request.singleRequest(reference: Request.ref.child("Users").child(User.uid!).queryOrderedByKey(), type: .value, complition: { (snapshot, error) in
+        Request.singleRequest(reference: Request.ref.child("Users").child(User.uid!).queryOrderedByKey(), type: .value, completion: { (snapshot, error) in
             guard error == nil else {return}
             if let snap = snapshot?.value as? NSDictionary {
                 let json = JSON(snap)
@@ -289,7 +289,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     }
                     return
                 } else {
-                    Request.singleRequest(reference: Request.ref.child("Users").child(User.uid!).queryOrderedByKey(), type: .value, complition: { (snapshot, error) in
+                    Request.singleRequest(reference: Request.ref.child("Users").child(User.uid!).queryOrderedByKey(), type: .value, completion: { (snapshot, error) in
                         guard error == nil else {return}
                         if let snap = snapshot?.value as? NSDictionary {
                             let json = JSON(snap)
@@ -382,7 +382,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             guard endIndex > lastPosition else {return}
             
             // Get more travels
-            Request.singleRequest(reference: getReference().queryOrdered(byChild: "createdate").queryEnding(atValue: endIndex - 1).queryLimited(toLast: reqLimit), type: .value, complition: { (snapshot, error) in
+            Request.singleRequest(reference: getReference().queryOrdered(byChild: "createdate").queryEnding(atValue: endIndex - 1).queryLimited(toLast: reqLimit), type: .value, completion: { (snapshot, error) in
                 
                 guard error == nil else {print (error as Any); return}
                 

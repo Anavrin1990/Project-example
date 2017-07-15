@@ -13,6 +13,9 @@ import Firebase
 
 class ChatViewController: JSQMessagesViewController {
     
+    var typingRef: FIRDatabaseReference?
+    var messagesRef: FIRDatabaseReference?
+    
     let imagePicker = UIImagePickerController()
     
     var messages = [JSQMessage]() {
@@ -24,24 +27,49 @@ class ChatViewController: JSQMessagesViewController {
     var lastIndex: Int?
     var endIndex: Int?
     
+    var checkTypingTimer: Timer?
+    var isTyping = false
+    
     var user: User? {
         didSet {
             navigationItem.title = user?.person?.name
-            observeMessages()
+            observeMessagesAndTyping()
         }
-    }    
-
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        typingRef?.removeAllObservers()
+        messagesRef?.removeAllObservers()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.senderId = User.uid
         self.senderDisplayName = User.person?.name
-        
         imagePicker.delegate = self
     }
     
-    func observeMessages() {
+    func observeMessagesAndTyping() {
         guard let uid = User.uid, let toId = user?.uid else {return}
+        
+        self.typingRef = Request.ref.child("UserMessages").child(uid).child("Typing").child(toId)
+        
+        Request.observeRequest(reference: typingRef!, type: .childChanged) { (snapshot, error) in
+            guard error == nil else {return}
+            
+            if let typing = snapshot?.value as? Bool {
+                DispatchQueue.main.async {
+                    self.showTypingIndicator = typing
+                    if !self.collectionView.isDragging {
+                        self.scrollToBottom(animated: true)
+                    }
+                }
+                
+            }
+        }
+        
         Request.singleRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toFirst: 1), type: .value) { (snapshot, error) in
             
             var lastIndex: Int?
@@ -50,7 +78,9 @@ class ChatViewController: JSQMessagesViewController {
                 let json = JSON(snap).first
                 lastIndex = json?.1["timestamp"].intValue
             }
-            Request.observeRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toLast: reqLimit), type: .childAdded) { (snapshot, error) in
+            self.messagesRef = Request.ref.child("UserMessages").child(uid).child(toId)
+            
+            Request.observeRequest(reference: self.messagesRef!.queryLimited(toLast: reqLimit), type: .childAdded) { (snapshot, error) in
                 guard error == nil else {return}
                 
                 guard let dictionary = snapshot?.value as? [String: AnyObject] else {return}
@@ -63,12 +93,14 @@ class ChatViewController: JSQMessagesViewController {
                 
                 self.messages.append(JSQMessage(senderId: message.fromId, senderDisplayName: message.senderName, date: date, text: text))
                 
+                
                 self.lastIndex = lastIndex ?? Int(self.messages[0].date.timeIntervalSince1970)
                 
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
-                    let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                    if !self.collectionView.isDragging {
+                        self.scrollToBottom(animated: true)
+                    }
                 }
             }
         }
@@ -136,10 +168,10 @@ class ChatViewController: JSQMessagesViewController {
             let userMessagesRef = Request.ref.child("UserMessages").child(fromId).child(toId)
             
             let messageId = childRef.key
-            Request.updateChildValue(reference: userMessagesRef, value: [messageId : values], complition: {})
+            Request.updateChildValue(reference: userMessagesRef, value: [messageId : values], completion: {})
             
             let recipientUserMessagesRef = Request.ref.child("UserMessages").child(toId).child(fromId)
-            Request.updateChildValue(reference: recipientUserMessagesRef, value: [messageId : values], complition: {})
+            Request.updateChildValue(reference: recipientUserMessagesRef, value: [messageId : values], completion: {})
         }
     }
     
@@ -151,14 +183,41 @@ class ChatViewController: JSQMessagesViewController {
         guard text != "" else {return}
         
         let properties = ["text": text, "senderName" : User.person?.name]
-        sendMessageWithProperties(properties as [String : AnyObject])
-       
-        self.keyboardController.textView.text = ""
+        
+        Request.updateChildValue(reference: Request.ref.child("UserMessages").child(user!.uid!).child("Typing").child(User.uid!), value: ["typing" : false], completion: {
+            self.sendMessageWithProperties(properties as [String : AnyObject])
+        })
+        
+        inputToolbar.contentView.textView.text.removeAll()
+        inputToolbar.contentView.rightBarButtonItem.isEnabled = false
+        
+        //self.keyboardController.textView.text = ""
         collectionView.reloadData()
         
         //let indexPath = IndexPath(item: self.chatMessages.count - 1, section: 0)
         //self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
     }
+    
+    override func textViewDidChange(_ textView: UITextView) {
+        inputToolbar.contentView.rightBarButtonItem.isEnabled = true
+        startTypingRequest()
+        checkTypingTimer?.invalidate()
+        checkTypingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(stopTypingRequest), userInfo: nil, repeats: false)
+    }
+    
+    func startTypingRequest() {
+        if !isTyping {
+            Request.updateChildValue(reference: Request.ref.child("UserMessages").child(user!.uid!).child("Typing").child(User.uid!), value: ["typing" : true], completion: {})
+        }
+        isTyping = true
+    }
+    
+    func stopTypingRequest() {
+        Request.updateChildValue(reference: Request.ref.child("UserMessages").child(user!.uid!).child("Typing").child(User.uid!), value: ["typing" : false], completion: {})
+        isTyping = false
+    }
+    
+    
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.messages.count
@@ -181,7 +240,7 @@ class ChatViewController: JSQMessagesViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
-        
+        cell.textView!.textColor = UIColor.white
         return cell
     }
     
@@ -200,27 +259,35 @@ class ChatViewController: JSQMessagesViewController {
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         let date = self.messages[indexPath.item].date
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yy"
+        dateFormatter.dateFormat = "dd MMMM"
         
         return NSAttributedString(string: dateFormatter.string(from: date!))
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
-        return NSAttributedString(string: "Доставлено")
-    }
-    
-    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAt indexPath: IndexPath!) -> CGFloat {
-        return kJSQMessagesCollectionViewCellLabelHeightDefault
+        return NSAttributedString(string: NSLocalizedString("Delivered", comment: "Delivered"))
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAt indexPath: IndexPath!) -> CGFloat {
-        return kJSQMessagesCollectionViewCellLabelHeightDefault
+        if indexPath.item == messages.count - 1 && self.messages[indexPath.item].senderId == self.senderId {
+            return kJSQMessagesCollectionViewCellLabelHeightDefault
+        }
+        return 0
     }
     
-//    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAt indexPath: IndexPath!) -> CGFloat {
-//        return kJSQMessagesCollectionViewCellLabelHeightDefault
-//    }
-
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAt indexPath: IndexPath!) -> CGFloat {
+        guard indexPath.item != 0 else {return 0}
+        let currentMessageDate = messages[indexPath.item].date
+        let previousMessageDate = messages[indexPath.item - 1].date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM"
+        
+        if dateFormatter.string(from: currentMessageDate!) != dateFormatter.string(from: previousMessageDate!) {
+            return 35
+        }
+        return 0
+    }
+    
 }
 
 extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

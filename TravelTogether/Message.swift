@@ -21,6 +21,7 @@ class Message: NSObject {
     var imageWidth: NSNumber?
     var imageHeight: NSNumber?
     var type: String?
+    var status: String?
     
     init(dictionary: [String: Any]) {
         self.senderName = dictionary["senderName"] as? String
@@ -31,6 +32,7 @@ class Message: NSObject {
         self.imageUrl = dictionary["imageUrl"] as? String
         self.videoUrl = dictionary["videoUrl"] as? String
         self.type = dictionary["type"] as? String
+        self.status = dictionary["status"] as? String
         self.imageWidth = dictionary["imageWidth"] as? NSNumber
         self.imageHeight = dictionary["imageHeight"] as? NSNumber
     }

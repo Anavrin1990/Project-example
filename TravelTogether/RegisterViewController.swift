@@ -74,7 +74,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                     User.uid = uid
                     User.email = user?.email
                     
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": emailUser], complition: {})
+                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": emailUser], completion: {})
                     
                     self.navigationController?.dismiss(animated: true, completion: nil)
                     print ("success Sign In with email")
@@ -98,9 +98,9 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 
                 if let uid = User.uid {
                     if let email = User.email {
-                        Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
+                        Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], completion: {})
                     } else {
-                        Request.singleRequest(reference: Request.ref.child("Users").child(uid).queryOrderedByKey(), type: .value, complition: { (snapshot, error) in
+                        Request.singleRequest(reference: Request.ref.child("Users").child(uid).queryOrderedByKey(), type: .value, completion: { (snapshot, error) in
                             guard error == nil else {return}
                             if let snap = snapshot?.value as? NSDictionary {
                                 let json = JSON(snap)
@@ -137,7 +137,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
             if let email = email {
                 if email != "" {
                     User.email = email
-                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {
+                    Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], completion: {
                         DispatchQueue.main.async {
                             self.dismiss(animated: true, completion: nil)
                             print ("Facebook sign in success")

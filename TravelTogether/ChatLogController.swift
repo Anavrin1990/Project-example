@@ -403,10 +403,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             let userMessagesRef = Request.ref.child("UserMessages").child(fromId).child(toId)
             
             let messageId = childRef.key
-            Request.updateChildValue(reference: userMessagesRef, value: [messageId : values], complition: {})
+            Request.updateChildValue(reference: userMessagesRef, value: [messageId : values], completion: {})
             
             let recipientUserMessagesRef = Request.ref.child("UserMessages").child(toId).child(fromId)
-            Request.updateChildValue(reference: recipientUserMessagesRef, value: [messageId : values], complition: {})
+            Request.updateChildValue(reference: recipientUserMessagesRef, value: [messageId : values], completion: {})
         }
     }
     

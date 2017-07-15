@@ -100,24 +100,24 @@ class ProfileViewController: UIViewController {
         }
         if let uid = User.uid {
             for (k, v) in userProperties {
-                Request.updateChildValue(reference: Request.ref.child("Criteria").child(k as! String).child(uid), value: [k : v], complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Criteria").child(k as! String).child(uid), value: [k : v], completion: {})
             }
             for photo in photoArray.enumerated() {
                 if photo.offset == 0 {
                     if let uploadPhoto = UIImageJPEGRepresentation(photo.element, 0.2) {
-                        Request.storagePutData(reference: Request.storageRef.child(uid).child("icon"), data: uploadPhoto, complition: { (metadata, error) in
+                        Request.storagePutData(reference: Request.storageRef.child(uid).child("icon"), data: uploadPhoto, completion: { (metadata, error) in
                             guard error == nil else {print (error?.localizedDescription as Any); return}
                             if let imageURL = metadata?.downloadURL()?.absoluteString {
-                                Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["icon": imageURL], complition: {})
+                                Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["icon": imageURL], completion: {})
                             }
                         })
                     }
                 }
                 if let uploadPhoto = UIImageJPEGRepresentation(photo.element, 0.6) {
-                    Request.storagePutData(reference: Request.storageRef.child(uid).child(photoArrayNames[photo.offset]), data: uploadPhoto, complition: { (metadata, error) in
+                    Request.storagePutData(reference: Request.storageRef.child(uid).child(photoArrayNames[photo.offset]), data: uploadPhoto, completion: { (metadata, error) in
                         guard error == nil else {print (error?.localizedDescription as Any); return}
                         if let imageURL = metadata?.downloadURL()?.absoluteString {
-                            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: [self.photoArrayNames[photo.offset]: imageURL], complition: {})
+                            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: [self.photoArrayNames[photo.offset]: imageURL], completion: {})
                         }
                     })
                 }
@@ -131,7 +131,7 @@ class ProfileViewController: UIViewController {
             userProperties["registrationDate"] = stringDate
             userProperties["uid"] = uid            
             userProperties["countryId"] = countryId
-            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, complition: {
+            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, completion: {
                 UserDefaults.standard.set(Person.instance.country, forKey: "countryDefault")
                 UserDefaults.standard.set(Person.instance.city, forKey: "cityDefault")
                 UserDefaults.standard.synchronize()

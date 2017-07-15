@@ -18,14 +18,14 @@ class Request {
     static var ref = FIRDatabase.database().reference()
     static var storageRef = FIRStorage.storage().reference()
     
-    static func getJSON (url: String?, complition: @escaping (_ JSON: JSON) -> ())  {
+    static func getJSON (url: String?, completion: @escaping (_ JSON: JSON) -> ())  {
         guard let url = url else {return}
         guard url != "" else {return}
         request(url).responseJSON { (response) in
             let result = response.result
             if result.error == nil {
                 let json = JSON(result.value as Any)
-                complition(json)
+                completion(json)
                 if showLogs {print ("------GET JSON ANSWER -> \(url)\n\(json)")}
             } else {
                 if showLogs { print ("------GET JSON ERROR -> \(url)\n\(result.error?.localizedDescription as Any)")}
@@ -35,80 +35,80 @@ class Request {
     }
     
     // Получить изображение
-    static func getImage (url: String?, complition: @escaping (_ data: Data?) -> ())  {
+    static func getImage (url: String?, completion: @escaping (_ data: Data?) -> ())  {
         guard let url = url else {return}
         guard url != "" else {return}
         request(url).responseData { (data) in
             if showLogs {print ("------GET IMAGE ANSWER -> \(url)\n\(data.data as Any)")}
-            complition(data.data)
+            completion(data.data)
         }
         if showLogs {print ("------GET IMAGE REQUEST -> \(url)")}
     }
     
     // Загрузка медиа
-    static func storagePutData (reference: FIRStorageReference, data: Data, complition: @escaping (_ snapshot: FIRStorageMetadata?, _ error: Error?) -> ()) {
+    static func storagePutData (reference: FIRStorageReference, data: Data, completion: @escaping (_ snapshot: FIRStorageMetadata?, _ error: Error?) -> ()) {
         
         reference.put(data, metadata: nil) { (metadata, error) in
             if error != nil {
-                complition(nil, error)
+                completion(nil, error)
                 if showLogs {print ("------STORAGE PUT ERROR -> \(reference)\n\(error?.localizedDescription as Any)")}
             } else {
-                complition(metadata, nil)
-                if showLogs {print ("------STORAGE PUT COMPLITED -> \(reference)")}
+                completion(metadata, nil)
+                if showLogs {print ("------STORAGE PUT COMPLETED -> \(reference)")}
             }
         }
         if showLogs {print ("------STORAGE PUT DATA -> \(reference)")}
     }
     
     // Обновление значения
-    static func updateChildValue(reference: FIRDatabaseReference, value: [AnyHashable : Any], complition: @escaping () ->()) {
+    static func updateChildValue(reference: FIRDatabaseReference, value: [AnyHashable : Any], completion: @escaping () ->()) {
         
         reference.updateChildValues(value) { (error, success) in
             if error != nil {
                 if showLogs {print ("------UPDATE ERROR -> \(reference.ref)\n\(error?.localizedDescription as Any)")}
             } else {
-                complition()
-                if showLogs {print ("------UPDATE COMPLITED -> \(reference.ref)")}
+                completion()
+                if showLogs {print ("------UPDATE COMPLETED -> \(reference.ref)")}
             }
         }
         if showLogs {print ("------UPDATE REQUEST -> \(reference.ref)")}
     }
     
     // Сингл запрос
-    static func singleRequest(reference: FIRDatabaseQuery, type: FIRDataEventType, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> Void) {
+    static func singleRequest(reference: FIRDatabaseQuery, type: FIRDataEventType, completion: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> Void) {
         
         reference.observeSingleEvent(of: type, with: { (snapshot) in
-            complition(snapshot, nil)
+            completion(snapshot, nil)
             if showLogs {print ("------SINGLE ANSWER -> \(reference.ref)\n\(snapshot)")}
         }) { (error) in
-            complition(nil, error)
+            completion(nil, error)
             if showLogs {print ("------SINGLE ANSWER ERROR -> \(reference.ref)\n\(error.localizedDescription)")}
         }
         if showLogs {print ("------SINGLE REQUEST -> \(reference.ref)")}
     }
     
     // Наблюдающий запрос
-    static func observeRequest(reference: FIRDatabaseQuery, type: FIRDataEventType, complition: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> Void) {
+    static func observeRequest(reference: FIRDatabaseQuery, type: FIRDataEventType, completion: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> Void) {
         
         reference.observe(type, with: { (snapshot) in
-            complition(snapshot, nil)
+            completion(snapshot, nil)
             if showLogs {print ("------OBSERVE ANSWER -> \(reference.ref)\n\(snapshot)")}
         }) { (error) in
-            complition(nil, error)
+            completion(nil, error)
             if showLogs {print ("------OBSERVE ANSWER ERROR -> \(reference.ref)\n\(error.localizedDescription)")}
         }
         if showLogs {print ("------OBSERVE REQUEST -> \(reference.ref)")}
     }    
     
     // Юзер инфо
-    static func getUserInfo(complition: @escaping() -> ()) {
+    static func getUserInfo(completion: @escaping() -> ()) {
         let user = FIRAuth.auth()?.currentUser
         if let user = user {
             if user.email != nil, user.email != "" {
                 User.email = user.email
             }
             User.uid = user.uid
-            Request.singleRequest(reference: Request.ref.child("Users").child(User.uid!).queryOrderedByKey(), type: .value, complition: { (snapshot, error) in
+            Request.singleRequest(reference: Request.ref.child("Users").child(User.uid!).queryOrderedByKey(), type: .value, completion: { (snapshot, error) in
                 guard error == nil else {return}
                 if let snap = snapshot?.value as? NSDictionary {
                     let json = JSON(snap)
@@ -132,28 +132,28 @@ class Request {
                     User.thirdTravel = json["thirdTravel"].stringValue
                     User.registrationDate = json["registrationDate"].stringValue
                     
-                    complition()
+                    completion()
                     if showLogs {print ("------GET USER INFO SUCCESS\n\(json)")}
                 } else {
-                    complition()
+                    completion()
                     if showLogs {print ("------GET USER INFO ERROR\n\(error?.localizedDescription as Any)")}
                 }
             })
         } else {
             if showLogs {print ("------NOT AUTHORIZED")}
-            complition()
+            completion()
         }
         if showLogs {print ("------GET USER INFO REQUEST")}
     }
     
-    static func logOut(complition: @escaping() -> ()) {
+    static func logOut(completion: @escaping() -> ()) {
         MainViewController.needCheckAuth = true
         let firebaseAuth = FIRAuth.auth()
         do {
             try firebaseAuth?.signOut()
             User.email = nil
             User.uid = nil
-            complition()
+            completion()
             if showLogs {print ("SING OUT SUCCESS")}
         } catch let signOutError as NSError {
             if showLogs {print ("Error signing out: %@", signOutError)}

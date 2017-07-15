@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             User.email = user?.email
             User.uid = user?.uid            
             if let uid = User.uid, let email = User.email {
-                Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], complition: {})
+                Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], completion: {})
             }
             AppDelegate.delegate?.dismissVC()
         }

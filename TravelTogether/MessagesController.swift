@@ -90,7 +90,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
             guard error == nil else {return}
             guard let userId = snapshot?.key else {return}
             
-            Request.observeRequest(reference: Request.ref.child("UserMessages").child(uid).child(userId).queryLimited(toLast: 1), type: .childAdded, complition: { (snapshot, error) in
+            Request.observeRequest(reference: Request.ref.child("UserMessages").child(uid).child(userId).queryLimited(toLast: 1), type: .childAdded, completion: { (snapshot, error) in
                 guard error == nil else {return}
                 
                 if let dictionary = snapshot?.value as? [String: AnyObject] {
