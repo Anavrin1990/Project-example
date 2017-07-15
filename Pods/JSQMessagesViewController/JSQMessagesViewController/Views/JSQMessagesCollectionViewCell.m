@@ -317,8 +317,8 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
     [self.messageBubbleImageView removeFromSuperview];
     [self.textView removeFromSuperview];
 
-    [mediaView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    mediaView.frame = self.messageBubbleContainerView.bounds;
+    [mediaView setTranslatesAutoresizingMaskIntoConstraints:NO];    
+    mediaView.frame = self.messageBubbleContainerView.bounds;    
 
     [self.messageBubbleContainerView addSubview:mediaView];
     [self.messageBubbleContainerView jsq_pinAllEdgesOfSubview:mediaView];

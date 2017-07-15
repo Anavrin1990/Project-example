@@ -83,7 +83,7 @@
                         <rect key="frame" x="245" y="68.5" width="50" height="17"/>
                         <color key="backgroundColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="50" id="iUd-eG-RXl"/>
+                            <constraint firstAttribute="width" constant="50" id="7rF-dN-ycJ"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -92,6 +92,8 @@
                 </subviews>
             </view>
             <constraints>
+                <constraint firstItem="Ufa-bF-l1Y" firstAttribute="centerY" secondItem="btS-p8-B7Z" secondAttribute="centerY" id="12V-qW-AUE"/>
+                <constraint firstItem="Ufa-bF-l1Y" firstAttribute="leading" secondItem="btS-p8-B7Z" secondAttribute="trailing" constant="-3" id="43Y-Ed-lpK"/>
                 <constraint firstItem="btS-p8-B7Z" firstAttribute="leading" secondItem="4lh-CK-yVn" secondAttribute="leading" constant="4" id="4K4-jz-6W9"/>
                 <constraint firstItem="UPz-5x-c1T" firstAttribute="leading" secondItem="4lh-CK-yVn" secondAttribute="leading" constant="6" id="54r-MX-MGW"/>
                 <constraint firstAttribute="trailing" secondItem="UPz-5x-c1T" secondAttribute="trailing" id="G3U-h0-DWS"/>
@@ -101,10 +103,8 @@
                 <constraint firstItem="afj-rd-iNv" firstAttribute="top" secondItem="4lh-CK-yVn" secondAttribute="top" id="ZG9-2M-N52"/>
                 <constraint firstItem="UPz-5x-c1T" firstAttribute="top" secondItem="Da1-09-wR4" secondAttribute="bottom" id="dDB-B0-c6J"/>
                 <constraint firstItem="Da1-09-wR4" firstAttribute="leading" secondItem="4lh-CK-yVn" secondAttribute="leading" id="jiu-B4-TSD"/>
-                <constraint firstItem="Ufa-bF-l1Y" firstAttribute="leading" secondItem="KYU-B8-cUW" secondAttribute="trailing" constant="-3" id="nRc-Av-war"/>
                 <constraint firstAttribute="bottom" secondItem="UPz-5x-c1T" secondAttribute="bottom" id="nsK-Gh-M3Z"/>
                 <constraint firstItem="UPz-5x-c1T" firstAttribute="top" secondItem="btS-p8-B7Z" secondAttribute="bottom" id="s8G-Je-7GA"/>
-                <constraint firstItem="Ufa-bF-l1Y" firstAttribute="centerY" secondItem="KYU-B8-cUW" secondAttribute="centerY" id="smc-0V-sRz"/>
             </constraints>
             <size key="customSize" width="317" height="245"/>
             <connections>

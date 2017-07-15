@@ -9,6 +9,20 @@
 import UIKit
 import Firebase
 
+enum MessageStatus: String {
+    
+    case delivered
+    case read
+    
+    var localValue: String {
+        
+        switch self {
+        case .delivered: return NSLocalizedString("Delivered", comment: "Delivered")
+        case .read: return NSLocalizedString("Read", comment: "Read")
+        }
+    }
+}
+
 class Message: NSObject {
     
     var senderName: String?
@@ -17,11 +31,9 @@ class Message: NSObject {
     var timestamp: NSNumber?
     var toId: String?
     var imageUrl: String?
-    var videoUrl: String?
-    var imageWidth: NSNumber?
-    var imageHeight: NSNumber?
     var type: String?
-    var status: String?
+    var status: MessageStatus?
+    var key: String?
     
     init(dictionary: [String: Any]) {
         self.senderName = dictionary["senderName"] as? String
@@ -30,11 +42,9 @@ class Message: NSObject {
         self.toId = dictionary["toId"] as? String
         self.timestamp = dictionary["timestamp"] as? NSNumber
         self.imageUrl = dictionary["imageUrl"] as? String
-        self.videoUrl = dictionary["videoUrl"] as? String
         self.type = dictionary["type"] as? String
-        self.status = dictionary["status"] as? String
-        self.imageWidth = dictionary["imageWidth"] as? NSNumber
-        self.imageHeight = dictionary["imageHeight"] as? NSNumber
+        let status = dictionary["status"] as? String
+        self.status = status == "delivered" ? .delivered : .read
     }
     
     func chatPartnerId() -> String? {

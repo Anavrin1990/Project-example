@@ -257,7 +257,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         cell.textView.text = message.text
         
-        setupCell(cell, message: message)
+        setupCell(cell, message: message) 
         
         if let text = message.text {
             //a text message
@@ -268,8 +268,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             cell.bubbleWidthAnchor?.constant = 200
             cell.textView.isHidden = true
         }
-        
-        cell.playButton.isHidden = message.videoUrl == nil
         
         return cell
     }
@@ -344,26 +342,26 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.collectionViewLayout.invalidateLayout()
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        var height: CGFloat = 80
-        
-        let message = messages[indexPath.item]
-        if let text = message.text {
-            height = estimateFrameForText(text).height + 20
-        } else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
-            
-            // h1 / w1 = h2 / w2
-            // solve for h1
-            // h1 = h2 / w2 * w1
-            
-            height = CGFloat(imageHeight / imageWidth * 200)
-            
-        }
-        
-        let width = UIScreen.main.bounds.width
-        return CGSize(width: width, height: height)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        
+//        var height: CGFloat = 80
+//        
+//        let message = messages[indexPath.item]
+//        if let text = message.text {
+//            height = estimateFrameForText(text).height + 20
+//        } else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
+//            
+//            // h1 / w1 = h2 / w2
+//            // solve for h1
+//            // h1 = h2 / w2 * w1
+//            
+//            height = CGFloat(imageHeight / imageWidth * 200)
+//            
+//        }
+//        
+//        let width = UIScreen.main.bounds.width
+//        return CGSize(width: width, height: height)
+//    }
     
     fileprivate func estimateFrameForText(_ text: String) -> CGRect {
         let size = CGSize(width: 200, height: 1000)

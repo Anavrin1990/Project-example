@@ -30,6 +30,22 @@ let customDateFormatter : DateFormatter = {
     return formatter
 }()
 
+func getCachedImage(url: String?, completion: @escaping (UIImage) -> Void) {
+        if let cacheImage = imageCache.object(forKey: url as AnyObject) as? UIImage {
+            completion(cacheImage)
+            return
+        }
+        Request.getImage(url: url) { (data) in
+            guard let imageData = data else {return}
+            DispatchQueue.main.async {
+                guard let image = UIImage(data: imageData) else {return}
+                imageCache.setObject(image, forKey: url as AnyObject)
+                completion(image)
+            }
+        }
+    
+}
+
 func addSpinner(_ view: UIView) {
     
     view.addSubview(spinner)

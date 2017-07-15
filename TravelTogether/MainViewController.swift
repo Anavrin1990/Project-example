@@ -87,8 +87,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         spinnerSettings()
     }
     
+    // MARK: Navigation drop menu
     func navigationDropdownMenu() {
-        
         let items = [(NSLocalizedString("Country", comment: "Country"), countryDefault.toCountry()),
                      (NSLocalizedString("City", comment: "City"), cityDefault.toCity()),
                      (NSLocalizedString("Sex", comment: "Sex"), sexDefault.toSex()),
@@ -105,6 +105,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             let searchController = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
             searchController.withTopConstraint = false
             
+            // Set cells
             if indexPath == 0 {
                 emptySearchName = ("AllCountries", NSLocalizedString("All countries", comment: "All countries"))
                 searchController.request = searchCountries(_:)
@@ -122,6 +123,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     rangeArray.append((rawValue: range.rawValue, localValue: range.localValue))
                 }
                 searchController.contentArray = [(NSLocalizedString("Age range", comment: "Age range"), rangeArray)]
+                
             } else if indexPath == 4 {
                 emptySearchName = ("AllCountries", NSLocalizedString("All countries", comment: "All countries"))
                 searchController.request = searchCountries(_:)
@@ -157,6 +159,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 return
             }
             
+            // Search completion
             searchController.resultComplition = { (rawValue: String, localValue: String) in
                 tableView.items[indexPath] = (items[indexPath].0, localValue)
                 
@@ -230,6 +233,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
+    // MARK: Collection view delegate
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.travelsArray.count
     }
@@ -264,6 +268,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
+    // MARK: Check auth
     func checkAuth() {
         if User.uid == nil {
             Request.logOut{}
@@ -316,6 +321,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         })
     }
     
+    // MARK: Requests
     func getReference() -> FIRDatabaseReference {
         let cityDefault = countryDefault == "AllCountries" ? "AllCities" : self.cityDefault
         
@@ -373,6 +379,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
+    // Pagination
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         if indexPath.row == (travelsArray.count - 2) {
