@@ -110,7 +110,6 @@ class ChatViewController: JSQMessagesViewController {
                     
                     guard let text = message.text else {return}
                     self.messages.append(JSQMessage(senderId: message.fromId, senderDisplayName: message.senderName, date: date, text: text))
-                    self.customMessages.append(message)
                     
                 } else {
                     
@@ -126,9 +125,9 @@ class ChatViewController: JSQMessagesViewController {
                         }                        
                     })
                     self.messages.append(JSQMessage(senderId: message.fromId, senderDisplayName: message.senderName, date: date, media: jsqImage))
-                    self.customMessages.append(message)
                     
                 }
+                self.customMessages.append(message)
                 
                 self.lastIndex = lastIndex ?? Int(self.messages[0].date.timeIntervalSince1970)
                 
@@ -148,7 +147,7 @@ class ChatViewController: JSQMessagesViewController {
                             }
                         }
                         
-                    }                    
+                    }
                     self.collectionView?.reloadData()
                     if !self.collectionView.isDragging {
                         self.scrollToBottom(animated: true)
@@ -181,9 +180,26 @@ class ChatViewController: JSQMessagesViewController {
                         
                         let date = Date(timeIntervalSince1970: Double(message.timestamp!) )
                         
-                        guard let text = message.text else {return}
-                        
-                        self.messages.insert(JSQMessage(senderId: message.fromId, senderDisplayName: message.senderName, date: date, text: text), at: 0)
+                        if message.type == "text" {
+                            
+                            guard let text = message.text else {return}
+                            self.messages.insert(JSQMessage(senderId: message.fromId, senderDisplayName: message.senderName, date: date, text: text), at: 0)
+                            
+                        } else {
+                            
+                            guard let imageUrl = message.imageUrl else {return}
+                            let jsqImage = JSQPhotoMediaItem(image: nil)
+                            
+                            jsqImage?.appliesMediaViewMaskAsOutgoing = self.senderId == message.fromId
+                            
+                            getCachedImage(url: imageUrl, completion: { (image) in
+                                DispatchQueue.main.async {
+                                    jsqImage?.image = image
+                                    self.collectionView?.reloadData()
+                                }
+                            })
+                            self.messages.insert(JSQMessage(senderId: message.fromId, senderDisplayName: message.senderName, date: date, media: jsqImage), at: 0)
+                        }
                         self.customMessages.insert(message, at: 0)
                     }
                 }
