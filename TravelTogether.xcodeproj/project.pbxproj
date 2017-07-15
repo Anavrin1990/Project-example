@@ -45,12 +45,9 @@
 		0BDA50A51EDF333400FA7A5E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA50A41EDF333400FA7A5E /* MainViewController.swift */; };
 		0BDA50A71EDF34B700FA7A5E /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA50A61EDF34B700FA7A5E /* MainCollectionViewCell.swift */; };
 		0BDA50A91EDF370A00FA7A5E /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA50A81EDF370A00FA7A5E /* Person.swift */; };
-		0BDA941A1F1286D70004B76D /* ChatInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94191F1286D70004B76D /* ChatInputContainerView.swift */; };
 		0BDA941C1F1286DF0004B76D /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA941B1F1286DF0004B76D /* ChatLogController.swift */; };
-		0BDA941E1F1286E50004B76D /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA941D1F1286E50004B76D /* ChatMessageCell.swift */; };
 		0BDA94241F1287030004B76D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94231F1287030004B76D /* Message.swift */; };
 		0BDA94261F1287080004B76D /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94251F1287080004B76D /* MessagesController.swift */; };
-		0BDA94281F12870C0004B76D /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94271F12870C0004B76D /* NewMessageController.swift */; };
 		0BDA942A1F1287140004B76D /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA94291F1287140004B76D /* UserCell.swift */; };
 		0BE5910D1F0AB3F70017A866 /* BTNavigationDropdownMenu.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0BE591041F0AB3F70017A866 /* BTNavigationDropdownMenu.bundle */; };
 		0BE5910E1F0AB3F70017A866 /* BTNavigationDropdownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE591051F0AB3F70017A866 /* BTNavigationDropdownMenu.swift */; };
@@ -106,12 +103,9 @@
 		0BDA50A41EDF333400FA7A5E /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		0BDA50A61EDF34B700FA7A5E /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		0BDA50A81EDF370A00FA7A5E /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
-		0BDA94191F1286D70004B76D /* ChatInputContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInputContainerView.swift; sourceTree = "<group>"; };
 		0BDA941B1F1286DF0004B76D /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
-		0BDA941D1F1286E50004B76D /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		0BDA94231F1287030004B76D /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		0BDA94251F1287080004B76D /* MessagesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
-		0BDA94271F12870C0004B76D /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		0BDA94291F1287140004B76D /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		0BE591041F0AB3F70017A866 /* BTNavigationDropdownMenu.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = BTNavigationDropdownMenu.bundle; sourceTree = "<group>"; };
 		0BE591051F0AB3F70017A866 /* BTNavigationDropdownMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTNavigationDropdownMenu.swift; sourceTree = "<group>"; };
@@ -178,6 +172,7 @@
 				0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */,
 				0A8EC4971F0E65A800B91B4A /* Travel.swift */,
 				0BAEE9611EF545E200CCC0C1 /* User.swift */,
+				0BDA94291F1287140004B76D /* UserCell.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -265,17 +260,6 @@
 			path = TravelTogether;
 			sourceTree = "<group>";
 		};
-		0BDA94181F1286D00004B76D /* Chat */ = {
-			isa = PBXGroup;
-			children = (
-				0BDA94191F1286D70004B76D /* ChatInputContainerView.swift */,
-				0BDA941D1F1286E50004B76D /* ChatMessageCell.swift */,
-				0BDA94271F12870C0004B76D /* NewMessageController.swift */,
-				0BDA94291F1287140004B76D /* UserCell.swift */,
-			);
-			name = Chat;
-			sourceTree = "<group>";
-		};
 		0BE591031F0AB3F70017A866 /* BTNavigationDropdownMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,7 +287,6 @@
 		0BE591151F0AB6500017A866 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
-				0BDA94181F1286D00004B76D /* Chat */,
 				0BE591031F0AB3F70017A866 /* BTNavigationDropdownMenu */,
 				0B7E63061F084254007DBDA6 /* DropStackView */,
 			);
@@ -465,7 +448,6 @@
 				0BF7455B1EE077F700F6A8E5 /* SearchViewController.swift in Sources */,
 				0B0D96501EE462B700C2F1C4 /* ParamsSelectField.swift in Sources */,
 				0BE591141F0AB3F70017A866 /* UIViewController+Extension.swift in Sources */,
-				0BDA941E1F1286E50004B76D /* ChatMessageCell.swift in Sources */,
 				0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */,
 				0BE591131F0AB3F70017A866 /* BTTableViewCell.swift in Sources */,
 				0BE591121F0AB3F70017A866 /* BTTableView.swift in Sources */,
@@ -476,7 +458,6 @@
 				0B0D96421EE410AD00C2F1C4 /* ParamsDropStack.swift in Sources */,
 				0BE5910E1F0AB3F70017A866 /* BTNavigationDropdownMenu.swift in Sources */,
 				0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */,
-				0BDA941A1F1286D70004B76D /* ChatInputContainerView.swift in Sources */,
 				0B0D96351EE3F05400C2F1C4 /* CustomScrollView.swift in Sources */,
 				0BCB55511EFFB00500605F24 /* MonthPicker.swift in Sources */,
 				0BDA50A71EDF34B700FA7A5E /* MainCollectionViewCell.swift in Sources */,
@@ -494,7 +475,6 @@
 				0BCD648E1EFE741300B93F82 /* TravelViewController.swift in Sources */,
 				0B0D963C1EE4055500C2F1C4 /* ParamsTextField.swift in Sources */,
 				0A8EC4981F0E65A800B91B4A /* Travel.swift in Sources */,
-				0BDA94281F12870C0004B76D /* NewMessageController.swift in Sources */,
 				0BDA50A91EDF370A00FA7A5E /* Person.swift in Sources */,
 				0BDA50A51EDF333400FA7A5E /* MainViewController.swift in Sources */,
 				0B273FEC1F0796D10031D3C1 /* CriteriaViewController.swift in Sources */,

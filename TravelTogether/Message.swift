@@ -14,8 +14,7 @@ enum MessageStatus: String {
     case delivered
     case read
     
-    var localValue: String {
-        
+    var localValue: String {        
         switch self {
         case .delivered: return NSLocalizedString("Delivered", comment: "Delivered")
         case .read: return NSLocalizedString("Read", comment: "Read")

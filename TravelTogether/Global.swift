@@ -43,11 +43,9 @@ func getCachedImage(url: String?, completion: @escaping (UIImage) -> Void) {
                 completion(image)
             }
         }
-    
 }
 
-func addSpinner(_ view: UIView) {
-    
+func addSpinner(_ view: UIView) {    
     view.addSubview(spinner)
     NSLayoutConstraint(item: spinner, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
     NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 0.85, constant: 0).isActive = true

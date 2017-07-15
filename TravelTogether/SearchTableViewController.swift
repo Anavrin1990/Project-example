@@ -140,13 +140,4 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
         searchBar.resignFirstResponder()
     }
     
-
-    
-    
-    
-    
-    
-    
-    
-
 }

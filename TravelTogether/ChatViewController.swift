@@ -35,7 +35,7 @@ class ChatViewController: JSQMessagesViewController {
     var user: User? {
         didSet {
             navigationItem.title = user?.person?.name
-            observeMessagesAndTyping()
+            observeMessagesTypingStatus()
         }
     }
     
@@ -57,25 +57,8 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     // MARK: Requests
-    func observeMessagesAndTyping() {
-        guard let uid = User.uid, let toId = user?.uid else {return}
-        
-        // Observe typing
-        self.typingRef = Request.ref.child("UserMessages").child(uid).child("Typing").child(toId)
-        
-        Request.observeRequest(reference: typingRef!, type: .childChanged) { (snapshot, error) in
-            guard error == nil else {return}
-            
-            if let typing = snapshot?.value as? Bool {
-                DispatchQueue.main.async {
-                    self.showTypingIndicator = typing
-                    if !self.collectionView.isDragging {
-                        self.scrollToBottom(animated: true)
-                    }
-                }
-                
-            }
-        }
+    func observeMessagesTypingStatus() {
+        guard let uid = User.uid, let toId = user?.uid else {return}        
         
         // Last index
         Request.singleRequest(reference: Request.ref.child("UserMessages").child(uid).child(toId).queryLimited(toFirst: 1), type: .value) { (snapshot, error) in
@@ -86,6 +69,23 @@ class ChatViewController: JSQMessagesViewController {
                 let json = JSON(snap).first
                 lastIndex = json?.1["timestamp"].intValue
             }
+            
+            // Observe typing
+            self.typingRef = Request.ref.child("UserMessages").child(uid).child("Typing").child(toId)
+            
+            Request.observeRequest(reference: self.typingRef!, type: .childChanged) { (snapshot, error) in
+                guard error == nil else {return}
+                
+                if let typing = snapshot?.value as? Bool {
+                    DispatchQueue.main.async {
+                        self.showTypingIndicator = typing
+                        if !self.collectionView.isDragging {
+                            self.scrollToBottom(animated: true)
+                        }
+                    }
+                }
+            }
+            
             self.messagesRef = Request.ref.child("UserMessages").child(uid).child(toId)
             
             // Observe status
@@ -147,7 +147,6 @@ class ChatViewController: JSQMessagesViewController {
                                 Request.updateChildValue(reference: Request.ref.child("UserMessages").child(toId).child(uid).child(messageKey), value: newDictionary, completion: {})
                             }
                         }
-                        
                     }
                     self.collectionView?.reloadData()
                     if !self.collectionView.isDragging {
@@ -211,8 +210,7 @@ class ChatViewController: JSQMessagesViewController {
                     self.collectionView!.contentOffset = CGPoint(x: self.collectionView!.contentOffset.x, y: offset)
                 }
             }
-        }
-        
+        }        
     }
     
     // MARK: Buttons handle
@@ -269,6 +267,10 @@ class ChatViewController: JSQMessagesViewController {
         startTypingRequest()
         checkTypingTimer?.invalidate()
         checkTypingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(stopTypingRequest), userInfo: nil, repeats: false)
+    }
+    
+    override func textViewDidBeginEditing(_ textView: UITextView) {
+        scrollToBottom(animated: true)
     }
     
     func startTypingRequest() {
@@ -373,17 +375,14 @@ class ChatViewController: JSQMessagesViewController {
             let mediaItem = message.media
             if mediaItem is JSQPhotoMediaItem {
                 let photoItem = mediaItem as! JSQPhotoMediaItem
-                if let test: UIImage = photoItem.image {
-                    let image = test
-                    return image
+                if let image = photoItem.image {
+                    let result = image
+                    return result
                 }
             }
         }
         return nil
-    }
-    
-    
-    
+    }    
 }
 
 // MARK: Send image

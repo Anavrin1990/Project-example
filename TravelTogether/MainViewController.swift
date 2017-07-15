@@ -214,7 +214,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: collectionView, attribute: .centerY, multiplier: 0.85, constant: 0).isActive = true
     }
     
-    
     @IBAction func addTravel(_ sender: Any) {
         guard User.thirdTravel == "" else {
             MessageBox.showMessage(parent: self, title: NSLocalizedString("Maximum is 3 travels", comment: "Maximum is 3 travels"), message: "")
@@ -411,7 +410,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.collectionView.reloadData()
                 }
             })
-        }
-        
+        }        
     }    
 }

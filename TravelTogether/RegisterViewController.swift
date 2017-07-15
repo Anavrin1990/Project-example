@@ -63,6 +63,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 print ("success Sign In with email")
             })
         } else {
+            
             FIRAuth.auth()?.createUser(withEmail: emailUser, password: password, completion: { (user, error) in
                 guard error == nil else {self.errorHandling(error: error!); return}
                 print ("success Register with email")
@@ -81,7 +82,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 })
             })
         }
-        
     }
     
     @IBAction func facebookLogin(_ sender: Any) {
@@ -98,8 +98,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 
                 if let uid = User.uid {
                     if let email = User.email {
+                        
                         Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], completion: {})
                     } else {
+                        
                         Request.singleRequest(reference: Request.ref.child("Users").child(uid).queryOrderedByKey(), type: .value, completion: { (snapshot, error) in
                             guard error == nil else {return}
                             if let snap = snapshot?.value as? NSDictionary {
@@ -125,10 +127,8 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                             }
                         })
                     }
-                    
                 }
             })
-            
         }
     }
     
@@ -154,8 +154,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
     
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
-    }
-    
+    }    
     
     func errorHandling (error: Error) {
         print (error.localizedDescription)
@@ -173,7 +172,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
     }
     
     func dismissVC() {
-        //FirstViewController.delegate?.fillTableView()
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -197,15 +195,5 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
         loginRegButton.setTitle(buttonText, for: UIControlState())
     }
     
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

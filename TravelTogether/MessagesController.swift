@@ -171,13 +171,6 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    func handleNewMessage() {
-        let newMessageController = NewMessageController()
-        newMessageController.messagesController = self
-        let navController = UINavigationController(rootViewController: newMessageController)
-        present(navController, animated: true, completion: nil)
-    }
-    
     func checkIfUserIsLoggedIn() {
         if User.uid == nil {
             print ("No current user")

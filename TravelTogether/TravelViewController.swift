@@ -35,6 +35,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
         searchVC.request = searchCountries(_:)
         self.navigationController?.pushViewController(searchVC, animated: true)
     }
+    
     @IBAction func onDoneClick(_ sender: Any) {
         self.view.endEditing(true)
         if let destination = destination, let month = monthNumber, monthTextField.text != "", let uid = User.uid {
@@ -78,8 +79,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             
             let userSex = User.person!.sex!.capitalized
             
-            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: [travelKey : travelId], completion: {
-                
+            Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: [travelKey : travelId], completion: {                
                 
                 // Update Criteria
                 Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").child(travelId), value: ["destination" : destination], completion: {})
