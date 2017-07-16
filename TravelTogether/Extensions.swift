@@ -9,6 +9,15 @@
 import Foundation
 import UIKit
 
+
+extension UIView {
+    func addSpinner() {
+        self.addSubview(spinner)
+        NSLayoutConstraint(item: spinner, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 0.85, constant: 0).isActive = true
+    }
+}
+
 extension UIImageView {
     
     func getImage (url: String?) {        

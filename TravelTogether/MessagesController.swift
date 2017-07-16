@@ -37,14 +37,23 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var messages = [Message]()
     var messagesDictionary = [String: Message]()
+    let refreshControl = UIRefreshControl()
     
     @IBOutlet weak var tableView: UITableView!
     let cellId = "cellId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        refreshControl.backgroundColor = .white
+        refreshControl.addTarget(self, action: #selector(observeUserMessages), for: .valueChanged)
+        tableView.addSubview(refreshControl)
         
-        checkIfUserIsLoggedIn()
+        messages.removeAll()
+        messagesDictionary.removeAll()
+        tableView.reloadData()
+        
+        observeUserMessages()
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         tableView.tableFooterView = UIView()
@@ -55,34 +64,25 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         return true
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
-            return
-        }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {        
+        guard let uid = User.uid else {return}
         
         let message = self.messages[indexPath.row]
         
         if let chatPartnerId = message.chatPartnerId() {
-            Request.ref.child("UserMessages").child(uid).child(chatPartnerId).removeValue(completionBlock: { (error, ref) in
-                
-                if error != nil {
-                    print("Failed to delete message:", error!)
-                    return
-                }
-                
+            Request.removeValue(reference: Request.ref.child("UserMessages").child(uid).child(chatPartnerId), completion: { 
                 self.messagesDictionary.removeValue(forKey: chatPartnerId)
                 self.attemptReloadOfTable()
-                
-                //                //this is one way of updating the table, but its actually not that safe..
-                //                self.messages.removeAtIndex(indexPath.row)
-                //                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-                
-            })
+            })            
         }
     }
     
     func observeUserMessages() {
+        
+        messages.removeAll()
+        messagesDictionary.removeAll()
+        tableView.reloadData()
+        
         guard let uid = User.uid else {return}
         
         let ref = Request.ref.child("UserMessages").child(uid)
@@ -133,6 +133,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         })
         
         DispatchQueue.main.async(execute: {
+            self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         })
     }
@@ -168,19 +169,6 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
             var user = User(dictionary: dictionary)
             user.uid = chatPartnerId            
             self.showChatControllerForUser(user)
-        }
-    }
-    
-    func checkIfUserIsLoggedIn() {
-        if User.uid == nil {
-            print ("No current user")
-            return
-        } else {
-            messages.removeAll()
-            messagesDictionary.removeAll()
-            tableView.reloadData()
-            
-            observeUserMessages()
         }
     }    
     

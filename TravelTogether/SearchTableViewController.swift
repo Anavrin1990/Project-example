@@ -73,7 +73,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
         stackView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: topConstant).isActive = true
         stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -(bottomConstant ?? 0)).isActive = true
-        addSpinner(view)
+        self.view.addSpinner()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

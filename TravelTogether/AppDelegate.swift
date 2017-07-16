@@ -100,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        
+        Request.updateStatus(.Offline)
     }
     
     

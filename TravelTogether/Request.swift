@@ -100,6 +100,17 @@ class Request {
         if showLogs {print ("------OBSERVE REQUEST -> \(reference.ref)")}
     }
     
+    static func removeValue(reference: FIRDatabaseReference, completion: @escaping () -> Void) {
+        reference.removeValue { (error, ref) in
+            if error == nil {
+                completion()
+                if showLogs {print ("------REMOVE COMPLITED -> \(reference.ref)")}
+            } else {
+                if showLogs {print ("------REMOVE ERROR -> \(reference.ref)\n\(error?.localizedDescription as Any)")}
+            }
+        }
+    }
+    
     // Update online/offline
     static func updateStatus(_ status: UserStatus) {
         guard let uid = User.uid else {return}

@@ -15,12 +15,11 @@ let showLogs = true
 var imageCache = NSCache<AnyObject, AnyObject>()
 let reqLimit: UInt = 15 // Лимит запроса
 
-
 let spinner: UIActivityIndicatorView = {
-    let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    let spin = UIActivityIndicatorView(activityIndicatorStyle: .white)
     spin.translatesAutoresizingMaskIntoConstraints = false
     spin.color = UIColor.darkGray
-    spin.hidesWhenStopped = true
+    spin.hidesWhenStopped = true    
     return spin
 }()
 
@@ -43,12 +42,6 @@ func getCachedImage(url: String?, completion: @escaping (UIImage) -> Void) {
                 completion(image)
             }
         }
-}
-
-func addSpinner(_ view: UIView) {    
-    view.addSubview(spinner)
-    NSLayoutConstraint(item: spinner, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 0.85, constant: 0).isActive = true
 }
 
 var emptySearchName = ("", NSLocalizedString("Not filled", comment: "Not filled"))

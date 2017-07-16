@@ -28,14 +28,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var destinationDefault = UserDefaults.standard.value(forKey: "destinationDefault") as? String ?? "AllCountries"
     var monthDefault = UserDefaults.standard.value(forKey: "monthDefault") as? String ?? "AllMonths"
     
-    let spinner: UIActivityIndicatorView = {
-        let spin = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-        spin.translatesAutoresizingMaskIntoConstraints = false
-        spin.color = UIColor.darkGray
-        spin.hidesWhenStopped = true
-        return spin
-    }()
-    
     let refreshControl = UIRefreshControl()
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -83,9 +75,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         refreshControl.addTarget(self, action: #selector(firstRequest), for: .valueChanged)
         collectionView?.addSubview(refreshControl)
         
+        
+        self.collectionView.addSpinner()
         spinner.startAnimating()
         
-        spinnerSettings()
+        
     }
     
     // MARK: Navigation drop menu
@@ -154,7 +148,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 UserDefaults.standard.set("AllCountries", forKey: "destinationDefault")
                 UserDefaults.standard.set("AllMonths", forKey: "monthDefault")
                 UserDefaults.standard.synchronize()
-                self.spinner.startAnimating()
+                spinner.startAnimating()
                 self.navigationDropdownMenu()
                 self.firstRequest()
                 return
@@ -201,18 +195,12 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
                 
                 UserDefaults.standard.synchronize()
-                self.spinner.startAnimating()
+                spinner.startAnimating()
                 self.firstRequest()
             }
             self.navigationController?.pushViewController(searchController, animated: true)
         }
         self.navigationItem.titleView = menuView
-    }
-    
-    func spinnerSettings() {
-        collectionView?.addSubview(spinner)
-        NSLayoutConstraint(item: spinner, attribute: .centerX, relatedBy: .equal, toItem: collectionView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: collectionView, attribute: .centerY, multiplier: 0.85, constant: 0).isActive = true
     }
     
     @IBAction func addTravel(_ sender: Any) {
@@ -370,7 +358,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         
                         DispatchQueue.main.async {
                             self.collectionView.reloadData()
-                            self.spinner.stopAnimating()
+                            spinner.stopAnimating()
                             self.refreshControl.endRefreshing()
                         }
                     })

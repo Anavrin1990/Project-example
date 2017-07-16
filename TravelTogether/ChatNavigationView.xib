@@ -24,7 +24,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wcA-mK-Lym">
-                            <rect key="frame" x="124.5" y="31" width="7" height="7"/>
+                            <rect key="frame" x="124.5" y="29" width="7" height="7"/>
                             <color key="backgroundColor" red="0.81408163820000001" green="1" blue="0.7032794912" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="7" id="cqf-0a-Kdu"/>
@@ -32,7 +32,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jG6-QY-Phi">
-                            <rect key="frame" x="85" y="26.5" width="31" height="14.5"/>
+                            <rect key="frame" x="85" y="24.5" width="31" height="14.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -41,7 +41,7 @@
                     <constraints>
                         <constraint firstItem="jG6-QY-Phi" firstAttribute="centerX" secondItem="SDG-is-HzF" secondAttribute="centerX" id="8Tw-eI-8V6"/>
                         <constraint firstAttribute="trailing" secondItem="ZT3-94-gsL" secondAttribute="trailing" id="Qsg-ae-UGe"/>
-                        <constraint firstItem="jG6-QY-Phi" firstAttribute="top" secondItem="ZT3-94-gsL" secondAttribute="bottom" constant="2" id="byH-25-Fh5"/>
+                        <constraint firstItem="jG6-QY-Phi" firstAttribute="top" secondItem="ZT3-94-gsL" secondAttribute="bottom" id="byH-25-Fh5"/>
                         <constraint firstAttribute="width" constant="200" id="cBJ-lT-BKT"/>
                         <constraint firstAttribute="height" constant="44" id="cHe-0G-HLT"/>
                         <constraint firstItem="ZT3-94-gsL" firstAttribute="leading" secondItem="SDG-is-HzF" secondAttribute="leading" id="dmN-Qf-KRM"/>

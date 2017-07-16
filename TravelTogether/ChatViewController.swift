@@ -47,7 +47,7 @@ class ChatViewController: JSQMessagesViewController {
     override func didMove(toParentViewController parent: UIViewController?) {
         super.didMove(toParentViewController: parent)
         if parent == self.navigationController?.parent {
-            let refArray = [typingRef, messagesRef, userStatusRef]
+            let refArray = [typingRef, userStatusRef]
             Request.removeAllObservers(refArray)
         }
     }

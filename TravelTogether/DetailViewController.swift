@@ -38,7 +38,7 @@ class DetailViewController: UIViewController {
         
         Request.observeRequest(reference: reference, type: .childChanged, completion: { (snapshot, error) in
             guard snapshot?.key == "status" else {return}
-            print (snapshot?.value)
+            
         })
     }
 
