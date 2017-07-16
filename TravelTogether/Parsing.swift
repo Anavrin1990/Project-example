@@ -12,38 +12,7 @@ import FirebaseDatabase
 
 class Parsing {
     
-    static var travelsArray = [Travel]()
-    
-    // Первый запрос
-    static func usersParse (_ snapshot: FIRDataSnapshot?, complition: @escaping (_ user: User?) -> ()) {
-        
-        var user: User?
-        
-        if let snap = snapshot?.value as? NSDictionary {
-            let json = JSON(snap).first
-            
-            let person = Person(name: json?.1["name"].stringValue,
-                                sex: json?.1["sex"].stringValue,
-                                birthday: json?.1["birthday"].stringValue,
-                                country: json?.1["name"].stringValue,
-                                city: json?.1["city"].stringValue,
-                                about: json?.1["about"].stringValue,
-                                alcohol: json?.1["alcohol"].stringValue,
-                                smoking: json?.1["smoking"].stringValue,
-                                familyStatus: json?.1["familyStatus"].stringValue,
-                                childs: json?.1["childs"].stringValue,
-                                orientation: json?.1["orientation"].stringValue)
-            user = User(email: json?.1["email"].stringValue,
-                        uid: json?.1["uid"].stringValue,
-                        person: person,
-                        icon: json?.1["icon"].stringValue,
-                        countryId: json?.1["countryID"].stringValue,                       
-                        firstTravel: json?.1["firstTravel"].stringValue,
-                        secondTravel: json?.1["secondTravel"].stringValue,
-                        thirdTravel: json?.1["thirdTravel"].stringValue)
-        }
-        complition(user)
-    }
+    static var travelsArray = [Travel]()    
     
     static func travelsParseFirst (_ snapshot: FIRDataSnapshot?, complition: @escaping (_ travelsArray: [Travel]) -> ()) {
         travelsArray = []

@@ -154,6 +154,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         return 72
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let message = messages[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
@@ -163,10 +164,9 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         let ref = Request.ref.child("Users").child(chatPartnerId)
         Request.singleRequest(reference: ref, type: .value) { (snapshot, error) in
             guard error == nil else {return}
-            guard let dictionary = snapshot?.value as? [String: AnyObject] else {return}
-            
+            guard let dictionary = snapshot?.value as? [String: AnyObject] else {return}            
             var user = User(dictionary: dictionary)
-            user.uid = chatPartnerId
+            user.uid = chatPartnerId            
             self.showChatControllerForUser(user)
         }
     }

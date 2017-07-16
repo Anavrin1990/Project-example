@@ -11,8 +11,7 @@ import UIKit
 
 extension UIImageView {
     
-    func getImage (url: String?) {
-        
+    func getImage (url: String?) {        
         if let cacheImage = imageCache.object(forKey: url as AnyObject) as? UIImage {
             self.image = cacheImage
             return

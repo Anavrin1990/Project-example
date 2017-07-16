@@ -16,8 +16,11 @@ class ChatViewController: JSQMessagesViewController {
     
     var typingRef: FIRDatabaseReference?
     var messagesRef: FIRDatabaseReference?
+    var userStatusRef: FIRDatabaseReference?
     
     let imagePicker = UIImagePickerController()
+    
+    let chatNavigationView = Bundle.main.loadNibNamed("ChatNavigationView", owner: self, options: nil)?.first as! ChatNavigationView
     
     var customMessages = [Message]()
     var messages = [JSQMessage]() {
@@ -34,17 +37,32 @@ class ChatViewController: JSQMessagesViewController {
     
     var user: User? {
         didSet {
-            navigationItem.title = user?.person?.name
+            chatNavigationView.nameLabel.text = user?.person?.name
+            chatNavigationView.status = user?.status
             observeMessagesTypingStatus()
+            setProfileImageOnBarButton()
         }
     }
     
     override func didMove(toParentViewController parent: UIViewController?) {
         super.didMove(toParentViewController: parent)
         if parent == self.navigationController?.parent {
-            typingRef?.removeAllObservers()
-            messagesRef?.removeAllObservers()
+            let refArray = [typingRef, messagesRef, userStatusRef]
+            Request.removeAllObservers(refArray)
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Observe user status (It works only here O_o)
+        guard let toId = user?.uid else {return}
+        self.userStatusRef = Request.ref.child("Users").child(toId)
+        
+        Request.observeRequest(reference: self.userStatusRef!, type: .childChanged, completion: { (snapshot, error) in
+            guard let status = snapshot?.value as? String, snapshot?.key == "status" else {return}
+            self.chatNavigationView.status = UserStatus(rawValue: status)
+        })
     }
     
     override func viewDidLoad() {
@@ -53,7 +71,32 @@ class ChatViewController: JSQMessagesViewController {
         self.senderId = User.uid
         self.senderDisplayName = User.person?.name
         self.navigationController?.delegate = self
-        imagePicker.delegate = self
+        imagePicker.delegate = self        
+        self.navigationItem.titleView = chatNavigationView
+    }
+    
+    func setProfileImageOnBarButton() {
+        let button = UIButton()
+        getCachedImage(url: user?.icon) { (image) in
+            button.setImage(image, for: .normal)
+        }
+        button.addTarget(self, action:#selector(showDetail), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y :0, width: 36, height: 36)
+        button.layer.cornerRadius = button.frame.width / 2
+        button.layer.masksToBounds = true
+        let barButton = UIBarButtonItem(customView: button)
+        self.navigationItem.rightBarButtonItem = barButton
+    }
+    
+    // MARK: Segue
+    func showDetail() {
+        performSegue(withIdentifier: "ShowDetail", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dvc = segue.destination as? DetailViewController {
+            dvc.user = user
+        }
     }
     
     // MARK: Requests
@@ -75,6 +118,7 @@ class ChatViewController: JSQMessagesViewController {
             
             Request.observeRequest(reference: self.typingRef!, type: .childChanged) { (snapshot, error) in
                 guard error == nil else {return}
+                guard snapshot?.key == "typing" else {return}
                 
                 if let typing = snapshot?.value as? Bool {
                     DispatchQueue.main.async {
@@ -86,9 +130,11 @@ class ChatViewController: JSQMessagesViewController {
                 }
             }
             
+            
+            
             self.messagesRef = Request.ref.child("UserMessages").child(uid).child(toId)
             
-            // Observe status
+            // Observe message status
             Request.observeRequest(reference: self.messagesRef!.queryLimited(toLast: 1), type: .childChanged) { (snapshot, error) in
                 DispatchQueue.main.async {
                     self.customMessages.last?.status = .read
@@ -120,10 +166,8 @@ class ChatViewController: JSQMessagesViewController {
                     jsqImage?.appliesMediaViewMaskAsOutgoing = self.senderId == message.fromId
                     
                     getCachedImage(url: imageUrl, completion: { (image) in
-                        DispatchQueue.main.async {
-                            jsqImage?.image = image
-                            self.collectionView?.reloadData()
-                        }                        
+                        jsqImage?.image = image
+                        self.collectionView?.reloadData()
                     })
                     self.messages.append(JSQMessage(senderId: message.fromId, senderDisplayName: message.senderName, date: date, media: jsqImage))
                     
@@ -142,9 +186,7 @@ class ChatViewController: JSQMessagesViewController {
                             self.updateStatusCount += 1
                             if self.senderId != lastMessage.fromId {
                                 let messageKey = lastMessage.key!
-                                var newDictionary = dictionary
-                                newDictionary["status"] = "read" as AnyObject
-                                Request.updateChildValue(reference: Request.ref.child("UserMessages").child(toId).child(uid).child(messageKey), value: newDictionary, completion: {})
+                                Request.updateChildValue(reference: Request.ref.child("UserMessages").child(toId).child(uid).child(messageKey), value: ["status" : "read" as AnyObject], completion: {})
                             }
                         }
                     }
@@ -163,11 +205,11 @@ class ChatViewController: JSQMessagesViewController {
         guard collectionView.isDragging else {return}
         guard let lastIndex = self.lastIndex else {return}
         guard let endIndex = self.endIndex else {return}
-        guard let uid = User.uid, let toId = user?.uid else {return}
+        guard let messagesRef = self.messagesRef else {return}
         guard indexPath.row == 0 else {return}
         guard endIndex > lastIndex else {return}
         
-        let userMessagesRef = Request.ref.child("UserMessages").child(uid).child(toId).queryOrdered(byChild: "timestamp").queryEnding(atValue: endIndex - 1).queryLimited(toLast: reqLimit)
+        let userMessagesRef = messagesRef.queryOrdered(byChild: "timestamp").queryEnding(atValue: endIndex - 1).queryLimited(toLast: reqLimit)
         
         Request.singleRequest(reference: userMessagesRef, type: .value) { (snapshot, error) in
             guard error == nil else {return}

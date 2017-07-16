@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="ChatNavigationView" id="LYe-bz-IC6" customClass="ChatNavigationView" customModule="TravelTogether" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SDG-is-HzF">
+                    <rect key="frame" x="0.0" y="0.0" width="200" height="44"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZT3-94-gsL">
+                            <rect key="frame" x="0.0" y="4" width="200" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wcA-mK-Lym">
+                            <rect key="frame" x="124.5" y="31" width="7" height="7"/>
+                            <color key="backgroundColor" red="0.81408163820000001" green="1" blue="0.7032794912" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="7" id="cqf-0a-Kdu"/>
+                                <constraint firstAttribute="width" constant="7" id="vCI-WB-xux"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jG6-QY-Phi">
+                            <rect key="frame" x="85" y="26.5" width="31" height="14.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="jG6-QY-Phi" firstAttribute="centerX" secondItem="SDG-is-HzF" secondAttribute="centerX" id="8Tw-eI-8V6"/>
+                        <constraint firstAttribute="trailing" secondItem="ZT3-94-gsL" secondAttribute="trailing" id="Qsg-ae-UGe"/>
+                        <constraint firstItem="jG6-QY-Phi" firstAttribute="top" secondItem="ZT3-94-gsL" secondAttribute="bottom" constant="2" id="byH-25-Fh5"/>
+                        <constraint firstAttribute="width" constant="200" id="cBJ-lT-BKT"/>
+                        <constraint firstAttribute="height" constant="44" id="cHe-0G-HLT"/>
+                        <constraint firstItem="ZT3-94-gsL" firstAttribute="leading" secondItem="SDG-is-HzF" secondAttribute="leading" id="dmN-Qf-KRM"/>
+                        <constraint firstItem="wcA-mK-Lym" firstAttribute="leading" secondItem="jG6-QY-Phi" secondAttribute="trailing" constant="8" id="i5S-53-iKM"/>
+                        <constraint firstItem="wcA-mK-Lym" firstAttribute="centerY" secondItem="jG6-QY-Phi" secondAttribute="centerY" id="uae-RJ-iVB"/>
+                        <constraint firstItem="ZT3-94-gsL" firstAttribute="top" secondItem="SDG-is-HzF" secondAttribute="top" constant="4" id="yPh-oW-lre"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="SDG-is-HzF" firstAttribute="leading" secondItem="LYe-bz-IC6" secondAttribute="leading" id="0M6-X7-VXt"/>
+                <constraint firstAttribute="trailing" secondItem="SDG-is-HzF" secondAttribute="trailing" id="V9S-3H-HpN"/>
+                <constraint firstItem="SDG-is-HzF" firstAttribute="top" secondItem="LYe-bz-IC6" secondAttribute="top" id="hhY-mG-BHR"/>
+                <constraint firstAttribute="bottom" secondItem="SDG-is-HzF" secondAttribute="bottom" id="wGj-fg-XDx"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="nameLabel" destination="ZT3-94-gsL" id="zgk-KE-Se9"/>
+                <outlet property="statusLabel" destination="jG6-QY-Phi" id="Jj1-8H-VZ1"/>
+                <outlet property="statusView" destination="wcA-mK-Lym" id="DqY-SW-xnA"/>
+            </connections>
+            <point key="canvasLocation" x="105" y="-596"/>
+        </view>
+    </objects>
+</document>

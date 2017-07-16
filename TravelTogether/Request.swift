@@ -98,7 +98,13 @@ class Request {
             if showLogs {print ("------OBSERVE ANSWER ERROR -> \(reference.ref)\n\(error.localizedDescription)")}
         }
         if showLogs {print ("------OBSERVE REQUEST -> \(reference.ref)")}
-    }    
+    }
+    
+    // Update online/offline
+    static func updateStatus(_ status: UserStatus) {
+        guard let uid = User.uid else {return}
+        Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["status" : status.rawValue], completion: {})
+    }
     
     // Юзер инфо
     static func getUserInfo(completion: @escaping() -> ()) {
@@ -144,6 +150,12 @@ class Request {
             completion()
         }
         if showLogs {print ("------GET USER INFO REQUEST")}
+    }    
+    
+    static func removeAllObservers(_ reference: [FIRDatabaseReference?]) {
+        reference.forEach { (ref) in
+            ref?.removeAllObservers()
+        }
     }
     
     static func logOut(completion: @escaping() -> ()) {
