@@ -10,20 +10,20 @@ import Foundation
 import SwiftyJSON
 
 enum UserStatus: String {
-    case Online
-    case Offline    
+    case online
+    case offline
     
     var localValue: String {
         switch self {
-        case .Online: return NSLocalizedString("Online", comment: "Online")
-        case .Offline: return NSLocalizedString("Offline", comment: "Offline")
+        case .online: return NSLocalizedString("Online", comment: "Online")
+        case .offline: return NSLocalizedString("Offline", comment: "Offline")
         }
     }
     
     var color: UIColor {
         switch self {
-        case .Online: return .green
-        case .Offline: return .clear
+        case .online: return .green
+        case .offline: return .orange
         }
     }
 }

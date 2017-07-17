@@ -88,11 +88,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        Request.updateStatus(.Offline)
+        Request.updateStatus(.offline)
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        Request.updateStatus(.Online)
+        Request.updateStatus(.online)
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -100,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        Request.updateStatus(.Offline)
+        Request.updateStatus(.offline)
     }
     
     

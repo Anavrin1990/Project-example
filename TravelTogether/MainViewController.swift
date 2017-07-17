@@ -48,7 +48,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.cityDefault = UserDefaults.standard.value(forKey: "cityDefault") as? String ?? User.person?.city ?? "AllCities"
                 countryId = UserDefaults.standard.value(forKey: "countryId") as? String ?? User.countryId ?? ""
                 self.checkAuth()
-                Request.updateStatus(.Online)
+                Request.updateStatus(.online)
             }
         }
     }
