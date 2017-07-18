@@ -114,7 +114,8 @@ class Request {
     // Update online/offline
     static func updateStatus(_ status: UserStatus) {
         guard let uid = User.uid else {return}
-        Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["status" : status.rawValue], completion: {})
+        let currentDate = String(Int(Date().timeIntervalSince1970))
+        Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["status" : status.rawValue + "_" + currentDate], completion: {})
     }
     
     // Юзер инфо

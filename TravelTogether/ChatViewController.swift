@@ -38,6 +38,7 @@ class ChatViewController: JSQMessagesViewController {
     var user: User? {
         didSet {
             chatNavigationView.nameLabel.text = user?.person?.name
+            chatNavigationView.lastSeen = user?.lastSeen
             chatNavigationView.status = user?.status
             observeMessagesTypingStatus()
             setProfileImageOnBarButton()
@@ -61,7 +62,9 @@ class ChatViewController: JSQMessagesViewController {
         
         Request.observeRequest(reference: self.userStatusRef!, type: .childChanged, completion: { (snapshot, error) in
             guard let status = snapshot?.value as? String, snapshot?.key == "status" else {return}
-            self.chatNavigationView.status = UserStatus(rawValue: status)
+            let stringArray = status.components(separatedBy: "_")
+            self.chatNavigationView.lastSeen = stringArray[1]
+            self.chatNavigationView.status = UserStatus(rawValue: stringArray[0])
         })
     }
     

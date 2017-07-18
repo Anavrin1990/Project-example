@@ -16,14 +16,13 @@ enum UserStatus: String {
     var localValue: String {
         switch self {
         case .online: return NSLocalizedString("Online", comment: "Online")
-        case .offline: return NSLocalizedString("Offline", comment: "Offline")
+        case .offline: return NSLocalizedString("last seen ", comment: "last seen ")
         }
     }
-    
     var color: UIColor {
         switch self {
         case .online: return .green
-        case .offline: return .orange
+        case .offline: return .clear
         }
     }
 }
@@ -49,6 +48,7 @@ struct User {
     var secondTravel: String?
     var thirdTravel: String?
     var status: UserStatus?
+    var lastSeen: String?
     
 }
 
@@ -76,6 +76,10 @@ extension User {
         self.firstTravel = dictionary["firstTravel"] as? String
         self.secondTravel = dictionary["secondTravel"] as? String
         self.thirdTravel = dictionary["thirdTravel"] as? String
-        self.status = UserStatus(rawValue: dictionary["status"] as? String ?? "Offline")
+        
+        let status = dictionary["status"] as? String
+        let statusLastSeen = status?.components(separatedBy: "_")
+        self.status = UserStatus(rawValue: statusLastSeen?[0] ?? "Offline")
+        self.lastSeen = statusLastSeen?[1]
     }
 }
