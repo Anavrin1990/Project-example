@@ -49,7 +49,7 @@ class UserCell: UITableViewCell {
         
         textLabel?.frame = CGRect(x: 73, y: textLabel!.frame.origin.y - 4, width: textLabel!.frame.width, height: textLabel!.frame.height)
         
-        detailTextLabel?.frame = CGRect(x: 73, y: detailTextLabel!.frame.origin.y, width: self.frame.width / 1.5, height: detailTextLabel!.frame.height)
+        detailTextLabel?.frame = CGRect(x: 73, y: detailTextLabel!.frame.origin.y, width: self.frame.width / 1.6, height: detailTextLabel!.frame.height)
         
     }
     

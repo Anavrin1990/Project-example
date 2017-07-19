@@ -212,7 +212,8 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
     
     func setTextField() {
         
-        let pickerView = MonthPickerView()
+        let pickerView = MonthPickerView(fromCurrent: false)
+                
         self.monthNumber = String(pickerView.currentMonth)
         self.monthString = MonthPickerView.months[pickerView.currentMonth - 1]
         

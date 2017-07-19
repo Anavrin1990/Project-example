@@ -287,7 +287,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         if let snap = snapshot?.value as? NSDictionary {
                             let json = JSON(snap)
                             let travelsCount = json["firstTravel"].stringValue
-                            if travelsCount == "" {
+                            if travelsCount == "" && UserDefaults.standard.value(forKey: "firstEnter") as? Bool == nil {
+                                
+                                UserDefaults.standard.set(true, forKey: "firstEnter")
+                                UserDefaults.standard.synchronize()
+                                
                                 let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "TravelNavigationController")
                                 DispatchQueue.main.async {
                                     self.present(profileVC!, animated: true)

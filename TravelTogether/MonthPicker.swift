@@ -26,6 +26,8 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
                          NSLocalizedString("November", comment: "November"),
                          NSLocalizedString("December", comment: "December")]
     
+    var months = [String]()
+    
     var month: Int = 0 {
         didSet {
             selectRow(month-1, inComponent: 0, animated: false)
@@ -34,14 +36,30 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
     
     var onDateSelected: ((_ monthInt: Int, _ monthString: String) -> Void)?
     
+    convenience init(fromCurrent: Bool) {
+        self.init(frame: .zero)
+        if fromCurrent {
+            var newMonths = [String]()
+            MonthPickerView.months.enumerated().forEach({ (offset, element) in
+                if offset >= currentMonth - 1 {
+                    newMonths.append(element)
+                }
+            })
+            months = newMonths
+        } else {
+            months = MonthPickerView.months
+        }
+        self.commonSetup()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.commonSetup()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.commonSetup()
+        
     }
     
     func commonSetup() {
@@ -57,7 +75,7 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
         
         self.delegate = self
         self.dataSource = self
-        
+        self.reloadAllComponents()
         self.selectRow(currentMonth - 1, inComponent: 0, animated: false)        
         
     }
@@ -69,16 +87,16 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return MonthPickerView.months[row]
+        return months[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return MonthPickerView.months.count
+        return months.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let monthInt = self.selectedRow(inComponent: 0)+1
-        let monthString = MonthPickerView.months[row]
+        let monthString = months[row]
         
         if let block = onDateSelected {
             block(monthInt, monthString)
