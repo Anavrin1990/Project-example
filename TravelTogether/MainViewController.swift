@@ -314,7 +314,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     // MARK: Requests
-    func getReference() -> FIRDatabaseReference {
+    func getReference() -> DatabaseReference {
         let cityDefault = countryDefault == "AllCountries" ? "AllCities" : self.cityDefault
         
         var reference = Request.ref.child("Travels").child("AllTravels").child(countryDefault).child(cityDefault).child(ageDefault).child(sexDefault)

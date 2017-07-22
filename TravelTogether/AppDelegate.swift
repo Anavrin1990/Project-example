@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FirebaseMessaging
+import FirebaseInstanceID
 import GoogleSignIn
 import FBSDKCoreKit
 import UserNotifications
@@ -62,12 +64,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUser
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        FIRApp.configure()
+        FirebaseApp.configure()
         
-        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         return true
     }
+    
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         var token = ""
@@ -98,16 +101,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUser
         }
         print ("User sign in into Goggle")
         guard let authentication = user.authentication else { return }
-        let credential = FIRGoogleAuthProvider.credential(withIDToken: authentication.idToken,
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                           accessToken: authentication.accessToken)
-        FIRAuth.auth()?.signIn(with: credential) { (user, error) in
+        Auth.auth().signIn(with: credential) { (user, error) in
             if let error = error {
                 print (error.localizedDescription)
                 return
             }
             print ("User sign in into Firebase")
             User.email = user?.email
-            User.uid = user?.uid            
+            User.uid = user?.uid
+            
+            Request.postToken()
+            
             if let uid = User.uid, let email = User.email {
                 Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": email], completion: {})
             }
@@ -137,6 +143,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUser
     func applicationWillTerminate(_ application: UIApplication) {
         Request.updateStatus(.offline)
     }
+    
+    
     
     // Firebase notification received
     @available(iOS 10.0, *)

@@ -14,9 +14,9 @@ import ImageSlideshow
 
 class ChatViewController: JSQMessagesViewController {
     
-    var typingRef: FIRDatabaseReference?
-    var messagesRef: FIRDatabaseReference?
-    var userStatusRef: FIRDatabaseReference?
+    var typingRef: DatabaseReference?
+    var messagesRef: DatabaseReference?
+    var userStatusRef: DatabaseReference?
     
     let imagePicker = UIImagePickerController()
     
@@ -217,7 +217,7 @@ class ChatViewController: JSQMessagesViewController {
         Request.singleRequest(reference: userMessagesRef, type: .value) { (snapshot, error) in
             guard error == nil else {return}
             
-            if let snapshots = snapshot?.children.allObjects as? [FIRDataSnapshot] {
+            if let snapshots = snapshot?.children.allObjects as? [DataSnapshot] {
                 for snap in snapshots.reversed() {
                     if let dictionary = snap.value as? [String : Any] {
                         

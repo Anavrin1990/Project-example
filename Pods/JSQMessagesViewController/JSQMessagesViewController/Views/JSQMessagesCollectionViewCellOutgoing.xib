@@ -79,11 +79,11 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="17" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p52-YN-yLu" userLabel="Bubble top label" customClass="JSQMessagesLabel">
-                        <rect key="frame" x="25" y="69" width="50" height="17"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p52-YN-yLu" userLabel="Bubble top label" customClass="JSQMessagesLabel">
+                        <rect key="frame" x="25" y="68.5" width="50" height="17"/>
                         <color key="backgroundColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="50" id="dhA-vp-gG4"/>
+                            <constraint firstAttribute="width" constant="50" id="GRx-Hb-Lbb"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -92,19 +92,19 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="p52-YN-yLu" firstAttribute="centerY" secondItem="2zh-vR-QJW" secondAttribute="centerY" id="059-G5-rDf"/>
                 <constraint firstAttribute="trailing" secondItem="7Uc-dI-YDD" secondAttribute="trailing" constant="6" id="1v4-5s-XmK"/>
+                <constraint firstItem="2zh-vR-QJW" firstAttribute="top" secondItem="jxM-YD-sVG" secondAttribute="bottom" id="2aI-ne-WcA"/>
                 <constraint firstAttribute="trailing" secondItem="jxM-YD-sVG" secondAttribute="trailing" id="AwY-g7-f1T"/>
                 <constraint firstItem="jxM-YD-sVG" firstAttribute="top" secondItem="23f-xH-rkY" secondAttribute="top" id="HYT-Tw-whz"/>
                 <constraint firstAttribute="trailing" secondItem="X89-B1-aAd" secondAttribute="trailing" id="KLt-Ix-wDa"/>
-                <constraint firstItem="2zh-vR-QJW" firstAttribute="top" secondItem="jxM-YD-sVG" secondAttribute="bottom" id="Lv4-lK-Bnq"/>
                 <constraint firstItem="7Uc-dI-YDD" firstAttribute="top" secondItem="2zh-vR-QJW" secondAttribute="bottom" id="Ngq-ew-t2K"/>
-                <constraint firstAttribute="trailing" secondItem="2zh-vR-QJW" secondAttribute="trailing" constant="4" id="O5d-Lh-CWW"/>
-                <constraint firstItem="2zh-vR-QJW" firstAttribute="leading" secondItem="p52-YN-yLu" secondAttribute="trailing" constant="-3" id="fhs-OL-zKj"/>
+                <constraint firstItem="2zh-vR-QJW" firstAttribute="leading" secondItem="p52-YN-yLu" secondAttribute="trailing" constant="-3" id="OKk-1f-pHe"/>
                 <constraint firstItem="7Uc-dI-YDD" firstAttribute="leading" secondItem="23f-xH-rkY" secondAttribute="leading" id="fiS-g3-X16"/>
                 <constraint firstAttribute="bottom" secondItem="7Uc-dI-YDD" secondAttribute="bottom" id="gXo-9b-b1W"/>
                 <constraint firstItem="7Uc-dI-YDD" firstAttribute="top" secondItem="X89-B1-aAd" secondAttribute="bottom" id="iiF-tn-5Ir"/>
                 <constraint firstItem="jxM-YD-sVG" firstAttribute="leading" secondItem="23f-xH-rkY" secondAttribute="leading" id="qeB-G5-1Wq"/>
+                <constraint firstItem="p52-YN-yLu" firstAttribute="centerY" secondItem="2zh-vR-QJW" secondAttribute="centerY" id="uYR-bD-6hX"/>
+                <constraint firstAttribute="trailing" secondItem="2zh-vR-QJW" secondAttribute="trailing" constant="4" id="yb6-go-5uz"/>
             </constraints>
             <size key="customSize" width="317" height="245"/>
             <connections>
@@ -126,7 +126,7 @@
                 <outlet property="textViewMarginHorizontalSpaceConstraint" destination="7rI-Nc-AK3" id="ciu-j6-IpH"/>
                 <outlet property="textViewTopVerticalSpaceConstraint" destination="RiG-21-Bqc" id="i3j-z0-feE"/>
             </connections>
-            <point key="canvasLocation" x="371" y="145"/>
+            <point key="canvasLocation" x="380" y="164"/>
         </collectionViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -11,7 +11,7 @@ import Firebase
 
 class DetailViewController: UIViewController {
     
-    var reference: FIRDatabaseReference?
+    var reference: DatabaseReference?
     
     var userUid: String? {
         didSet {

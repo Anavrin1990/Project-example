@@ -73,7 +73,7 @@
     
     if (self.cachedImageView == nil) {
         CGSize size = [self mediaViewDisplaySize];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:self.image];        
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:self.image];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.frame = CGRectMake(0.0f, 0.0f, size.width, size.height);
         imageView.clipsToBounds = YES;

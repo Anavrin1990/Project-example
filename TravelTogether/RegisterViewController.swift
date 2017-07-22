@@ -52,28 +52,32 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
         
         if segmentedControl.selectedSegmentIndex == 0 {
             
-            FIRAuth.auth()?.signIn(withEmail: emailUser, password: password, completion: { (user, error) in
+            Auth.auth().signIn(withEmail: emailUser, password: password, completion: { (user, error) in
                 guard error == nil else {self.errorHandling(error: error!); return}
                 guard let uid = user?.uid else {print (error as Any); return}
                 
                 User.uid = uid
                 User.email = user?.email
                 
+                Request.postToken()
+                
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 print ("success Sign In with email")
             })
         } else {
             
-            FIRAuth.auth()?.createUser(withEmail: emailUser, password: password, completion: { (user, error) in
+            Auth.auth().createUser(withEmail: emailUser, password: password, completion: { (user, error) in
                 guard error == nil else {self.errorHandling(error: error!); return}
                 print ("success Register with email")
                 
-                FIRAuth.auth()?.signIn(withEmail: emailUser, password: password, completion: { (user, error) in
+                Auth.auth().signIn(withEmail: emailUser, password: password, completion: { (user, error) in
                     guard error == nil else {print (error as Any); return}
                     guard let uid = user?.uid else {print (error as Any); return}
                     
                     User.uid = uid
                     User.email = user?.email
+                    
+                    Request.postToken()
                     
                     Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": emailUser], completion: {})
                     
@@ -90,11 +94,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
             guard error == nil else {self.errorHandling(error: error!); return}
             guard let result = result?.token else {return}
             guard let accessTokenString = result.tokenString else {return}
-            let credentials = FIRFacebookAuthProvider.credential(withAccessToken: accessTokenString)
-            FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
+            let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+            Auth.auth().signIn(with: credentials, completion: { (user, error) in
                 guard error == nil else {self.errorHandling(error: error!); return}
                 User.email = user?.email
                 User.uid = user?.uid
+                
+                Request.postToken()
                 
                 if let uid = User.uid {
                     if let email = User.email {
@@ -148,13 +154,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 }
             } else {
                 Request.logOut{}
-            }            
+            }
         })
     }
     
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
-    }    
+    }
     
     func errorHandling (error: Error) {
         print (error.localizedDescription)

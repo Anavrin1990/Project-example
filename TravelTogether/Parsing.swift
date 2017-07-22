@@ -14,7 +14,7 @@ class Parsing {
     
     static var travelsArray = [Travel]()    
     
-    static func travelsParseFirst (_ snapshot: FIRDataSnapshot?, complition: @escaping (_ travelsArray: [Travel]) -> ()) {
+    static func travelsParseFirst (_ snapshot: DataSnapshot?, complition: @escaping (_ travelsArray: [Travel]) -> ()) {
         travelsArray = []
         
         if let snap = snapshot?.value as? NSDictionary {
@@ -38,7 +38,7 @@ class Parsing {
         }
     }
     
-    static func travelsParseSecond (_ snapshot: FIRDataSnapshot?, complition: @escaping (_ travelsArray: [Travel]) -> ()) {
+    static func travelsParseSecond (_ snapshot: DataSnapshot?, complition: @escaping (_ travelsArray: [Travel]) -> ()) {
         var preArray = [Travel]()
         
         if let snap = snapshot?.value as? NSDictionary {

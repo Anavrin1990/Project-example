@@ -8,7 +8,7 @@
 
 import UIKit
 import FirebaseDatabase
-var ref = FIRDatabase.database().reference()
+var ref = Database.database().reference()
 class SearchViewController: UIViewController {
     
     @IBOutlet weak var alcReg: UITextField!

@@ -10,13 +10,16 @@ import Foundation
 import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
+import FirebaseInstanceID
+import FirebaseMessaging
 import Alamofire
 import SwiftyJSON
 
+
 class Request {
     
-    static var ref = FIRDatabase.database().reference()
-    static var storageRef = FIRStorage.storage().reference()
+    static var ref = Database.database().reference()
+    static var storageRef = Storage.storage().reference()
     
     static func getJSON (url: String?, completion: @escaping (_ JSON: JSON) -> ())  {
         guard let url = url else {return}
@@ -46,9 +49,9 @@ class Request {
     }
     
     // Загрузка медиа
-    static func storagePutData (reference: FIRStorageReference, data: Data, completion: @escaping (_ snapshot: FIRStorageMetadata?, _ error: Error?) -> ()) {
+    static func storagePutData (reference: StorageReference, data: Data, completion: @escaping (_ snapshot: StorageMetadata?, _ error: Error?) -> ()) {
         
-        reference.put(data, metadata: nil) { (metadata, error) in
+        reference.putData(data, metadata: nil) { (metadata, error) in
             if error != nil {
                 completion(nil, error)
                 if showLogs {print ("------STORAGE PUT ERROR -> \(reference)\n\(error?.localizedDescription as Any)")}
@@ -61,7 +64,7 @@ class Request {
     }
     
     // Обновление значения
-    static func updateChildValue(reference: FIRDatabaseReference, value: [AnyHashable : Any], completion: @escaping () ->()) {
+    static func updateChildValue(reference: DatabaseReference, value: [AnyHashable : Any], completion: @escaping () ->()) {
         
         reference.updateChildValues(value) { (error, success) in
             if error != nil {
@@ -75,7 +78,7 @@ class Request {
     }
     
     // Сингл запрос
-    static func singleRequest(reference: FIRDatabaseQuery, type: FIRDataEventType, completion: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> Void) {
+    static func singleRequest(reference: DatabaseQuery, type: DataEventType, completion: @escaping (_ snapshot: DataSnapshot?, _ error: Error?) -> Void) {
         
         reference.observeSingleEvent(of: type, with: { (snapshot) in
             completion(snapshot, nil)
@@ -88,7 +91,7 @@ class Request {
     }
     
     // Наблюдающий запрос
-    static func observeRequest(reference: FIRDatabaseQuery, type: FIRDataEventType, completion: @escaping (_ snapshot: FIRDataSnapshot?, _ error: Error?) -> Void) {
+    static func observeRequest(reference: DatabaseQuery, type: DataEventType, completion: @escaping (_ snapshot: DataSnapshot?, _ error: Error?) -> Void) {
         
         reference.observe(type, with: { (snapshot) in
             completion(snapshot, nil)
@@ -100,7 +103,7 @@ class Request {
         if showLogs {print ("------OBSERVE REQUEST -> \(reference.ref)")}
     }
     
-    static func removeValue(reference: FIRDatabaseReference, completion: @escaping () -> Void) {
+    static func removeValue(reference: DatabaseReference, completion: @escaping () -> Void) {
         reference.removeValue { (error, ref) in
             if error == nil {
                 completion()
@@ -120,7 +123,7 @@ class Request {
     
     // Юзер инфо
     static func getUserInfo(completion: @escaping() -> ()) {
-        let user = FIRAuth.auth()?.currentUser
+        let user = Auth.auth().currentUser
         if let user = user {
             if user.email != nil, user.email != "" {
                 User.email = user.email
@@ -164,17 +167,28 @@ class Request {
         if showLogs {print ("------GET USER INFO REQUEST")}
     }    
     
-    static func removeAllObservers(_ reference: [FIRDatabaseReference?]) {
+    static func removeAllObservers(_ reference: [DatabaseReference?]) {
         reference.forEach { (ref) in
             ref?.removeAllObservers()
         }
     }
     
+    static func postToken() {
+        guard let token = InstanceID.instanceID().token() else {return}
+        guard let uid = User.uid else {return}
+        Request.ref.child("fcmToken").child(token).setValue(["fcmToken" : token ])
+        print ("fcmToken set -> \(token)")       
+    }
+    
+    static func getToken() -> String? {
+        return InstanceID.instanceID().token()
+    }
+    
     static func logOut(completion: @escaping() -> ()) {
         MainViewController.needCheckAuth = true
-        let firebaseAuth = FIRAuth.auth()
+        let firebaseAuth = Auth.auth()
         do {
-            try firebaseAuth?.signOut()
+            try firebaseAuth.signOut()
             User.email = nil
             User.uid = nil
             completion()
