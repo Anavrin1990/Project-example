@@ -10,13 +10,14 @@ import UIKit
 import Firebase
 import GoogleSignIn
 import FBSDKCoreKit
+import UserNotifications
 
 protocol DismissVC {
     func dismissVC()
 }
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUserNotificationCenterDelegate {
     
     var window: UIWindow?
     static var delegate: DismissVC?
@@ -38,6 +39,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 //        
 //        window?.rootViewController = UINavigationController(rootViewController: MessagesController())
         
+        //create the notificationCenter
+        if #available(iOS 10.0, *) {
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self
+            
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: {_, _ in })
+            
+            // For iOS 10 data message (sent via FCM)
+            //FIRMessaging.messaging().remoteMessageDelegate = self
+            
+        } else {
+            let settings: UIUserNotificationSettings =
+                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        
+        application.registerForRemoteNotifications()
+        
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         FIRApp.configure()
@@ -45,6 +67,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         return true
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        var token = ""
+        for i in 0..<deviceToken.count {
+            token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
+        }
+        print("Registration push succeeded! Token: ", token)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Registration push failed!")
     }
     
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any])
@@ -96,12 +130,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        UIApplication.shared.applicationIconBadgeNumber = 0
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
         Request.updateStatus(.offline)
     }
+    
+    // Firebase notification received
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter,  willPresent notification: UNNotification, withCompletionHandler   completionHandler: @escaping (_ options:   UNNotificationPresentationOptions) -> Void) {
+        
+        // custom code to handle push while app is in the foreground
+        print("Handle push from foreground\(notification.request.content.userInfo)")
+        
+        let dict = notification.request.content.userInfo["aps"] as! NSDictionary
+        let d : [String : Any] = dict["alert"] as! [String : Any]
+        let body : String = d["body"] as! String
+        let title : String = d["title"] as! String
+        print("Title:\(title) + body:\(body)")
+        self.showAlertAppDelegate(title: title,message:body,buttonTitle:"ok",window:self.window!)
+        
+    }
+    
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // if you set a member variable in didReceiveRemoteNotification, you  will know if this is from closed or background
+        print("Handle push from background or closed\(response.notification.request.content.userInfo)")
+    }
+    
+    func showAlertAppDelegate(title: String,message : String,buttonTitle: String,window: UIWindow){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: buttonTitle, style: UIAlertActionStyle.default, handler: nil))
+        window.rootViewController?.present(alert, animated: false, completion: nil)
+    }
+    // Firebase ended here
     
     
 }

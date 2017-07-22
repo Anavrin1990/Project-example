@@ -96,6 +96,7 @@
 		0BCD648D1EFE741300B93F82 /* TravelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelViewController.swift; sourceTree = "<group>"; };
 		0BCF46981F1B905E008056F5 /* ChatNavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatNavigationView.swift; sourceTree = "<group>"; };
 		0BCF469B1F1B9099008056F5 /* ChatNavigationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatNavigationView.xib; sourceTree = "<group>"; };
+		0BD9BBED1F2325C2002A931F /* TravelTogether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TravelTogether.entitlements; sourceTree = "<group>"; };
 		0BDA508D1EDF2D1800FA7A5E /* TravelTogether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelTogether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BDA50951EDF2D1800FA7A5E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -255,6 +256,7 @@
 		0BDA508F1EDF2D1800FA7A5E /* TravelTogether */ = {
 			isa = PBXGroup;
 			children = (
+				0BD9BBED1F2325C2002A931F /* TravelTogether.entitlements */,
 				0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */,
 				0B86048C1EEF03C40090CAF3 /* Global.swift */,
 				0BC4965B1EED563100505FD2 /* Request.swift */,
@@ -358,6 +360,14 @@
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 2XB4ND3L45;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -620,6 +630,7 @@
 			baseConfigurationReference = C7D082603FB77E6EDF8BE5FB /* Pods-TravelTogether.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TravelTogether/TravelTogether.entitlements;
 				DEVELOPMENT_TEAM = 2XB4ND3L45;
 				INFOPLIST_FILE = TravelTogether/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -635,6 +646,7 @@
 			baseConfigurationReference = 5D15BD35CB9B96C0F30A4B57 /* Pods-TravelTogether.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TravelTogether/TravelTogether.entitlements;
 				DEVELOPMENT_TEAM = 2XB4ND3L45;
 				INFOPLIST_FILE = TravelTogether/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
