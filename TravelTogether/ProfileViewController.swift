@@ -99,9 +99,9 @@ class ProfileViewController: UIViewController {
             return
         }
         if let uid = User.uid {
-            for (k, v) in userProperties {
-                Request.updateChildValue(reference: Request.ref.child("Criteria").child(k as! String).child(uid), value: [k : v], completion: {})
-            }
+//            for (k, v) in userProperties {
+//                Request.updateChildValue(reference: Request.ref.child("Criteria").child(k as! String).child(uid), value: [k : v], completion: {})
+//            }
             for photo in photoArray.enumerated() {
                 if photo.offset == 0 {
                     if let uploadPhoto = UIImageJPEGRepresentation(photo.element, 0.2) {

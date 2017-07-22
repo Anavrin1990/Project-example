@@ -75,7 +75,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         refreshControl.addTarget(self, action: #selector(firstRequest), for: .valueChanged)
         collectionView?.addSubview(refreshControl)
         
-        
         self.collectionView.addSpinner()
         spinner.startAnimating()
         
@@ -301,6 +300,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                             MainViewController.needCheckAuth = false
                             self.navigationDropdownMenu()
                             self.menuView.setMenuTitle(self.countryDefault.toCountry())
+                            Request.postToken()
                             self.firstRequest()
                         }
                     })

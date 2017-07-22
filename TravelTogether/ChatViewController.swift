@@ -287,10 +287,15 @@ class ChatViewController: JSQMessagesViewController {
         let ref = Request.ref.child("Messages")
         let childRef = ref.childByAutoId()
         let toId = user!.uid!
+        let fcmToken = user!.fcmToken
         let fromId = User.uid!
         let timestamp = Int(Date().timeIntervalSince1970)
         
         var values: [String: AnyObject] = ["senderName" : User.person?.name as AnyObject, "toId": toId as AnyObject, "fromId": fromId as AnyObject, "timestamp": timestamp as AnyObject, "status" : "delivered" as AnyObject]
+        
+        if let fcmToken = fcmToken {
+            values["fcmToken"] = fcmToken as AnyObject
+        }
         
         properties.forEach({values[$0] = $1})
         

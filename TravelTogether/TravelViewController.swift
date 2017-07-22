@@ -81,9 +81,9 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: [travelKey : travelId], completion: {                
                 
-                // Update Criteria
-                Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").child(travelId), value: ["destination" : destination], completion: {})
-                Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").child(travelId), value: ["month" : month], completion: {})
+//                // Update Criteria
+//                Request.updateChildValue(reference: Request.ref.child("Criteria").child("destination").child(travelId), value: ["destination" : destination], completion: {})
+//                Request.updateChildValue(reference: Request.ref.child("Criteria").child("month").child(travelId), value: ["month" : month], completion: {})
                 
                 
                 // Update UsersTravels

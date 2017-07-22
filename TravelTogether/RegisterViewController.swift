@@ -59,8 +59,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                 User.uid = uid
                 User.email = user?.email
                 
-                Request.postToken()
-                
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 print ("success Sign In with email")
             })
@@ -76,8 +74,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
                     
                     User.uid = uid
                     User.email = user?.email
-                    
-                    Request.postToken()
                     
                     Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["email": emailUser], completion: {})
                     
@@ -98,9 +94,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
             Auth.auth().signIn(with: credentials, completion: { (user, error) in
                 guard error == nil else {self.errorHandling(error: error!); return}
                 User.email = user?.email
-                User.uid = user?.uid
-                
-                Request.postToken()
+                User.uid = user?.uid                
                 
                 if let uid = User.uid {
                     if let email = User.email {

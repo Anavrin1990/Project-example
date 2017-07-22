@@ -49,6 +49,7 @@ struct User {
     var thirdTravel: String?
     var status: UserStatus?
     var lastSeen: String?
+    var fcmToken: String?
     
 }
 
@@ -81,5 +82,6 @@ extension User {
         let statusLastSeen = status?.components(separatedBy: "_")
         self.status = UserStatus(rawValue: statusLastSeen?[0] ?? "Offline")
         self.lastSeen = statusLastSeen?[1]
+        self.fcmToken = dictionary["fcmToken"] as? String
     }
 }

@@ -173,15 +173,11 @@ class Request {
         }
     }
     
-    static func postToken() {
-        guard let token = InstanceID.instanceID().token() else {return}
+    static func postToken(_ token: String? = nil) {
+        guard let token = token ?? Messaging.messaging().fcmToken else {return}
         guard let uid = User.uid else {return}
-        Request.ref.child("fcmToken").child(token).setValue(["fcmToken" : token ])
+        Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["fcmToken" : token ], completion: {})
         print ("fcmToken set -> \(token)")       
-    }
-    
-    static func getToken() -> String? {
-        return InstanceID.instanceID().token()
     }
     
     static func logOut(completion: @escaping() -> ()) {
