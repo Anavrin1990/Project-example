@@ -185,9 +185,9 @@ class Request {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-            User.email = nil
-            User.uid = nil
             Request.updateStatus(.offline)
+            User.email = nil
+            User.uid = nil            
             completion()
             if showLogs {print ("SING OUT SUCCESS")}
         } catch let signOutError as NSError {
