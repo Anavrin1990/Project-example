@@ -34,20 +34,25 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     var result: (String, String)?
     var resultComplition: (((String, String)) -> ())?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupScreen()
-        spinner.startAnimating()
-        searchBar.delegate = self
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SearchTableViewCell")
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        spinner.startAnimating()
         if let request = request {
             searchRequest(request: request)
         } else {
             spinner.stopAnimating()
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupScreen()
+        searchBar.delegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SearchTableViewCell")
+        tableView.tableFooterView = UIView()
     }
     
     func searchRequest(request: (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void) {
@@ -73,7 +78,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
         stackView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: topConstant).isActive = true
         stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -(bottomConstant ?? 0)).isActive = true
-        self.view.addSpinner()
+        self.stackView.addSpinner()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

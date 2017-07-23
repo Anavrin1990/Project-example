@@ -35,16 +35,21 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
+    @IBAction func forgotPassword(_ sender: Any) {
+        let title = NSLocalizedString("Reset password?", comment: "Reset password?")
+        let message = NSLocalizedString("Information on how to reset the password will be sent to the email address", comment: "Reset info")
+        MessageBox.showTextField(parent: self, title: title, message: message, placeholder: "email") { (text) in
+            guard let text = text else {return}
+            Auth.auth().sendPasswordReset(withEmail: text, completion: { (error) in
+                if error != nil {
+                    let errorMessage = error?.localizedDescription ?? "Reset password error"
+                    MessageBox.showMessage(parent: self, title: NSLocalizedString("Error", comment: "Error"), message: errorMessage)
+                }
+                MessageBox.showMessage(parent: self, title: NSLocalizedString("Success", comment: "Success"), message: NSLocalizedString("Check your email", comment: "Check your email"))
+            })
+        }        
     }
     
-    @IBAction func logOut(_ sender: Any) {
-        MessageBox.showDialog(parent: self, title: NSLocalizedString("Sign out", comment: "Sign out"), message: NSLocalizedString("Do you want to sign out?", comment: "Do you want to sign out?")) {
-            Request.logOut{}
-        }
-    }
     
     @IBAction func onRegister(_ sender: Any) {
         
@@ -187,9 +192,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, GIDSignInUI
         self.view.endEditing(true)
     }
     
-    @IBAction func onBackClick(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
     @IBAction func onSegmentClick(_ sender: Any) {
         let buttonText = segmentedControl.selectedSegmentIndex == 0 ? NSLocalizedString("Sign in", comment: "Sign in") : NSLocalizedString("Register", comment: "Register")
         loginRegButton.setTitle(buttonText, for: UIControlState())

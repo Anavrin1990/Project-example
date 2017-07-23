@@ -169,7 +169,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     tableView.items[1] = (items[indexPath + 1].0, self.cityDefault.toCity())
                     UserDefaults.standard.set("AllCities", forKey: "cityDefault")
                     
-                    
                 } else if indexPath == 1 {
                     let value = rawValue == "AllCities" ? rawValue : localValue
                     UserDefaults.standard.set(value, forKey: "cityDefault")
