@@ -64,6 +64,7 @@ func searchCountries (_ complition: @escaping (_ content: [(String, [(String, St
 
 var countryId = UserDefaults.standard.value(forKey: "countryId") as? String ?? ""
 func searchCities (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
+    
     Request.getJSON(url: "https://api.vk.com/api.php?oauth=1&method=database.getCities&v=5.5&country_id=\(countryId)&lang=en&count=1000") { (json) in
         var citiesArray = [emptySearchName]
         if emptySearchName == ("", "") {

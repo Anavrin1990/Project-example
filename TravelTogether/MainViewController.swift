@@ -136,7 +136,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.ageDefault = "AllAges"
                 self.destinationDefault = "AllCountries"
                 self.monthDefault = "AllMonths"
-                
+                countryId = User.countryId ?? ""
                 self.menuView.setMenuTitle(User.person!.country!)
                 
                 UserDefaults.standard.set(User.countryId, forKey: "countryId")
@@ -161,7 +161,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     countryId = rawValue
                     self.menuView.setMenuTitle(localValue)
                     let value = rawValue == "AllCountries" ? rawValue : localValue
-                    UserDefaults.standard.set(value, forKey: "countryDefault")
+                    UserDefaults.standard.set(value, forKey: "countryDefault")                    
                     UserDefaults.standard.set(rawValue, forKey: "countryId")
                     self.countryDefault = value
                     

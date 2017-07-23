@@ -134,7 +134,9 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDel
             if header.value.name == name {
                 header.value.paramValue.text = result.1
                 self.result[name!] = result.1
-                countryId = result.0
+                if name == "country" {
+                    countryId = result.0
+                }
             }
         }
     }

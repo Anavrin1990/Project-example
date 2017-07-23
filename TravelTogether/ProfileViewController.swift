@@ -134,6 +134,7 @@ class ProfileViewController: UIViewController {
             Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: userProperties, completion: {
                 UserDefaults.standard.set(Person.instance.country, forKey: "countryDefault")
                 UserDefaults.standard.set(Person.instance.city, forKey: "cityDefault")
+                UserDefaults.standard.set(countryId, forKey: "countryId")
                 UserDefaults.standard.synchronize()
                 self.navigationController?.dismiss(animated: true, completion: nil)
                 SearchTableViewController.delegate = nil
@@ -161,6 +162,7 @@ class ProfileViewController: UIViewController {
         componentsArray.append(("birthday", NSLocalizedString("Birthday", comment: "Birthday"), [birthdayField], nil))
         
         let countryField = self.storyboard?.instantiateViewController(withIdentifier: "SearchTableViewController") as! SearchTableViewController
+        emptySearchName = ("", "")
         countryField.request = searchCountries
         countryField.name = "country"
         componentsArray.append(("country", NSLocalizedString("Country", comment: "Country"), nil, countryField))

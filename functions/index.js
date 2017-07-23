@@ -1,24 +1,40 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
+let functions = require('firebase-functions');
+let admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 exports.sendPushNotification = functions.database.ref('/Messages/{id}').onWrite(event => {
-    const message = event.data.val();    
-    const token = message.fcmToken;
+    let message = event.data.val();
+    let toId = message.toId;
+    let fromId = message.fromId;
 
-    if (!token) {
-        return;
-    } 
-    const payload = {
-        notification: {
-            title: message.fromId,
-            body:  message.text,
-            badge: '1',
-            sound: 'default'
+    // Get fcmToken
+    return admin.database().ref(`/Users/${toId}`).once('value').then(function (snapshot) {
+        let fcmToken = snapshot.val().fcmToken;
+
+        if (!fcmToken) {
+            return;
         }
-    };
-    return admin.messaging().sendToDevice(token, payload).then(response => {
 
+        // Get senderName
+        admin.database().ref(`/Users/${fromId}`).once('value').then(function (snapshot) {
+            let senderName = snapshot.val().name;
+
+            // Fill pushMessage
+            let payload = {
+                notification: {
+                    title: senderName,
+                    body: message.text,
+                    badge: '1',
+                    sound: 'default'
+                }
+            };
+
+            // Send push notification
+            admin.messaging().sendToDevice(fcmToken, payload).then(response => {
+
+            });
+
+        });
     });
 });
 
