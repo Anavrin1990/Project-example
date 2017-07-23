@@ -44,6 +44,25 @@ func getCachedImage(url: String?, completion: @escaping (UIImage) -> Void) {
         }
 }
 
+func isTodayDate(_ timestamp: NSNumber) -> String {
+    var result = ""
+    
+    let currentDate = Date()
+    let messageDate = Date(timeIntervalSince1970: Double(timestamp))
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd.MM.yy"
+    let currentDay = dateFormatter.string(from: currentDate)
+    let messageDay = dateFormatter.string(from: messageDate)
+    
+    if currentDay == messageDay {
+        dateFormatter.dateFormat = "HH:mm"
+        result = dateFormatter.string(from: messageDate)
+    } else {
+        result = dateFormatter.string(from: messageDate)
+    }
+    return result
+}
+
 var emptySearchName = ("", NSLocalizedString("Not filled", comment: "Not filled"))
 func searchCountries (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) {
     //countryId = ""

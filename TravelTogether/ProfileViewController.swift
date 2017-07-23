@@ -224,17 +224,24 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.photoArray.count
+        return self.photoArray.count == 0 ? 1 : self.photoArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileCell", for: indexPath) as! ProfileCollectionViewCell
-        cell.profileImage.image = photoArray[indexPath.row]
+        
+        cell.profileImage.image = self.photoArray.count == 0 ? #imageLiteral(resourceName: "defaultImage") : self.photoArray[indexPath.row]
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.view.endEditing(true)
+        guard self.photoArray.count > 0 else {return}
+        
+        MessageBox.showDialog(parent: self, title: NSLocalizedString("Remove this photo?", comment: "Remove this photo?"), message: "") { 
+            self.photoArray.remove(at: indexPath.item)
+            self.collectionView.reloadData()
+        }
     }
     
 }

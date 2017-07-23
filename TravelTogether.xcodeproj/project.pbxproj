@@ -11,6 +11,7 @@
 		0A8EC4981F0E65A800B91B4A /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8EC4971F0E65A800B91B4A /* Travel.swift */; };
 		0ABE6A861F18DC1A001F3ECB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABE6A851F18DC1A001F3ECB /* ChatViewController.swift */; };
 		0AF1DCC61F0F4FEB0073D54D /* AgeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF1DCC51F0F4FEB0073D54D /* AgeRange.swift */; };
+		0B066C041F24FFD900045AC1 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B066C031F24FFD900045AC1 /* UserCell.xib */; };
 		0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */; };
 		0B0D96351EE3F05400C2F1C4 /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */; };
 		0B0D963A1EE402F100C2F1C4 /* ParamsTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B0D96391EE402F100C2F1C4 /* ParamsTextField.xib */; };
@@ -68,6 +69,7 @@
 		0A8EC4971F0E65A800B91B4A /* Travel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Travel.swift; sourceTree = "<group>"; };
 		0ABE6A851F18DC1A001F3ECB /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		0AF1DCC51F0F4FEB0073D54D /* AgeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeRange.swift; sourceTree = "<group>"; };
+		0B066C031F24FFD900045AC1 /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		0B0D96341EE3F05400C2F1C4 /* CustomScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
 		0B0D96391EE402F100C2F1C4 /* ParamsTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsTextField.xib; sourceTree = "<group>"; };
@@ -159,6 +161,8 @@
 			children = (
 				0BDA50A61EDF34B700FA7A5E /* MainCollectionViewCell.swift */,
 				0B0D96321EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift */,
+				0BDA94291F1287140004B76D /* UserCell.swift */,
+				0B066C031F24FFD900045AC1 /* UserCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -174,7 +178,6 @@
 				0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */,
 				0A8EC4971F0E65A800B91B4A /* Travel.swift */,
 				0BAEE9611EF545E200CCC0C1 /* User.swift */,
-				0BDA94291F1287140004B76D /* UserCell.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				0BDA50981EDF2D1800FA7A5E /* Assets.xcassets in Resources */,
 				0B0D963A1EE402F100C2F1C4 /* ParamsTextField.xib in Resources */,
 				0B2106351EE2CE7B001AE7D0 /* ParamsHeaderView.xib in Resources */,
+				0B066C041F24FFD900045AC1 /* UserCell.xib in Resources */,
 				0B0D96401EE4107A00C2F1C4 /* ParamsDropStack.xib in Resources */,
 				0BCF469C1F1B9099008056F5 /* ChatNavigationView.xib in Resources */,
 				0BDA50961EDF2D1800FA7A5E /* Main.storyboard in Resources */,

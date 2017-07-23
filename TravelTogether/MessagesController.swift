@@ -40,7 +40,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
     let refreshControl = UIRefreshControl()
     
     @IBOutlet weak var tableView: UITableView!
-    let cellId = "cellId"
+    let cellId = "Cell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +55,8 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
         
         observeUserMessages()
         
-        tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
+        let userCell = UINib(nibName: "UserCell", bundle: nil)        
+        tableView.register(userCell, forCellReuseIdentifier: cellId)
         tableView.tableFooterView = UIView()
         tableView.allowsMultipleSelectionDuringEditing = true
     }
@@ -143,8 +144,7 @@ class MessagesController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell        
         let message = messages[indexPath.row]
         cell.message = message
         

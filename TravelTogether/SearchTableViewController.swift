@@ -57,8 +57,7 @@ class SearchTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     func searchRequest(request: (_ complition: @escaping (_ content: [(String, [(String, String)])]) -> ()) -> Void) {
         request { (content) in
-            self.contentArray = content
-            
+            self.contentArray = content            
             DispatchQueue.main.async {
                 spinner.stopAnimating()
                 self.tableView.reloadData()

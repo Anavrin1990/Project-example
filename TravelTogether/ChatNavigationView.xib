@@ -23,14 +23,6 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wcA-mK-Lym">
-                            <rect key="frame" x="124.5" y="29" width="7" height="7"/>
-                            <color key="backgroundColor" red="0.81408163820000001" green="1" blue="0.7032794912" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="7" id="cqf-0a-Kdu"/>
-                                <constraint firstAttribute="width" constant="7" id="vCI-WB-xux"/>
-                            </constraints>
-                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jG6-QY-Phi">
                             <rect key="frame" x="85" y="24.5" width="31" height="14.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -45,8 +37,6 @@
                         <constraint firstAttribute="width" constant="200" id="cBJ-lT-BKT"/>
                         <constraint firstAttribute="height" constant="44" id="cHe-0G-HLT"/>
                         <constraint firstItem="ZT3-94-gsL" firstAttribute="leading" secondItem="SDG-is-HzF" secondAttribute="leading" id="dmN-Qf-KRM"/>
-                        <constraint firstItem="wcA-mK-Lym" firstAttribute="leading" secondItem="jG6-QY-Phi" secondAttribute="trailing" constant="8" id="i5S-53-iKM"/>
-                        <constraint firstItem="wcA-mK-Lym" firstAttribute="centerY" secondItem="jG6-QY-Phi" secondAttribute="centerY" id="uae-RJ-iVB"/>
                         <constraint firstItem="ZT3-94-gsL" firstAttribute="top" secondItem="SDG-is-HzF" secondAttribute="top" constant="4" id="yPh-oW-lre"/>
                     </constraints>
                 </view>
@@ -62,7 +52,6 @@
             <connections>
                 <outlet property="nameLabel" destination="ZT3-94-gsL" id="zgk-KE-Se9"/>
                 <outlet property="statusLabel" destination="jG6-QY-Phi" id="Jj1-8H-VZ1"/>
-                <outlet property="statusView" destination="wcA-mK-Lym" id="DqY-SW-xnA"/>
             </connections>
             <point key="canvasLocation" x="105" y="-596"/>
         </view>

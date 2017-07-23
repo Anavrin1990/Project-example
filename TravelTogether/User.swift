@@ -15,14 +15,8 @@ enum UserStatus: String {
     
     var localValue: String {
         switch self {
-        case .online: return NSLocalizedString("Online", comment: "Online")
+        case .online: return NSLocalizedString("online", comment: "online")
         case .offline: return NSLocalizedString("last seen ", comment: "last seen ")
-        }
-    }
-    var color: UIColor {
-        switch self {
-        case .online: return .green
-        case .offline: return .clear
         }
     }
 }

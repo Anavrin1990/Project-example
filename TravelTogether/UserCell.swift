@@ -11,85 +11,63 @@ import Firebase
 
 class UserCell: UITableViewCell {
     
-    var message: Message? {
+    @IBOutlet weak var profileImageView: UIImageView! 
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var onlineView: UIView! {
         didSet {
-            setupNameAndProfileImage()
-            
-            detailTextLabel?.text = message?.text
-            
-            if let seconds = message?.timestamp?.doubleValue {
-                let timestampDate = Date(timeIntervalSince1970: seconds)
-                
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "hh:mm"
-                timeLabel.text = dateFormatter.string(from: timestampDate)
-            }            
+            onlineView.layer.cornerRadius = onlineView.frame.width / 2
+        }
+    }
+    @IBOutlet weak var imageContainerView: UIView! {
+        didSet {
+            imageContainerView.layer.cornerRadius = imageContainerView.frame.width / 2
+            imageContainerView.layer.masksToBounds = true
         }
     }
     
-    fileprivate func setupNameAndProfileImage() {
+    
+    var message: Message? {
+        didSet {
+            setupCell()
+            
+            
+        }
+    }
+    
+    
+    
+    fileprivate func setupCell() {
         
+        // Setup time
+        messageLabel?.text = message?.text
+        
+        if let timestamp = message?.timestamp {
+            timeLabel.text = isTodayDate(timestamp)
+        }
+        
+        // Setup name and text
         if let id = message?.chatPartnerId() {
-            Request.singleRequest(reference: Request.ref.child("Users").child(id), type: .value, completion: { (snapshot, error) in
+            let userRef = Request.ref.child("Users").child(id)
+            Request.singleRequest(reference: userRef, type: .value, completion: { (snapshot, error) in
                 
                 if let dictionary = snapshot?.value as? [String: AnyObject] {
-                    self.textLabel?.text = dictionary["name"] as? String
-                    
-                    if let profileImageUrl = dictionary["icon"] as? String {
-                        self.profileImageView.getImage(url: profileImageUrl)
-                    }
+                    let user = User(dictionary: dictionary)
+                    self.nameLabel?.text = user.person?.name
+                    self.onlineView.isHidden = user.status == .offline
+                    self.profileImageView.getImage(url: user.icon)
                 }
+                
+                // Setup status
+                Request.observeRequest(reference: userRef, type: .childChanged, completion: { (snapshot, error) in
+                    guard let status = snapshot?.value as? String, snapshot?.key == "status" else {return}
+                    let stringArray = status.components(separatedBy: "_")
+                    self.onlineView.isHidden = stringArray[0] == "offline"                    
+                })
                 
             })
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        textLabel?.frame = CGRect(x: 73, y: textLabel!.frame.origin.y - 4, width: textLabel!.frame.width, height: textLabel!.frame.height)
-        
-        detailTextLabel?.frame = CGRect(x: 73, y: detailTextLabel!.frame.origin.y, width: self.frame.width / 1.6, height: detailTextLabel!.frame.height)
-        
-    }
-    
-    let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 28
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
-    
-    let timeLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13)
-        label.textColor = UIColor.darkGray
-        label.textAlignment = .right
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        
-        addSubview(profileImageView)
-        addSubview(timeLabel)
-        
-        profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 56).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 56).isActive = true
-        
-        timeLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
-        timeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18).isActive = true
-        timeLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        timeLabel.heightAnchor.constraint(equalTo: (textLabel?.heightAnchor)!).isActive = true
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    }    
     
 }
