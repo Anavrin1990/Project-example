@@ -216,8 +216,8 @@ class ChatViewController: JSQMessagesViewController {
         Request.singleRequest(reference: userMessagesRef, type: .value) { (snapshot, error) in
             guard error == nil else {return}
             
-            if let snapshots = snapshot?.children.allObjects as? [DataSnapshot] {
-                for snap in snapshots.reversed() {
+            if let snapshot = snapshot?.children.allObjects as? [DataSnapshot] {
+                for snap in snapshot.reversed() {
                     if let dictionary = snap.value as? [String : Any] {
                         
                         let message = Message(dictionary: dictionary)

@@ -55,8 +55,8 @@ enum Profile {
         case no
         var  localValue: String {
             switch self {
-            case .yes: return NSLocalizedString("Yes", comment: "Yes")
             case .no: return NSLocalizedString("No", comment: "No")
+            case .yes: return NSLocalizedString("Yes", comment: "Yes")    
             }
         }
     }

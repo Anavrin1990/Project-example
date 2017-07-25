@@ -61,7 +61,5 @@ class ParamsSelectField: ParamsAbstract, ParamsViewsProtocol {
 
         checkImage.isHidden = false
     }
-    
-    
-    
+
 }

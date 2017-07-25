@@ -16,7 +16,6 @@ class ChatNavigationView: UIView {
             setStatus()
         }
     }
-
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     

@@ -53,7 +53,7 @@ class TravelViewController: UIViewController, SearchTableViewDelegate {
             
             var travelValues = [String : Any]()
             travelValues["destination"] = destination
-            travelValues["month"] = month
+            travelValues["month"] = Int(month)
             travelValues["createdate"] = Int(stringDate)
             travelValues["icon"] = User.icon
             travelValues["name"] = User.person?.name

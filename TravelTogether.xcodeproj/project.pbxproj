@@ -28,7 +28,6 @@
 		0B2106351EE2CE7B001AE7D0 /* ParamsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2106341EE2CE7B001AE7D0 /* ParamsHeaderView.xib */; };
 		0B273FEC1F0796D10031D3C1 /* CriteriaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */; };
 		0B273FEE1F079B910031D3C1 /* DropStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B273FED1F079B910031D3C1 /* DropStackView.swift */; };
-		0B5062471EF65DF7003B5785 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5062461EF65DF7003B5785 /* Parsing.swift */; };
 		0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B86048C1EEF03C40090CAF3 /* Global.swift */; };
 		0B95FC3A1EF06ACC00C315F6 /* MessageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B95FC391EF06ACC00C315F6 /* MessageBox.swift */; };
 		0BAEE95E1EF507BA00CCC0C1 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */; };
@@ -86,7 +85,6 @@
 		0B2106341EE2CE7B001AE7D0 /* ParamsHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsHeaderView.xib; sourceTree = "<group>"; };
 		0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CriteriaViewController.swift; sourceTree = "<group>"; };
 		0B273FED1F079B910031D3C1 /* DropStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropStackView.swift; sourceTree = "<group>"; };
-		0B5062461EF65DF7003B5785 /* Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; };
 		0B86048C1EEF03C40090CAF3 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		0B95FC391EF06ACC00C315F6 /* MessageBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBox.swift; sourceTree = "<group>"; };
 		0BAEE95D1EF507BA00CCC0C1 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -185,9 +183,11 @@
 		0B0D96311EE3E8AE00C2F1C4 /* Stuff */ = {
 			isa = PBXGroup;
 			children = (
+				0BDA50971EDF2D1800FA7A5E /* Assets.xcassets */,
 				0BDA50991EDF2D1800FA7A5E /* LaunchScreen.storyboard */,
 				0BDA509C1EDF2D1800FA7A5E /* Info.plist */,
 				0BDA50A21EDF2E8F00FA7A5E /* GoogleService-Info.plist */,
+				0BD9BBED1F2325C2002A931F /* TravelTogether.entitlements */,
 			);
 			name = Stuff;
 			sourceTree = "<group>";
@@ -224,7 +224,6 @@
 			children = (
 				0B0D96491EE431FB00C2F1C4 /* Extensions.swift */,
 				0B95FC391EF06ACC00C315F6 /* MessageBox.swift */,
-				0B5062461EF65DF7003B5785 /* Parsing.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -259,12 +258,10 @@
 		0BDA508F1EDF2D1800FA7A5E /* TravelTogether */ = {
 			isa = PBXGroup;
 			children = (
-				0BD9BBED1F2325C2002A931F /* TravelTogether.entitlements */,
 				0BDA50901EDF2D1800FA7A5E /* AppDelegate.swift */,
 				0B86048C1EEF03C40090CAF3 /* Global.swift */,
 				0BC4965B1EED563100505FD2 /* Request.swift */,
 				0BDA50941EDF2D1800FA7A5E /* Main.storyboard */,
-				0BDA50971EDF2D1800FA7A5E /* Assets.xcassets */,
 				0BAEE95C1EF506F000CCC0C1 /* Utils */,
 				0B0D962E1EE3E80000C2F1C4 /* Controllers */,
 				0B0D96301EE3E87E00C2F1C4 /* Models */,
@@ -476,7 +473,6 @@
 				0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */,
 				0BE591131F0AB3F70017A866 /* BTTableViewCell.swift in Sources */,
 				0BE591121F0AB3F70017A866 /* BTTableView.swift in Sources */,
-				0B5062471EF65DF7003B5785 /* Parsing.swift in Sources */,
 				0BE591101F0AB3F70017A866 /* BTConfiguration.swift in Sources */,
 				0BDA50911EDF2D1800FA7A5E /* AppDelegate.swift in Sources */,
 				0BBA88DB1EE2FE2200CFE1C8 /* ParamsHeaderView.swift in Sources */,

@@ -26,20 +26,12 @@ class UserCell: UITableViewCell {
             imageContainerView.layer.masksToBounds = true
         }
     }
-    
-    
     var message: Message? {
         didSet {
-            setupCell()
-            
-            
+            setupCell()            
         }
     }
-    
-    
-    
     fileprivate func setupCell() {
-        
         // Setup time
         messageLabel?.text = message?.text
         
@@ -65,9 +57,8 @@ class UserCell: UITableViewCell {
                     let stringArray = status.components(separatedBy: "_")
                     self.onlineView.isHidden = stringArray[0] == "offline"                    
                 })
-                
             })
         }
-    }    
+    }
     
 }

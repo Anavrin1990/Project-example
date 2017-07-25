@@ -78,10 +78,4 @@ class ParamsDatePicker: ParamsAbstract, ParamsViewsProtocol {
         complition(name, rawValue, textField.text)
     }
     
-    
-    
-    
-    
-    
-
 }

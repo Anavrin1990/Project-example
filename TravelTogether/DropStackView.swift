@@ -140,8 +140,5 @@ class DropStackView: UIStackView, ParamsHeaderViewDelegate, ParamsSelectFieldDel
             }
         }
     }
-    
-    
-    
-    
+        
 }

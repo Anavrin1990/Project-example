@@ -15,7 +15,6 @@ import FirebaseMessaging
 import Alamofire
 import SwiftyJSON
 
-
 class Request {
     
     static var ref = Database.database().reference()
@@ -24,6 +23,7 @@ class Request {
     static func getJSON (url: String?, completion: @escaping (_ JSON: JSON) -> ())  {
         guard let url = url else {return}
         guard url != "" else {return}
+
         request(url).responseJSON { (response) in
             let result = response.result
             if result.error == nil {
@@ -36,8 +36,7 @@ class Request {
         }
         if showLogs {print ("------GET JSON REQUEST -> \(url)")}
     }
-    
-    // Получить изображение
+
     static func getImage (url: String?, completion: @escaping (_ data: Data?) -> ())  {
         guard let url = url else {return}
         guard url != "" else {return}
@@ -47,8 +46,7 @@ class Request {
         }
         if showLogs {print ("------GET IMAGE REQUEST -> \(url)")}
     }
-    
-    // Загрузка медиа
+
     static func storagePutData (reference: StorageReference, data: Data, completion: @escaping (_ snapshot: StorageMetadata?, _ error: Error?) -> ()) {
         
         reference.putData(data, metadata: nil) { (metadata, error) in
@@ -62,8 +60,7 @@ class Request {
         }
         if showLogs {print ("------STORAGE PUT DATA -> \(reference)")}
     }
-    
-    // Обновление значения
+
     static func updateChildValue(reference: DatabaseReference, value: [AnyHashable : Any], completion: @escaping () ->()) {
         
         reference.updateChildValues(value) { (error, success) in
@@ -76,8 +73,7 @@ class Request {
         }
         if showLogs {print ("------UPDATE REQUEST -> \(reference.ref)")}
     }
-    
-    // Сингл запрос
+
     static func singleRequest(reference: DatabaseQuery, type: DataEventType, completion: @escaping (_ snapshot: DataSnapshot?, _ error: Error?) -> Void) {
         
         reference.observeSingleEvent(of: type, with: { (snapshot) in
@@ -89,8 +85,7 @@ class Request {
         }
         if showLogs {print ("------SINGLE REQUEST -> \(reference.ref)")}
     }
-    
-    // Наблюдающий запрос
+
     static func observeRequest(reference: DatabaseQuery, type: DataEventType, completion: @escaping (_ snapshot: DataSnapshot?, _ error: Error?) -> Void) {
         
         reference.observe(type, with: { (snapshot) in
@@ -119,9 +114,8 @@ class Request {
         guard let uid = User.uid else {return}
         let currentDate = String(Int(Date().timeIntervalSince1970))
         Request.updateChildValue(reference: Request.ref.child("Users").child(uid), value: ["status" : status.rawValue + "_" + currentDate], completion: {})
-    }
-    
-    // Юзер инфо
+    }    
+
     static func getUserInfo(completion: @escaping() -> ()) {
         let user = Auth.auth().currentUser
         if let user = user {
