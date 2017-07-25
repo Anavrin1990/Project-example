@@ -344,36 +344,42 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             guard let snapshot = snapshot?.children.allObjects as? [DataSnapshot] else {return}
 
-            for snap in snapshot {
+            guard let dictionary = snapshot.first?.value as? [String : Any] else {
+                self.travelsArray = travelsArray
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    spinner.stopAnimating()
+                    self.refreshControl.endRefreshing()
+                }
+                return
+            }
 
-                guard let dictionary = snap.value as? [String : Any] else {return}
+            let travel = Travel(dictionary: dictionary as [String : Any])
 
-                let travel = Travel(dictionary: dictionary as [String : Any])
+            self.lastPosition = travel.createDate
 
-                self.lastPosition = travel.createDate
+            // Get travels
+            Request.singleRequest(reference: self.getReference().queryOrdered(byChild: "createdate").queryLimited(toLast: reqLimit), type: .value) { (snapshot, error) in
+                guard error == nil else {print (error as Any); return}
 
-                // Get travels
-                Request.singleRequest(reference: self.getReference().queryOrdered(byChild: "createdate").queryLimited(toLast: reqLimit), type: .value) { (snapshot, error) in
-                    guard error == nil else {print (error as Any); return}
+                guard let snapshot = snapshot?.children.allObjects as? [DataSnapshot] else {return}
 
-                    guard let snapshot = snapshot?.children.allObjects as? [DataSnapshot] else {return}
+                for snap in snapshot.reversed() {
+                    guard let dictionary = snap.value as? [String : Any] else {return}
 
-                    for snap in snapshot.reversed() {
-                        guard let dictionary = snap.value as? [String : Any] else {return}
+                    let travel = Travel(dictionary: dictionary as [String : Any])
+                    travelsArray.append(travel)
 
-                        let travel = Travel(dictionary: dictionary as [String : Any])
-                        travelsArray.append(travel)
+                }
+                self.travelsArray = travelsArray
 
-                    }
-                    self.travelsArray = travelsArray
-
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                        spinner.stopAnimating()
-                        self.refreshControl.endRefreshing()
-                    }
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    spinner.stopAnimating()
+                    self.refreshControl.endRefreshing()
                 }
             }
+
         }
     }
 
@@ -389,12 +395,12 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             // Get more travels
             Request.singleRequest(reference: getReference().queryOrdered(byChild: "createdate").queryEnding(atValue: endIndex - 1).queryLimited(toLast: reqLimit), type: .value, completion: { (snapshot, error) in
                 guard error == nil else {print (error as Any); return}
-
+                
                 guard let snapshot = snapshot?.children.allObjects as? [DataSnapshot] else {return}
-
+                
                 for snap in snapshot.reversed() {
                     guard let dictionary = snap.value as? [String : Any] else {return}
-
+                    
                     let travel = Travel(dictionary: dictionary as [String : Any])
                     self.travelsArray.append(travel)
                     
