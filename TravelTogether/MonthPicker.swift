@@ -64,15 +64,6 @@ class MonthPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSourc
     
     func commonSetup() {
         
-//        // population months with localized names
-//        var months: [String] = []
-//        var month = 0
-//        for _ in 1...12 {
-//            months.append(DateFormatter().monthSymbols[month].capitalized)
-//            month += 1
-//        }
-//        MonthPickerView.months = months
-        
         self.delegate = self
         self.dataSource = self
         self.reloadAllComponents()

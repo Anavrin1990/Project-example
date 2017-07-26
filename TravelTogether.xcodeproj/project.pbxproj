@@ -26,7 +26,6 @@
 		0B0D96501EE462B700C2F1C4 /* ParamsSelectField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0D964F1EE462B700C2F1C4 /* ParamsSelectField.swift */; };
 		0B2106331EE2CCC7001AE7D0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */; };
 		0B2106351EE2CE7B001AE7D0 /* ParamsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2106341EE2CE7B001AE7D0 /* ParamsHeaderView.xib */; };
-		0B273FEC1F0796D10031D3C1 /* CriteriaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */; };
 		0B273FEE1F079B910031D3C1 /* DropStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B273FED1F079B910031D3C1 /* DropStackView.swift */; };
 		0B86048D1EEF03C40090CAF3 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B86048C1EEF03C40090CAF3 /* Global.swift */; };
 		0B95FC3A1EF06ACC00C315F6 /* MessageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B95FC391EF06ACC00C315F6 /* MessageBox.swift */; };
@@ -59,7 +58,6 @@
 		0BE591131F0AB3F70017A866 /* BTTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE5910B1F0AB3F70017A866 /* BTTableViewCell.swift */; };
 		0BE591141F0AB3F70017A866 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE5910C1F0AB3F70017A866 /* UIViewController+Extension.swift */; };
 		0BEBA0831EEC6C48001EE6EA /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEBA0821EEC6C48001EE6EA /* SearchTableViewController.swift */; };
-		0BF7455B1EE077F700F6A8E5 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */; };
 		DB2BAD730CBACD49BAA8FF7E /* Pods_TravelTogether.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B021ED4F573B2B7F43AFAB02 /* Pods_TravelTogether.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,7 +81,6 @@
 		0B0D964F1EE462B700C2F1C4 /* ParamsSelectField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamsSelectField.swift; sourceTree = "<group>"; };
 		0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0B2106341EE2CE7B001AE7D0 /* ParamsHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParamsHeaderView.xib; sourceTree = "<group>"; };
-		0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CriteriaViewController.swift; sourceTree = "<group>"; };
 		0B273FED1F079B910031D3C1 /* DropStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropStackView.swift; sourceTree = "<group>"; };
 		0B86048C1EEF03C40090CAF3 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		0B95FC391EF06ACC00C315F6 /* MessageBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBox.swift; sourceTree = "<group>"; };
@@ -119,7 +116,6 @@
 		0BE5910B1F0AB3F70017A866 /* BTTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTTableViewCell.swift; sourceTree = "<group>"; };
 		0BE5910C1F0AB3F70017A866 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		0BEBA0821EEC6C48001EE6EA /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
-		0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		5D15BD35CB9B96C0F30A4B57 /* Pods-TravelTogether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelTogether.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelTogether/Pods-TravelTogether.release.xcconfig"; sourceTree = "<group>"; };
 		B021ED4F573B2B7F43AFAB02 /* Pods_TravelTogether.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelTogether.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D082603FB77E6EDF8BE5FB /* Pods-TravelTogether.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelTogether.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelTogether/Pods-TravelTogether.debug.xcconfig"; sourceTree = "<group>"; };
@@ -141,13 +137,11 @@
 			isa = PBXGroup;
 			children = (
 				0ABE6A851F18DC1A001F3ECB /* ChatViewController.swift */,
-				0B273FEB1F0796D10031D3C1 /* CriteriaViewController.swift */,
 				0A304C101F136EF000096768 /* DetailViewController.swift */,
 				0BDA50A41EDF333400FA7A5E /* MainViewController.swift */,
 				0BDA94251F1287080004B76D /* MessagesController.swift */,
 				0B2106321EE2CCC7001AE7D0 /* ProfileViewController.swift */,
 				0BAEE95F1EF5456F00CCC0C1 /* RegisterViewController.swift */,
-				0BF7455A1EE077F700F6A8E5 /* SearchViewController.swift */,
 				0BEBA0821EEC6C48001EE6EA /* SearchTableViewController.swift */,
 				0BCD648D1EFE741300B93F82 /* TravelViewController.swift */,
 			);
@@ -467,7 +461,6 @@
 				0BEBA0831EEC6C48001EE6EA /* SearchTableViewController.swift in Sources */,
 				0BDA94261F1287080004B76D /* MessagesController.swift in Sources */,
 				0BAEE9601EF5456F00CCC0C1 /* RegisterViewController.swift in Sources */,
-				0BF7455B1EE077F700F6A8E5 /* SearchViewController.swift in Sources */,
 				0B0D96501EE462B700C2F1C4 /* ParamsSelectField.swift in Sources */,
 				0BE591141F0AB3F70017A866 /* UIViewController+Extension.swift in Sources */,
 				0B0D96331EE3EB2800C2F1C4 /* ProfileCollectionViewCell.swift in Sources */,
@@ -499,7 +492,6 @@
 				0A8EC4981F0E65A800B91B4A /* Travel.swift in Sources */,
 				0BDA50A91EDF370A00FA7A5E /* Person.swift in Sources */,
 				0BDA50A51EDF333400FA7A5E /* MainViewController.swift in Sources */,
-				0B273FEC1F0796D10031D3C1 /* CriteriaViewController.swift in Sources */,
 				0B0D96461EE4265900C2F1C4 /* ParamsDatePicker.swift in Sources */,
 				0BAEE9621EF545E200CCC0C1 /* User.swift in Sources */,
 				0BE591111F0AB3F70017A866 /* BTTableCellContentView.swift in Sources */,

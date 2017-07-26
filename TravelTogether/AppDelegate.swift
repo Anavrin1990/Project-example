@@ -25,21 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, UNUser
     static var delegate: DismissVC?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        UINavigationBar.appearance().tintColor = UIColor.white
-//        UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.2588235294, green: 0.4784313725, blue: 0.6784313725, alpha: 1)
-//        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.systemFont(ofSize: 20)]
-//        UINavigationBar.appearance().isTranslucent = false
-//        
-//        UITabBar.appearance().tintColor = #colorLiteral(red: 0.2579664588, green: 0.4773989916, blue: 0.6789934635, alpha: 1)
-//        
-//        let statusBarView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 20))
-//        statusBarView.backgroundColor = UINavigationBar.appearance().barTintColor
-//        self.window?.rootViewController?.view.insertSubview(statusBarView, at: 1)
-        
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        window?.makeKeyAndVisible()
-//        
-//        window?.rootViewController = UINavigationController(rootViewController: MessagesController())
         
         //create the notificationCenter
         if #available(iOS 10.0, *) {

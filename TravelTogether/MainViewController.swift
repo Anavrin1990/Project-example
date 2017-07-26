@@ -62,17 +62,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationController?.navigationBar.isTranslucent = false
 
-        //                var q = 179976175556
-        //                for i in 0...20 {
-        //                    var value = [String : Any]()
-        //                    value["name"] = "male" + String(i)
-        //                    value["createdate"] = q
-        //                    value["male_createdate"] = q
-        //                    Request.updateChildValue(reference: Request.ref.child("Travels").child("All").child("All").childByAutoId(), value: value, complition: {})
-        //                    q += 10
-        //                }
-
-
         self.collectionView.alwaysBounceVertical = true
 
         refreshControl.backgroundColor = .white
